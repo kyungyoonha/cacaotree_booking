@@ -1,0 +1,30 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true
+      }
+    ],
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "@hooks": "./src/hooks",
+          "@components": "./src/components",
+          "@layouts": "./src/layouts",
+          "@views": "./src/domain",
+          "@utils": "./src/utils",
+          "@config": "./src/config",
+          "@service": "./src/service",
+          "@interfaces": "./src/interfaces",
+          "@styles": "./src/styles",
+          "@context": "./src/context"
+        }
+      }
+    ]
+  ]
+}
