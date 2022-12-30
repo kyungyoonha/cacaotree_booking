@@ -18,12 +18,12 @@
     "paths": {
       "@hooks/*": ["./src/hooks/*"],
       "@layouts/*": ["./src/layouts/*"],
-      "@vviews/*": ["./src/domain/*"],
+      "@views/*": ["./src/views/*"],
       "@utils/*": ["./src/utils/*"],
       "@context/*": ["./src/context/*"],
       "@components": ["./src/components"],
-      "@interfaces*": ["./src/interfaces"],
-      "@styles*": ["./src/styles"],
+      "@interfaces": ["./src/interfaces"],
+      "@styles/*": ["./src/styles/*"],
       "@service": ["./src/service"],
       "@config": ["./src/config"]
     },

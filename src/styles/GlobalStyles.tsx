@@ -25,6 +25,35 @@ const GlobalStyles = createGlobalStyle`
     li {
         list-style: none;
     }
+
+    .placeholder {
+        & input::placeholder { 
+            color: black;
+        }
+    }
+    
+    .ant-input {
+        border-radius: 0;
+        width: 100%;
+
+        /* input::placeholder {
+            color: black !important;
+        }
+
+        &::placeholder {
+            color: black !important;
+        } */
+
+        
+    }
+
+    .ant-input-number-group-addon {
+            border-radius: 0 !important;
+        }
+
+    .input-radius {
+        border-radius: 0 !important;
+    }
 `;
 
 export default GlobalStyles;

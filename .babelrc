@@ -16,7 +16,7 @@
           "@hooks": "./src/hooks",
           "@components": "./src/components",
           "@layouts": "./src/layouts",
-          "@views": "./src/domain",
+          "@views": "./src/views",
           "@utils": "./src/utils",
           "@config": "./src/config",
           "@service": "./src/service",
