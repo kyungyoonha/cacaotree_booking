@@ -9,7 +9,7 @@ export const DropItems = [
         (11시 출발)
       </p>
     ),
-    dropPlace: null,
+    dropPlace: "",
     disabled: false,
     isPort: false,
   },
@@ -41,20 +41,14 @@ export const DropItems = [
     ),
     dropPlace: "Port(항구)",
     disabled: true,
-    isPort: false,
+    isPort: true,
   },
   {
     key: "d",
     title: "옵션4",
-    description: (
-      <p>
-        투어출발 입니다.
-        <br />
-        (오션젯 탑승)
-      </p>
-    ),
+    description: <p>투어출발 입니다.</p>,
     dropPlace: "Tour Pickup(투어픽업)",
     disabled: true,
-    isPort: true,
+    isPort: false,
   },
 ];

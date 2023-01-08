@@ -45,6 +45,7 @@ const FormItemBasic = () => {
         label="인원수"
         name="pax"
         rules={[{ required: true, message: "인원수를 입력해주세요." }]}
+        initialValue={1}
       >
         <InputNumber
           placeholder="인원수를 입력해주세요."

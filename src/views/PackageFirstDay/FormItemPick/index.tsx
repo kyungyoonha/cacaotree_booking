@@ -43,8 +43,9 @@ const FormItemPick = () => {
         label="픽업장소"
         name="픽업장소"
         rules={[{ required: true, message: "" }]}
+        initialValue="막탄공항"
       >
-        <Input value="막탄공항" disabled size="large" />
+        <Input disabled size="large" />
       </Form.Item>
 
       <Form.Item

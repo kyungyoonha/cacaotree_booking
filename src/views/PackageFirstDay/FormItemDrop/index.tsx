@@ -5,7 +5,12 @@ import styled from "styled-components";
 
 const { Title } = Typography;
 
-const FormItemDrop = () => {
+interface Props {
+  value: string;
+  onChange: (e) => void;
+}
+
+const FormItemDrop = ({ value, onChange }: Props) => {
   const [dropPlace, setDropPlace] = useState(null);
   const [dropPort, setDropPort] = useState(null);
   const [disabled, setDisabled] = useState(false);
@@ -13,8 +18,9 @@ const FormItemDrop = () => {
   const [key, setKey] = useState(null);
 
   const onClick = (key) => () => setKey(key);
-  const onChangeDrop = (e) => setDropPlace(e.target.value);
   const onChangePort = (e) => setDropPort(e.target.value);
+
+  const onChangeDrop = (e) => setDropPlace(e.target.value);
 
   useEffect(() => {
     if (!key) return;
@@ -25,6 +31,13 @@ const FormItemDrop = () => {
     setDisabled(disabled);
     setIsPort(isPort);
   }, [key]);
+
+  useEffect(() => {
+    if (!value && !dropPlace) return;
+    let result = dropPlace + (dropPort && isPort ? " " + dropPort : "");
+    console.log({ result });
+    onChange(result);
+  }, [value, dropPlace, isPort, dropPort, onChange]);
 
   return (
     <>
@@ -54,33 +67,32 @@ const FormItemDrop = () => {
             </Col>
           );
         })}
-
-        <Col span={24}>
-          <Form.Item
-            label="드랍장소"
-            rules={[{ required: true, message: "드랍장소를 입력해주세요." }]}
-          >
-            <Input
-              placeholder="드랍장소를 입력해주세요."
-              size="large"
-              value={dropPlace}
-              onChange={onChangeDrop}
-              disabled={disabled}
-            />
-          </Form.Item>
-
-          {isPort && (
-            <Form.Item label="티켓시간">
-              <Input
-                placeholder="티켓시간을 입력해주세요."
-                size="large"
-                value={dropPort}
-                onChange={onChangePort}
-              />
-            </Form.Item>
-          )}
-        </Col>
       </Row>
+      <br />
+      <Form.Item
+        label="드랍장소"
+        name="drop"
+        rules={[{ required: true, message: "드랍장소를 입력해주세요." }]}
+      >
+        <Input
+          placeholder="드랍장소를 입력해주세요."
+          size="large"
+          value={value}
+          onChange={onChangeDrop}
+          disabled={disabled}
+        />
+      </Form.Item>
+
+      {isPort && (
+        <Form.Item label="티켓시간">
+          <Input
+            placeholder="티켓시간을 입력해주세요."
+            size="large"
+            value={dropPort}
+            onChange={onChangePort}
+          />
+        </Form.Item>
+      )}
     </>
   );
 };

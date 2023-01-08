@@ -10,6 +10,7 @@ const { Title } = Typography;
 const PackageFirstDay = () => {
   const [form] = Form.useForm();
   const fieldPax = Form.useWatch("pax", form);
+  const drop = Form.useWatch("drop", form);
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
@@ -18,7 +19,7 @@ const PackageFirstDay = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
+  console.log({ drop });
   return (
     <>
       <Form
@@ -33,9 +34,12 @@ const PackageFirstDay = () => {
         requiredMark={false}
       >
         <FormItemBasic />
-        <FormItemMassage itemLength={fieldPax} />
+        <FormItemMassage itemLength={fieldPax} form={form} />
         <FormItemPick />
-        <FormItemDrop />
+        <FormItemDrop
+          value={drop}
+          onChange={(value) => form.setFieldValue("drop", value)}
+        />
 
         <Title
           level={4}
