@@ -21,7 +21,7 @@
       "@views/*": ["./src/views/*"],
       "@utils/*": ["./src/utils/*"],
       "@context/*": ["./src/context/*"],
-      "@components": ["./src/components"],
+      "@components/*": ["./src/components/*"],
       "@interfaces": ["./src/interfaces"],
       "@styles/*": ["./src/styles/*"],
       "@service": ["./src/service"],

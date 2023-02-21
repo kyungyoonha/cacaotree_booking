@@ -1,8 +1,8 @@
 import React from "react";
-import { LayoutForm } from "@components";
+import LayoutForm from "@components/LayoutForm";
 import PackageFirstDay from "@views/PackageFirstDay";
 
-const FirstDayPackage = () => {
+const PackageFirstDayPage = () => {
   return (
     <LayoutForm
       title="첫날팩 마사지"
@@ -14,4 +14,4 @@ const FirstDayPackage = () => {
   );
 };
 
-export default FirstDayPackage;
+export default PackageFirstDayPage;

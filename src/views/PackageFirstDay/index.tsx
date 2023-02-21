@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { Form, Input, Button, Typography } from "antd";
-import FormItemMassage from "./FormItemMassage";
 import FormItemDrop from "./FormItemDrop";
-import FormItemBasic from "./FormItemBasic";
 import FormItemPick from "./FormItemPick";
+import FormItemBasic from "@components/FormItemBasic";
+import FormItemMassage from "@components/FormItemMassage";
 
 const { Title } = Typography;
 
@@ -19,7 +19,7 @@ const PackageFirstDay = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-  console.log({ drop });
+
   return (
     <>
       <Form

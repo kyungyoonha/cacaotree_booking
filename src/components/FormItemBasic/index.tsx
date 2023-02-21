@@ -1,12 +1,12 @@
 import React from "react";
-import { Form, Input, InputNumber, Typography } from "antd";
+import { Form, Input, Typography } from "antd";
 const { Title } = Typography;
 
 const FormItemBasic = () => {
   return (
     <>
       <Title level={4} type="warning" style={{ fontWeight: 700 }}>
-        기본정보
+        기본 정보
       </Title>
       <Form.Item
         label="예약자 성함"
@@ -39,22 +39,6 @@ const FormItemBasic = () => {
         rules={[{ required: true, message: "연락처를 입력해주세요." }]}
       >
         <Input size="large" />
-      </Form.Item>
-
-      <Form.Item
-        label="인원수"
-        name="pax"
-        rules={[{ required: true, message: "인원수를 입력해주세요." }]}
-        initialValue={1}
-      >
-        <InputNumber
-          placeholder="인원수를 입력해주세요."
-          addonAfter="명"
-          style={{ borderRadius: 0 }}
-          className="input-radius"
-          min={0}
-          size="large"
-        />
       </Form.Item>
     </>
   );
