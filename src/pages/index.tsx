@@ -1,5 +1,10 @@
-import Home from "@views/Home";
+import LayoutBasic from "@components/LayoutBasic";
+import HomeView from "@views/Home";
 
 export default function Main() {
-  return <Home />;
+  return (
+    <LayoutBasic>
+      <HomeView />
+    </LayoutBasic>
+  );
 }

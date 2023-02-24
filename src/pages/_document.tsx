@@ -12,7 +12,12 @@ class CustomDucument extends Document {
               - 로딩 굉장히 빨라진다.
               - .next/server/pages/index.html 보면 폰트가 다 들어가져있음
             */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
 
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600&display=swap"
+            rel="stylesheet"
+          />
           <link
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
             rel="stylesheet"

@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import { Card } from "antd";
+import Header from "@components/Header";
 
 interface Props {
   title: string;
@@ -11,22 +12,25 @@ interface Props {
 
 const LayoutForm = ({ title, description, children }: Props) => {
   return (
-    <Wrapper>
-      <Image src="/background.jpeg" fill alt="background" />
+    <>
+      <Header />
+      <Wrapper>
+        <Image src="/background.jpeg" fill alt="background" />
 
-      <Card
-        className="inner"
-        title={title}
-        bodyStyle={{
-          overflowY: "scroll",
-          height: "550px",
-          paddingBottom: "50px",
-        }}
-      >
-        <Description>{description}</Description>
-        <div>{children}</div>
-      </Card>
-    </Wrapper>
+        <Card
+          className="inner"
+          title={title}
+          bodyStyle={{
+            overflowY: "scroll",
+            height: "550px",
+            paddingBottom: "50px",
+          }}
+        >
+          <Description>{description}</Description>
+          <div>{children}</div>
+        </Card>
+      </Wrapper>
+    </>
   );
 };
 
@@ -34,7 +38,7 @@ export default LayoutForm;
 
 const Wrapper = styled.div`
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 70px);
   overflow: hidden;
 
   & > img {
