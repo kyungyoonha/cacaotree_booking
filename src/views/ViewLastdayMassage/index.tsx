@@ -8,7 +8,7 @@ import FormItemDrop from "./FormItemDrop";
 
 const { Title } = Typography;
 
-const PackageLastDay = () => {
+const ViewLastdayMassage = () => {
   const [form] = Form.useForm();
   const fieldPax = Form.useWatch("pax", form);
 
@@ -63,4 +63,4 @@ const PackageLastDay = () => {
   );
 };
 
-export default PackageLastDay;
+export default ViewLastdayMassage;

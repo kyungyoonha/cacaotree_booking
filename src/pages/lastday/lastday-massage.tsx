@@ -1,13 +1,13 @@
 import React from "react";
 import LayoutForm from "@components/LayoutForm";
-import PackageLastDay from "@views/PackageLastDay";
+import ViewLastdayMassage from "@views/PackageLastDay";
 
-const PackageLastDayPage = () => {
+const LastdayMassage = () => {
   return (
     <LayoutForm title="막날팩 마사지" description="">
-      <PackageLastDay />
+      <ViewLastdayMassage />
     </LayoutForm>
   );
 };
 
-export default PackageLastDayPage;
+export default LastdayMassage;

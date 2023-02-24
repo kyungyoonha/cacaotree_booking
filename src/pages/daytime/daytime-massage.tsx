@@ -1,13 +1,13 @@
 import LayoutForm from "@components/LayoutForm";
-import PackageDaytime from "@views/PackageDaytime";
+import ViewDaytimeMassage from "@views/ViewDaytimeMassage";
 import React from "react";
 
-const PackageDaytimePage = () => {
+const DaytimeMassage = () => {
   return (
     <LayoutForm title="데이타임 마사지" description="">
-      <PackageDaytime />
+      <ViewDaytimeMassage />
     </LayoutForm>
   );
 };
 
-export default PackageDaytimePage;
+export default DaytimeMassage;

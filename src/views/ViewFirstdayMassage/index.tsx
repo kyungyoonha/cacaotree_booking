@@ -7,7 +7,7 @@ import FormItemMassage from "@components/FormItemMassage";
 
 const { Title } = Typography;
 
-const PackageFirstDay = () => {
+const ViewFirstdayMassage = () => {
   const [form] = Form.useForm();
   const fieldPax = Form.useWatch("pax", form);
   const drop = Form.useWatch("drop", form);
@@ -66,4 +66,4 @@ const PackageFirstDay = () => {
   );
 };
 
-export default PackageFirstDay;
+export default ViewFirstdayMassage;

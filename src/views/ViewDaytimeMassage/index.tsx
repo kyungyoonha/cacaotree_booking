@@ -1,12 +1,10 @@
 import React from "react";
-import { Form, Button, Typography } from "antd";
+import { Form, Button } from "antd";
 import FormItemBasic from "@components/FormItemBasic";
 import FormItemMassage from "@components/FormItemMassage";
 import FormItemDetail from "./FormItemDetail";
 
-const { Title } = Typography;
-
-const PackageDaytime = () => {
+const ViewDaytimeMassage = () => {
   const [form] = Form.useForm();
   const fieldPax = Form.useWatch("pax", form);
 
@@ -41,4 +39,4 @@ const PackageDaytime = () => {
   );
 };
 
-export default PackageDaytime;
+export default ViewDaytimeMassage;
