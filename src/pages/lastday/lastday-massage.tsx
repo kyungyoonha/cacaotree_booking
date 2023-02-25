@@ -1,6 +1,6 @@
 import React from "react";
 import LayoutForm from "@components/LayoutForm";
-import ViewLastdayMassage from "@views/PackageLastDay";
+import ViewLastdayMassage from "@views/ViewLastdayMassage";
 
 const LastdayMassage = () => {
   return (

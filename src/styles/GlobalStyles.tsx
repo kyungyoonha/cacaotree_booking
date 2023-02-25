@@ -37,14 +37,7 @@ const GlobalStyles = createGlobalStyle`
         border-radius: 0;
         width: 100%;
 
-        /* input::placeholder {
-            color: black !important;
-        }
-
-        &::placeholder {
-            color: black !important;
-        } */
-
+        
         
     }
 
@@ -54,6 +47,20 @@ const GlobalStyles = createGlobalStyle`
 
     .input-radius {
         border-radius: 0 !important;
+    }
+    
+    @keyframes animation-arrow {
+        0% {
+            transform: translateX(0px);
+        }
+
+        50% {
+            transform: translateX(5px);
+        }
+
+        100% {
+            transform: translateX(0px);
+        }
     }
 `;
 

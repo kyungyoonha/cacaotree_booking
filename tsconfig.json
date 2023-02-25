@@ -25,7 +25,7 @@
       "@interfaces": ["./src/interfaces"],
       "@styles/*": ["./src/styles/*"],
       "@service": ["./src/service"],
-      "@config": ["./src/config"]
+      "@configs/*": ["./src/configs/*"]
     },
 
     "incremental": true
