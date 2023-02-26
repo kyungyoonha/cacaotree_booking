@@ -49,6 +49,7 @@ const Wrapper = styled.div`
   padding: 0 30px;
   height: 70px;
   border-bottom: 3px solid #eceff3;
+  min-width: 354px;
 `;
 
 const Title = styled.p`

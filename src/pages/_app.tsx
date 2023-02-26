@@ -4,6 +4,7 @@ import theme from "../styles/theme";
 import Head from "next/head";
 
 import type { AppProps } from "next/app";
+import { ConfigProvider } from "antd";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -14,7 +15,15 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <Component {...pageProps} />
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: theme.main,
+            },
+          }}
+        >
+          <Component {...pageProps} />
+        </ConfigProvider>
       </ThemeProvider>
     </>
   );
