@@ -19,5 +19,6 @@ const LayoutBasic = ({ children }: Props) => {
 export default LayoutBasic;
 
 const Wrapper = styled.div`
+  margin-top: 70px;
   height: calc(100vh - 70px);
 `;

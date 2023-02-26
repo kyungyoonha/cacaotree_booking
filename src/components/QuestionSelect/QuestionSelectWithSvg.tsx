@@ -48,7 +48,7 @@ const QuestionSelectWithSvg = ({
         <Button
           type="default"
           size="large"
-          style={{ width: "200px" }}
+          style={{ width: "300px", height: "70px" }}
           onClick={onClickButton}
         >
           {buttonName}

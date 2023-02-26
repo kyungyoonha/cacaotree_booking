@@ -7,7 +7,6 @@ export const Wrapper = styled.div`
   margin-top: 80px;
 
   & > h1.title {
-    padding: 30px 0;
     text-align: center;
   }
 
@@ -92,9 +91,6 @@ export const ItemWrapper = styled.div`
     background-color: ${(props) => props.theme.background};
     /* color: #fff; */
     border: 1px solid ${(props) => props.theme.main};
-    svg {
-      fill: #fff;
-    }
   }
 
   & > p {

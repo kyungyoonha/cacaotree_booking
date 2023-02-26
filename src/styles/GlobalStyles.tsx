@@ -48,6 +48,8 @@ const GlobalStyles = createGlobalStyle`
     .input-radius {
         border-radius: 0 !important;
     }
+
+    
     
     @keyframes animation-arrow {
         0% {

@@ -48,8 +48,13 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 0 30px;
   height: 70px;
+  background: #fff;
   border-bottom: 3px solid #eceff3;
   min-width: 354px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10 !important;
 `;
 
 const Title = styled.p`

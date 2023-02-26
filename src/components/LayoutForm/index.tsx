@@ -60,7 +60,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.h3``;
 const Description = styled.p`
   margin-bottom: 20px;
 `;
