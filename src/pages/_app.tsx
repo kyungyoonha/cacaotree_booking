@@ -5,13 +5,8 @@ import Head from "next/head";
 
 import type { AppProps } from "next/app";
 import { ConfigProvider } from "antd";
-import { useEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    localStorage.setItem("test", "1");
-  }, []);
-
   return (
     <>
       <Head>

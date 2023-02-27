@@ -2,20 +2,15 @@ import Logo from "@components/Logo";
 import { Badge, Tooltip } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Header = () => {
-  const [aaa, setAaa] = useState("");
-  useEffect(() => {
-    setAaa(localStorage.getItem("test"));
-  }, []);
-
   return (
     <Wrapper>
-      <Logo width="50" height="50" />
+      <Logo width="50" height="50" href="/" />
 
-      <Title>스파 예약하기 {aaa}</Title>
+      <Title>스파 예약하기</Title>
 
       <div>
         <StyledLink

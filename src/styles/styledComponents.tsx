@@ -35,6 +35,16 @@ export const StyledForm = styled(Form)`
   align-items: center;
   padding: 30px 0 150px;
   width: 600px;
+
+  @media (max-width: ${SCREENS.md}) {
+    width: 100%;
+    padding: 30px 20px 150px;
+  }
+
+  @media (max-width: ${SCREENS.sm}) {
+    min-width: 354px;
+    margin-top: 30px;
+  }
 `;
 
 export const StyledSelect = styled(Select)`
@@ -57,7 +67,13 @@ export const StyledRadioGroup = styled(Radio.Group)`
 
 export const StyledRadioButton = styled(Radio.Button)`
   height: 60px !important;
-  padding-top: 8px;
   flex: 1;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 18px !important;
+
+  @media (max-width: ${SCREENS.sm}) {
+    font-size: 11px !important;
+  }
 `;

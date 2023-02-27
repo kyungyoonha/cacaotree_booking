@@ -26,6 +26,10 @@ const FormItemDrop = ({ value, onChange }: Props) => {
         setDisabled(true);
         onChange("개별 드랍하겠습니다.");
         return;
+      case "port":
+        setDisabled(true);
+        onChange("항구드랍 (1인 200페소 추가)");
+        return;
       case "no-need":
         setDisabled(true);
         onChange("필요 없습니다.");
@@ -46,7 +50,8 @@ const FormItemDrop = ({ value, onChange }: Props) => {
         onChange={onChangeRadio}
       >
         <StyledRadioButton value="mactan">막탄지역</StyledRadioButton>
-        <StyledRadioButton value="cebu">세부시티,코르도바</StyledRadioButton>
+        <StyledRadioButton value="cebu">세부시티, 코르도바</StyledRadioButton>
+        <StyledRadioButton value="port">항구 드랍</StyledRadioButton>
         <StyledRadioButton value="no-need">필요 없습니다.</StyledRadioButton>
       </StyledRadioGroup>
       <StyledInput
