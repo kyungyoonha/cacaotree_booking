@@ -10,9 +10,8 @@ import { Form, DatePicker, Card, Select, Radio } from "antd";
 import dayjs from "dayjs";
 import theme from "@styles/theme";
 import massageFirstday from "src/configs/massage-firstday";
-import FormItemDrop from "./FormItemDrop";
-import FormItemPick from "./FormItemPick";
 import FormItemGuestInfo from "@components/FormItemGuestInfo";
+import FormItemInputWithOption from "@components/FormItemInputWithOption";
 
 const ViewDaytimeMassage = () => {
   const [form] = Form.useForm();
@@ -150,18 +149,66 @@ const ViewDaytimeMassage = () => {
           픽업 장소를 적어주세요.
         </StyledH1>
 
-        <FormItemPick
+        <FormItemInputWithOption
           value={pick}
           onChange={(value) => form.setFieldValue("pick", value)}
+          label="픽업장소"
+          name="pick"
+          placeholder="픽업장소를 입력해주세요."
+          defaultValue="mactan"
+          options={[
+            {
+              key: "mactan",
+              title: "막탄지역",
+              disabled: false,
+              value: "",
+            },
+            {
+              key: "cebu",
+              title: "세부시티, 코르도바",
+              disabled: true,
+              value: "개별적으로 스파로 오겠습니다.",
+            },
+            {
+              key: "no-need",
+              title: "필요 없습니다.",
+              disabled: true,
+              value: "필요 없습니다.",
+            },
+          ]}
         />
 
         <StyledH1 style={{ textAlign: "center" }}>
           드랍 장소를 적어주세요.
         </StyledH1>
 
-        <FormItemDrop
+        <FormItemInputWithOption
           value={drop}
           onChange={(value) => form.setFieldValue("drop", value)}
+          label="드랍장소"
+          name="drop"
+          placeholder="드랍장소를 입력해주세요."
+          defaultValue="mactan"
+          options={[
+            {
+              key: "mactan",
+              title: "막탄지역",
+              disabled: false,
+              value: "",
+            },
+            {
+              key: "cebu",
+              title: "세부시티, 코르도바",
+              disabled: true,
+              value: "개별 드랍하겠습니다.",
+            },
+            {
+              key: "no-need",
+              title: "필요 없습니다.",
+              disabled: true,
+              value: "필요 없습니다.",
+            },
+          ]}
         />
 
         <StyledButton type="primary" htmlType="submit">

@@ -11,8 +11,8 @@ import { Card, DatePicker, Form, Radio, Select, TimePicker } from "antd";
 import React, { useEffect } from "react";
 import massageLastday from "@configs/massage-lastday";
 import theme from "@styles/theme";
-import FormItemPick from "@views/ViewDaytimeMassage/FormItemPick";
 import dayjs from "dayjs";
+import FormItemInputWithOption from "@components/FormItemInputWithOption";
 
 const ViewLastdayMassage = () => {
   const [form] = Form.useForm();
@@ -79,9 +79,33 @@ const ViewLastdayMassage = () => {
           픽업 장소를 적어주세요.
         </StyledH1>
 
-        <FormItemPick
+        <FormItemInputWithOption
           value={pick}
           onChange={(value) => form.setFieldValue("pick", value)}
+          label="픽업장소"
+          name="pick"
+          placeholder="픽업장소를 입력해주세요."
+          defaultValue="mactan"
+          options={[
+            {
+              key: "mactan",
+              title: "막탄지역",
+              disabled: false,
+              value: "",
+            },
+            {
+              key: "cebu",
+              title: "세부시티, 코르도바",
+              disabled: true,
+              value: "개별적으로 스파로 오겠습니다.",
+            },
+            {
+              key: "no-need",
+              title: "필요 없습니다.",
+              disabled: true,
+              value: "필요 없습니다.",
+            },
+          ]}
         />
 
         <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>

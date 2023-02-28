@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Card, DatePicker, Form, Radio, Select, TimePicker } from "antd";
+import FormItemGuestInfo from "@components/FormItemGuestInfo";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -8,17 +8,17 @@ import {
   StyledInput,
   StyledSelect,
 } from "@styles/styledComponents";
-import FormItemGuestInfo from "@components/FormItemGuestInfo";
-import massageFirstday from "@configs/massage-firstday";
+import { Card, DatePicker, Form, Radio, Select, TimePicker } from "antd";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
+import massageLastday from "@configs/massage-lastday";
 import theme from "@styles/theme";
 import dayjs from "dayjs";
 
-const ViewFirstdayMassage = () => {
+const ViewLastdayHopping = () => {
   const [form] = Form.useForm();
   const fieldPax = Number(Form.useWatch("pax", form)) || 1;
   const fieldMsgList = Form.useWatch("massageList", form) || [];
-  const drop = Form.useWatch("drop", form);
+  const pick = Form.useWatch("pick", form);
 
   const onFinish = (values: any) => {
     console.log("Success", values);
@@ -57,7 +57,7 @@ const ViewFirstdayMassage = () => {
       >
         <FormItemGuestInfo form={form} />
 
-        <StyledH1>공항픽업 정보를 입력해주세요.</StyledH1>
+        <StyledH1>예약날짜를 선택해주세요.</StyledH1>
 
         <Form.Item
           label="예약날짜"
@@ -75,11 +75,42 @@ const ViewFirstdayMassage = () => {
           />
         </Form.Item>
 
+        <StyledH1 style={{ textAlign: "center" }}>
+          픽업 장소를 적어주세요.
+        </StyledH1>
+
+        <FormItemInputWithOption
+          value={pick}
+          onChange={(value) => form.setFieldValue("pick", value)}
+          label="픽업장소"
+          name="pick"
+          placeholder="픽업장소를 입력해주세요."
+          defaultValue="mactan"
+          options={[
+            {
+              key: "mactan",
+              title: "막탄지역",
+              disabled: false,
+              value: "",
+            },
+            {
+              key: "cebu",
+              title: "세부시티(편도 500페소)",
+              disabled: false,
+              value: "",
+            },
+          ]}
+        />
+
+        <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>
+
         <Form.Item
-          label="도착시간"
-          name="arrivalTime"
-          rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
+          label="비행기 출발 시간"
+          name="departTime"
           style={{ width: "100%" }}
+          rules={[
+            { required: true, message: "비행기 출발시간을 선택해주세요." },
+          ]}
         >
           <TimePicker
             style={{
@@ -88,7 +119,7 @@ const ViewFirstdayMassage = () => {
               borderRadius: "10px",
             }}
             format="HH:mm"
-            placeholder="도착시간을 선택해주세요."
+            placeholder="비행기 출발시간을 선택해주세요."
             size="large"
           />
         </Form.Item>
@@ -103,53 +134,14 @@ const ViewFirstdayMassage = () => {
         </Form.Item>
 
         <Form.Item
-          label="픽업장소"
-          name="픽업장소"
+          label="드랍장소"
+          name="drop"
           rules={[{ required: true, message: "" }]}
           initialValue="막탄공항"
           style={{ width: "100%" }}
         >
           <StyledInput disabled size="large" />
         </Form.Item>
-
-        <StyledH1 style={{ textAlign: "center" }}>
-          드랍 장소를 적어주세요.
-        </StyledH1>
-
-        <FormItemInputWithOption
-          value={drop}
-          onChange={(value) => form.setFieldValue("drop", value)}
-          label="드랍장소"
-          name="drop"
-          placeholder="드랍장소를 입력해주세요."
-          defaultValue="mactan"
-          options={[
-            {
-              key: "mactan",
-              title: "막탄지역",
-              disabled: false,
-              value: "",
-            },
-            {
-              key: "cebu",
-              title: "세부시티, 코르도바",
-              disabled: true,
-              value: "개별적으로 스파로 오겠습니다.",
-            },
-            {
-              key: "port",
-              title: "항구드랍",
-              disabled: true,
-              value: "항구드랍 (1인 200페소 추가)",
-            },
-            {
-              key: "no-need",
-              title: "필요 없습니다.",
-              disabled: true,
-              value: "필요 없습니다.",
-            },
-          ]}
-        />
 
         <StyledH1>총 인원수를 선택해주세요.</StyledH1>
 
@@ -200,7 +192,7 @@ const ViewFirstdayMassage = () => {
                           { required: true, message: "마사지를 선택해주세요" },
                         ]}
                       >
-                        <Select options={massageFirstday} size="large" />
+                        <Select options={massageLastday} size="large" />
                       </Form.Item>
 
                       <Form.Item
@@ -230,4 +222,4 @@ const ViewFirstdayMassage = () => {
   );
 };
 
-export default ViewFirstdayMassage;
+export default ViewLastdayHopping;

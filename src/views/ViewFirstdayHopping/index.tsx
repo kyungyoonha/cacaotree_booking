@@ -10,11 +10,11 @@ import {
 } from "@styles/styledComponents";
 import FormItemGuestInfo from "@components/FormItemGuestInfo";
 import massageFirstday from "@configs/massage-firstday";
-import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import theme from "@styles/theme";
 import dayjs from "dayjs";
+import FormItemInputWithOption from "@components/FormItemInputWithOption";
 
-const ViewFirstdayMassage = () => {
+const ViewFirstdayHopping = () => {
   const [form] = Form.useForm();
   const fieldPax = Number(Form.useWatch("pax", form)) || 1;
   const fieldMsgList = Form.useWatch("massageList", form) || [];
@@ -132,21 +132,9 @@ const ViewFirstdayMassage = () => {
             },
             {
               key: "cebu",
-              title: "세부시티, 코르도바",
-              disabled: true,
-              value: "개별적으로 스파로 오겠습니다.",
-            },
-            {
-              key: "port",
-              title: "항구드랍",
-              disabled: true,
-              value: "항구드랍 (1인 200페소 추가)",
-            },
-            {
-              key: "no-need",
-              title: "필요 없습니다.",
-              disabled: true,
-              value: "필요 없습니다.",
+              title: "세부시티(편도 500페소)",
+              disabled: false,
+              value: "",
             },
           ]}
         />
@@ -230,4 +218,4 @@ const ViewFirstdayMassage = () => {
   );
 };
 
-export default ViewFirstdayMassage;
+export default ViewFirstdayHopping;
