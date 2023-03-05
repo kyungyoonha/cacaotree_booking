@@ -4,21 +4,27 @@ import Header from "@components/Header";
 import styled from "styled-components";
 
 interface Props {
+  background?: string;
   children;
 }
 
-const LayoutBasic = ({ children }: Props) => {
+const LayoutBasic = ({ background, children }: Props) => {
   return (
     <>
       <Header />
-      <Wrapper>{children}</Wrapper>
+      <Wrapper background={background}>{children}</Wrapper>
     </>
   );
 };
 
 export default LayoutBasic;
 
-const Wrapper = styled.div`
+type Props2 = {
+  background: string;
+};
+
+const Wrapper = styled.div<Props2>`
+  background: ${(props) => props.background};
   margin-top: 70px;
   height: calc(100vh - 70px);
 `;
