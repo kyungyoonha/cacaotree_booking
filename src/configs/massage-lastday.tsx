@@ -1,4 +1,6 @@
-const massageDaytime = [
+import { SelectOption } from "src/types";
+
+const massageDaytime: SelectOption = [
   {
     label: "클래식 마사지",
     options: [

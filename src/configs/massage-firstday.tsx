@@ -1,4 +1,6 @@
-const massageFirstday = [
+import { SelectOption } from "src/types";
+
+const massageFirstday: SelectOption = [
   {
     label: "마사지",
     options: [

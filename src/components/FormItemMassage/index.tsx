@@ -1,106 +1,108 @@
-import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Row,
-  Col,
-  Card,
-  Typography,
-  Select,
-  FormInstance,
-  InputNumber,
-  Radio,
-} from "antd";
+import { StyledH1, StyledSelect } from "@styles/styledComponents";
 import theme from "@styles/theme";
-import massageFirstday from "src/configs/massage-firstday";
+import { Card, Form, FormInstance, Radio, Select } from "antd";
+import React, { useEffect } from "react";
+import { SelectOption } from "src/types";
 
-const { Title } = Typography;
-
-interface prop {
-  itemLength: number;
-  form: FormInstance;
+interface FormItemMassage {
+  form: FormInstance<any>;
+  selectOption: SelectOption;
 }
 
-const FormItemMassage = ({ itemLength, form }: prop) => {
-  const [massages, setMassages] = useState([]);
-
-  const onChangeMassage = (i) => (newMassage) => {
-    let newMassages = [...massages];
-    newMassages[i] = newMassage;
-    setMassages(newMassages);
-  };
-
-  const onChange = (value) => {
-    form.setFieldValue("good", value);
-  };
+const FormItemMassage = ({ form, selectOption }) => {
+  const fieldPax = Number(Form.useWatch("pax", form)) || 1;
+  const fieldMsgList = Form.useWatch("massageList", form) || [];
 
   useEffect(() => {
-    if (!itemLength || itemLength === 0) return;
+    if (fieldPax === fieldMsgList.length) return;
 
-    const newMassages = [...new Array(itemLength)].map((_, i) => {
-      return massages[i] ? massages[i] : "";
-    });
-    setMassages(newMassages);
-  }, [itemLength]);
-
-  useEffect(() => {
-    onChange(massages);
-  }, [massages]);
-
+    let initialValue = { sex: "f", massage: "" };
+    let newMsgList =
+      fieldPax < fieldMsgList.length
+        ? fieldMsgList.slice(0, fieldPax)
+        : [...new Array(fieldPax).keys()].map((_, idx) => {
+            return fieldMsgList[idx] ? fieldMsgList[idx] : initialValue;
+          });
+    form.setFieldValue("massageList", newMsgList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, fieldPax]);
   return (
-    <Form.Item name="good" wrapperCol={{ span: 23 }}>
-      <Title level={4} type="warning" style={{ fontWeight: 700 }}>
-        마사지 정보
-      </Title>
+    <>
+      <StyledH1>총 인원수를 선택해주세요.</StyledH1>
+
       <Form.Item
         label="인원수"
         name="pax"
         rules={[{ required: true, message: "인원수를 입력해주세요." }]}
         initialValue={1}
-        labelCol={{ span: 5 }}
+        style={{ width: "100%" }}
       >
-        <InputNumber
-          placeholder="인원수를 입력해주세요."
-          addonAfter="명"
-          style={{ borderRadius: 0 }}
-          className="input-radius"
-          min={0}
+        <StyledSelect
+          options={[
+            ...new Array(30).fill(null).map((_, idx) => ({
+              label: `${idx + 1}명`,
+              value: `${idx + 1}`,
+            })),
+          ]}
           size="large"
+          style={{ height: "60px" }}
         />
       </Form.Item>
-      {itemLength >= 1 && (
-        <Row gutter={[16, 16]}>
-          {[...new Array(itemLength)].map((_, i) => (
-            <Col span={24} key={i}>
-              <Card
-                type="inner"
-                title={`고객${i + 1}`}
-                style={{ background: theme.gray }}
-              >
-                <Form.Item
-                  label="마사지 종류"
-                  rules={[
-                    { required: true, message: "인원수를 입력해주세요." },
-                  ]}
+
+      <StyledH1>마사지를 선택해주세요.</StyledH1>
+
+      <Form.List name="massageList">
+        {(fields) => {
+          return (
+            <>
+              {fields.map((field) => (
+                <Card
+                  key={field.key}
+                  type="inner"
+                  title={`고객 ${field.key + 1}`}
+                  style={{
+                    background: theme.gray,
+                    width: "100%",
+                    marginBottom: "15px",
+                    marginTop: "15px",
+                  }}
                 >
-                  <Select
-                    options={massageFirstday}
-                    size="large"
-                    onChange={onChangeMassage(i)}
-                    value={massages[i]}
-                  />
-                </Form.Item>
-                <Form.Item label="성별" name={`sex${i + 1}`}>
-                  <Radio.Group defaultValue="f">
-                    <Radio.Button value="f">여자</Radio.Button>
-                    <Radio.Button value="m">남자</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      )}
-    </Form.Item>
+                  <Form.Item required style={{ marginBottom: "5px" }}>
+                    <Form.Item
+                      {...field}
+                      key={`${field.key}-1`}
+                      name={[field.name, "massage"]}
+                      initialValue=""
+                      rules={[
+                        { required: true, message: "마사지를 선택해주세요" },
+                      ]}
+                    >
+                      <Select
+                        options={selectOption}
+                        size="large"
+                        placeholder="마사지를 선택해주세요."
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      key={`${field.key}-2`}
+                      name={[field.name, "sex"]}
+                      noStyle
+                      initialValue="f"
+                    >
+                      <Radio.Group>
+                        <Radio.Button value="f">여자</Radio.Button>
+                        <Radio.Button value="m">남자</Radio.Button>
+                      </Radio.Group>
+                    </Form.Item>
+                  </Form.Item>
+                </Card>
+              ))}
+            </>
+          );
+        }}
+      </Form.List>
+    </>
   );
 };
 
