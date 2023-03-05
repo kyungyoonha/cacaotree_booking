@@ -112,12 +112,10 @@ const ViewLastdayMassage = () => {
         <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>
 
         <Form.Item
-          label="비행기 출발 시간"
+          label="드랍시간을 입력해주세요."
           name="departTime"
           style={{ width: "100%" }}
-          rules={[
-            { required: true, message: "비행기 출발시간을 선택해주세요." },
-          ]}
+          rules={[{ required: true, message: "드랍시간을 입력해주세요." }]}
         >
           <TimePicker
             style={{
@@ -126,18 +124,9 @@ const ViewLastdayMassage = () => {
               borderRadius: "10px",
             }}
             format="HH:mm"
-            placeholder="비행기 출발시간을 선택해주세요."
+            placeholder="드랍시간을 입력해주세요.(최소 비행 2시간 전으로 해주시는 것이 좋습니다.)"
             size="large"
           />
-        </Form.Item>
-
-        <Form.Item
-          label="항공기 편명"
-          name="flight"
-          rules={[{ required: true, message: "항공기 편명을 입력해주세요." }]}
-          style={{ width: "100%" }}
-        >
-          <StyledInput placeholder="항공기 편명을 입력해주세요." size="large" />
         </Form.Item>
 
         <Form.Item

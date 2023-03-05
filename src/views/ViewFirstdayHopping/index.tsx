@@ -56,8 +56,6 @@ const ViewFirstdayHopping = () => {
         autoComplete="off"
         requiredMark={false}
       >
-        <FormItemGuestInfo form={form} />
-
         <StyledH1>공항픽업 정보를 입력해주세요.</StyledH1>
 
         <Form.Item
@@ -96,7 +94,7 @@ const ViewFirstdayHopping = () => {
 
         <Form.Item
           label="항공기 편명"
-          name="flight"
+          name="pickFlight"
           rules={[{ required: true, message: "항공기 편명을 입력해주세요." }]}
           style={{ width: "100%" }}
         >

@@ -96,7 +96,7 @@ const ViewFirstdayMassage = () => {
 
         <Form.Item
           label="항공기 편명"
-          name="flight"
+          name="pickFlight"
           rules={[{ required: true, message: "항공기 편명을 입력해주세요." }]}
           style={{ width: "100%" }}
         >
