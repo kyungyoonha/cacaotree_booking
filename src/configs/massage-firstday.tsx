@@ -1,25 +1,40 @@
-import { SelectOption } from "src/types";
+import { SelectOption } from "@types";
 
 const massageFirstday: SelectOption = [
   {
     label: "마사지",
     options: [
-      { label: "90분 타이 (45,000원)", value: "90 Thai", price: 45000 },
-      { label: "90분 시아추 (45,000원)", value: "90 Shiatsu", price: 45000 },
-      { label: "90분 오일 (45,000원)", value: "90 Oil", price: 45000 },
       {
-        label: "90분 라바스톤 (45,000원)",
-        value: "90 LavaStone",
-        price: 45000,
+        label: "90분 타이 (45,000원/1,800페소)",
+        value: "90분 타이/90 Thai/45000",
       },
-
-      { label: "120분 타이 (60,000원)", value: "120 Thai", price: 60000 },
-      { label: "120분 시아추 (60,000원)", value: "120 Shiatsu", price: 60000 },
-      { label: "120분 오일 (60,000원)", value: "120 Oil", price: 60000 },
       {
-        label: "120분 라바스톤 (60,000원)",
-        value: "120 LavaStone",
-        price: 60000,
+        label: "90분 시아추 (45,000원/1,800페소)",
+        value: "90분 시아추/90 Shiatsu/45000",
+      },
+      {
+        label: "90분 오일 (45,000원/1,800페소)",
+        value: "90분 오일/90 Oil/45000",
+      },
+      {
+        label: "90분 라바스톤 (45,000원/1,800페소)",
+        value: "90분 라바스톤/90 LavaStone/45000",
+      },
+      {
+        label: "120분 타이 (60,000원/2,400페소)",
+        value: "120분 타이/120 Thai/60000",
+      },
+      {
+        label: "120분 시아추 (60,000원/2,400페소)",
+        value: "120분 시아추/120 Shiatsu/60000",
+      },
+      {
+        label: "120분 오일 (60,000원/2,400페소)",
+        value: "120분 오일/120 Oil/60000",
+      },
+      {
+        label: "120분 라바스톤 (60,000원/2,400페소)",
+        value: "120분 라바스톤/120 LavaStone/60000",
       },
     ],
   },

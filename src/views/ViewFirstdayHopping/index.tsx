@@ -12,18 +12,20 @@ import massageFirstday from "@configs/massage-firstday";
 import dayjs from "dayjs";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import FormItemMassage from "@components/FormItemMassage";
+import { FormFirstdayHopping, ItemKey } from "@types";
+import CartService from "src/services/CartService";
+import { useRouter } from "next/router";
 
 const ViewFirstdayHopping = () => {
-  const [form] = Form.useForm();
+  const router = useRouter();
+  const [form] = Form.useForm<FormFirstdayHopping>();
+  const urlPath = router.asPath.split("/")[2];
 
   const drop = Form.useWatch("drop", form);
 
   const onFinish = (values: any) => {
     console.log("Success", values);
-
-    const { name, email, phone } = values;
-    const guestInfo = { name, email, phone };
-    localStorage.setItem("guestInfo", JSON.stringify(guestInfo));
+    CartService.addItem(urlPath as ItemKey, values);
   };
 
   const onFinishFailed = (errorInfo: any) => {

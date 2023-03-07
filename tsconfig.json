@@ -23,6 +23,7 @@
       "@context/*": ["./src/context/*"],
       "@components/*": ["./src/components/*"],
       "@interfaces": ["./src/interfaces"],
+      "@types": ["./src/types"],
       "@styles/*": ["./src/styles/*"],
       "@service": ["./src/service"],
       "@configs/*": ["./src/configs/*"]

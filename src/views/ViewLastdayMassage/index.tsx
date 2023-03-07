@@ -1,4 +1,3 @@
-import FormItemGuestInfo from "@components/FormItemGuestInfo";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -12,18 +11,19 @@ import massageLastday from "@configs/massage-lastday";
 import dayjs from "dayjs";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import FormItemMassage from "@components/FormItemMassage";
+import { FormLastdayMassage, ItemKey } from "@types";
+import CartService from "src/services/CartService";
+import { useRouter } from "next/router";
 
 const ViewLastdayMassage = () => {
-  const [form] = Form.useForm();
-
+  const router = useRouter();
+  const [form] = Form.useForm<FormLastdayMassage>();
+  const urlPath = router.asPath.split("/")[2];
   const pick = Form.useWatch("pick", form);
 
   const onFinish = (values: any) => {
     console.log("Success", values);
-
-    const { name, email, phone } = values;
-    const guestInfo = { name, email, phone };
-    localStorage.setItem("guestInfo", JSON.stringify(guestInfo));
+    CartService.addItem(urlPath as ItemKey, values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -40,8 +40,6 @@ const ViewLastdayMassage = () => {
         autoComplete="off"
         requiredMark={false}
       >
-        <FormItemGuestInfo form={form} />
-
         <StyledH1>예약날짜를 선택해주세요.</StyledH1>
 
         <Form.Item

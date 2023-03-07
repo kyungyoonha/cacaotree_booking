@@ -1,26 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CartItem from "@components/CartItem";
-import LayoutQuestion from "@components/LayoutQuestion";
 
 import styled from "styled-components";
 import { Button } from "antd";
+import CartService from "src/services/CartService";
+import { changeNumberWithComma } from "src/utilities/funcs";
 
 const ViewCart = () => {
+  const [data, setData] = useState({
+    summary: {
+      totalPricePeso: 0,
+      totalPriceWon: 0,
+      totalDiscountPeso: 0,
+      totalDiscountWon: 0,
+      totalPaymentPeso: 0,
+      totalPaymentWon: 0,
+    },
+    cartItems: [],
+  });
+  const { summary, cartItems } = data;
+  const {
+    totalPricePeso,
+    totalPriceWon,
+    totalDiscountPeso,
+    totalDiscountWon,
+    totalPaymentPeso,
+    totalPaymentWon,
+  } = summary;
+
+  useEffect(() => {
+    setData(CartService.getCarts());
+  }, []);
   return (
     <Wrapper>
       <CardWrapper>
-        <CartItem />
-        <CartItem />
-        <CartItem />
+        {cartItems.map((cartItem) => (
+          <CartItem
+            key={`${cartItem.key}-${cartItem.seq}`}
+            cartItem={cartItem}
+          />
+        ))}
       </CardWrapper>
       <CartFooter>
         <div className="inner">
           <span>
-            총 계좌이체: <strong>10,000원</strong>
+            총 계좌이체:{" "}
+            <strong>
+              {totalPaymentWon
+                ? `${changeNumberWithComma(
+                    totalPaymentWon
+                  )} (${changeNumberWithComma(totalDiscountWon)})`
+                : 0}
+              원
+            </strong>
           </span>
           <span>+</span>
           <span>
-            총 페소지불: <strong>10,000페소</strong>
+            총 페소지불:{" "}
+            <strong>
+              {totalPaymentPeso
+                ? `${changeNumberWithComma(
+                    totalPaymentPeso
+                  )} (${changeNumberWithComma(totalDiscountPeso)})`
+                : 0}
+              페소
+            </strong>
           </span>
           <Button
             size="large"

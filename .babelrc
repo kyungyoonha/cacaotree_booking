@@ -21,6 +21,7 @@
           "@config": "./src/config",
           "@service": "./src/service",
           "@interfaces": "./src/interfaces",
+          "@types": "./src/types",
           "@styles": "./src/styles",
           "@context": "./src/context"
         }

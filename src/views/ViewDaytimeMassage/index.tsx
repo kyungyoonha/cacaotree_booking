@@ -1,29 +1,27 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LayoutQuestion from "@components/LayoutQuestion";
-import {
-  StyledButton,
-  StyledForm,
-  StyledH1,
-  StyledSelect,
-} from "@styles/styledComponents";
-import { Form, DatePicker, Card, Select, Radio } from "antd";
+import { StyledButton, StyledForm, StyledH1 } from "@styles/styledComponents";
+import { Form, DatePicker } from "antd";
 import dayjs from "dayjs";
-import theme from "@styles/theme";
-import massageFirstday from "src/configs/massage-firstday";
-import FormItemGuestInfo from "@components/FormItemGuestInfo";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import FormItemMassage from "@components/FormItemMassage";
+import massageDaytime from "@configs/massage-daytime";
+import { FormDaytimeMassage, ItemKey } from "@types";
+import CartService from "src/services/CartService";
+import { useRouter } from "next/router";
 
 const ViewDaytimeMassage = () => {
-  const [form] = Form.useForm();
+  const router = useRouter();
+  const [form] = Form.useForm<FormDaytimeMassage>();
   const pick = Form.useWatch("pick", form);
   const drop = Form.useWatch("drop", form);
 
-  const onFinish = (values: any) => {
-    console.log("Success", values);
-    const { name, email, phone } = values;
-    const guestInfo = { name, email, phone };
-    localStorage.setItem("guestInfo", JSON.stringify(guestInfo));
+  const urlPath = router.asPath.split("/")[2];
+
+  const onFinish = (values: FormDaytimeMassage) => {
+    CartService.addItem(urlPath as ItemKey, values);
+
+    console.log(CartService.findAll());
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -40,8 +38,6 @@ const ViewDaytimeMassage = () => {
         autoComplete="off"
         requiredMark={false}
       >
-        <FormItemGuestInfo form={form} />
-
         <StyledH1>예약날짜를 선택해주세요.</StyledH1>
 
         <Form.Item
@@ -60,7 +56,7 @@ const ViewDaytimeMassage = () => {
           />
         </Form.Item>
 
-        <FormItemMassage form={form} selectOption={massageFirstday} />
+        <FormItemMassage form={form} selectOption={massageDaytime} />
 
         <StyledH1 style={{ textAlign: "center" }}>
           픽업 장소를 적어주세요.
