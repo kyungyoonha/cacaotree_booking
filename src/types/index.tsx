@@ -41,16 +41,18 @@ export type FormType =
   | FormLastdayMassage
   | FormLastdayHopping;
 
-export interface CartItem {
+export interface CartItemType {
   seq?: number;
   key?: string;
   isSolo: boolean;
   isRevisit: boolean;
   isHappyhour: boolean;
+  hasSixtyMinutesMassage: boolean;
   itemPrice?: number;
   itemDiscount?: number;
   itemPayment?: number;
   paymentMethod?: "peso" | "won";
+  massageText: string;
   form: FormType;
 }
 
@@ -68,11 +70,11 @@ export interface Carts {
   totalPaymentPeso: number;
   totalPaymentWon: number;
   items: {
-    "daytime-massage": CartItem[];
-    "firstday-massage": CartItem[];
-    "firstday-hopping": CartItem[];
-    "lastday-massage": CartItem[];
-    "lastday-hopping": CartItem[];
+    "daytime-massage": CartItemType[];
+    "firstday-massage": CartItemType[];
+    "firstday-hopping": CartItemType[];
+    "lastday-massage": CartItemType[];
+    "lastday-hopping": CartItemType[];
   };
 }
 
@@ -83,6 +85,15 @@ export type ItemKey =
   | "lastday-massage"
   | "lastday-hopping";
 
-export interface CartItemResult extends CartItem {
-  massageText: string;
+export interface CartsResult {
+  summary: {
+    totalItemCnt: number;
+    totalPricePeso: number;
+    totalPriceWon: number;
+    totalDiscountPeso: number;
+    totalDiscountWon: number;
+    totalPaymentPeso: number;
+    totalPaymentWon: number;
+  };
+  cartItems: CartItemType[];
 }

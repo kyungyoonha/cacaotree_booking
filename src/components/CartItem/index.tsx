@@ -1,19 +1,25 @@
+import React from "react";
+import Image from "next/image";
+
 import StatisticText from "@components/StatisticText";
 import productMap from "@configs/productMap";
-import { CartItemResult } from "@types";
-import { Button, Card, Checkbox, Radio, Tag } from "antd";
-import Image from "next/image";
-import React from "react";
+import { CartItemType, ItemKey } from "@types";
+import { Button, Card, Checkbox, message, Radio, Tag } from "antd";
+import CartService from "src/services/CartService";
 import { changeNumberWithComma } from "src/utilities/funcs";
 
 import styled from "styled-components";
+import dayjs from "dayjs";
+import { useUIContext } from "src/contexts";
 
 interface CartItemProps {
-  cartItem: CartItemResult;
+  cartItem: CartItemType;
 }
 
 const CartItem = ({ cartItem }: CartItemProps) => {
   const {
+    key,
+    seq,
     paymentMethod,
     itemDiscount,
     itemPayment,
@@ -21,11 +27,30 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     isHappyhour,
     isRevisit,
     isSolo,
+    hasSixtyMinutesMassage,
   } = cartItem;
+  const { getCartsAll, dispatch } = useUIContext();
   const { name, src } = productMap[cartItem.key];
   const afterText = paymentMethod === "won" ? "원" : "페소";
+
+  const onClickDelete = () => {
+    CartService.removeItem(key as ItemKey, seq);
+    getCartsAll({}, dispatch);
+    message.success("삭제 완료되었습니다.");
+  };
+
+  const onChangePaymentMethod = (e) => {
+    const paymentMethod = e.target.value;
+    const newCartItem = {
+      ...cartItem,
+      paymentMethod,
+    };
+    CartService.updateItem(key as ItemKey, newCartItem);
+    getCartsAll({}, dispatch);
+  };
+
   return (
-    <Wrapper
+    <StyledCard
       title={
         <div>
           <Checkbox
@@ -44,26 +69,42 @@ const CartItem = ({ cartItem }: CartItemProps) => {
               재방문 할인
             </Tag>
           )}
-          {isSolo && (
-            <Tag style={{ marginLeft: "5px" }} color="red">
-              추가 1인차지
-            </Tag>
-          )}
         </div>
       }
       extra={
-        <Button type="primary" ghost size="small">
+        <Button type="primary" ghost size="small" onClick={onClickDelete}>
           삭제
         </Button>
       }
     >
       <CartItemWrapper>
         <div className="item">
-          <Image width="100" height="100" src={src} alt="image" />
+          <Image
+            width="130"
+            height="130"
+            src={src}
+            alt="image"
+            style={{ borderRadius: "10px" }}
+          />
         </div>
 
         <div className="item left">
-          <p style={{ marginBottom: "10px" }}>{cartItem?.massageText}</p>
+          <p>예약날짜: {dayjs(cartItem?.form?.date).format("YYYY-MM-DD")}</p>
+          <p>
+            총인원수: {cartItem?.form.pax} 명
+            {isSolo && (
+              <Tag style={{ marginLeft: "5px" }} color="red">
+                1인 추가차지
+              </Tag>
+            )}
+          </p>
+          <p>{cartItem?.massageText}</p>
+          {(isHappyhour || isRevisit) && hasSixtyMinutesMassage && (
+            <p style={{ color: "red" }}>
+              (60분 마사지는 할인 적용이 어렵습니다)
+            </p>
+          )}
+          <br />
 
           <Button size="small">수정하기</Button>
         </div>
@@ -72,15 +113,23 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <StatisticText
             title={paymentMethod === "won" ? "계좌이체" : "페소지불"}
             value={itemPrice}
+            afterText={afterText}
           />
           <Radio.Group
             defaultValue="won"
             buttonStyle="solid"
             style={{ marginTop: "10px" }}
+            onChange={onChangePaymentMethod}
+            value={paymentMethod}
           >
             <Radio.Button value="won">계좌이체</Radio.Button>
-            <Radio.Button value="peso">페소지불</Radio.Button>
+            <Radio.Button value="peso" disabled={key.includes("first")}>
+              페소지불
+            </Radio.Button>
           </Radio.Group>
+          {key.includes("first") && (
+            <p style={{ color: "red" }}>첫날팩은 계좌이체만 가능합니다.</p>
+          )}
         </div>
       </CartItemWrapper>
       <CartPriceWrapper>
@@ -102,16 +151,17 @@ const CartItem = ({ cartItem }: CartItemProps) => {
         <div className="item">
           <TextTotal>총 금액 </TextTotal>
           <TextTotal className="active">
-            {changeNumberWithComma(itemPayment)}원
+            {`${changeNumberWithComma(itemPayment)} ${afterText}`}
           </TextTotal>
         </div>
       </CartPriceWrapper>
-    </Wrapper>
+    </StyledCard>
   );
 };
 export default CartItem;
 
-const Wrapper = styled(Card)`
+const StyledCard = styled(Card)`
+  position: relative;
   margin: 15px 0 20px;
   width: 1000px;
 `;
@@ -183,4 +233,11 @@ const TextTotal = styled.span`
   &.active {
     color: ${(props) => props.theme.main};
   }
+`;
+
+const TextBottom = styled.div`
+  position: absolute;
+  bottom: -25px;
+  left: 20px;
+  color: red;
 `;

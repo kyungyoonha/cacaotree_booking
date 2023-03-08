@@ -1,36 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CartItem from "@components/CartItem";
 
 import styled from "styled-components";
 import { Button } from "antd";
-import CartService from "src/services/CartService";
 import { changeNumberWithComma } from "src/utilities/funcs";
+import { useUIContext } from "src/contexts";
 
 const ViewCart = () => {
-  const [data, setData] = useState({
-    summary: {
-      totalPricePeso: 0,
-      totalPriceWon: 0,
-      totalDiscountPeso: 0,
-      totalDiscountWon: 0,
-      totalPaymentPeso: 0,
-      totalPaymentWon: 0,
-    },
-    cartItems: [],
-  });
-  const { summary, cartItems } = data;
   const {
-    totalPricePeso,
-    totalPriceWon,
-    totalDiscountPeso,
-    totalDiscountWon,
-    totalPaymentPeso,
-    totalPaymentWon,
-  } = summary;
+    carts: {
+      summary: {
+        totalDiscountPeso,
+        totalDiscountWon,
+        totalPaymentPeso,
+        totalPaymentWon,
+      },
+      cartItems,
+    },
+    getCartsAll,
+    dispatch,
+  } = useUIContext();
 
   useEffect(() => {
-    setData(CartService.getCarts());
-  }, []);
+    getCartsAll({}, dispatch);
+  }, [getCartsAll, dispatch]);
+
   return (
     <Wrapper>
       <CardWrapper>
@@ -47,9 +41,7 @@ const ViewCart = () => {
             총 계좌이체:{" "}
             <strong>
               {totalPaymentWon
-                ? `${changeNumberWithComma(
-                    totalPaymentWon
-                  )} (${changeNumberWithComma(totalDiscountWon)})`
+                ? `${changeNumberWithComma(totalPaymentWon)}`
                 : 0}
               원
             </strong>
@@ -59,9 +51,7 @@ const ViewCart = () => {
             총 페소지불:{" "}
             <strong>
               {totalPaymentPeso
-                ? `${changeNumberWithComma(
-                    totalPaymentPeso
-                  )} (${changeNumberWithComma(totalDiscountPeso)})`
+                ? `${changeNumberWithComma(totalPaymentPeso)}`
                 : 0}
               페소
             </strong>

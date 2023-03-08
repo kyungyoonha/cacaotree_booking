@@ -1,5 +1,6 @@
 import Storage from "./index";
-import { CartItem, Carts, FormType, ItemKey } from "@types";
+import { CartItemType, Carts, CartsResult, FormType, ItemKey } from "@types";
+import { changeNumberWithComma } from "src/utilities/funcs";
 
 const KEY = "cacaotree-cart";
 
@@ -25,14 +26,16 @@ const defualtCart: Carts = {
   },
 };
 
-const defaultCartItem: CartItem = {
+const defaultCartItem: CartItemType = {
   itemPrice: 0,
   itemDiscount: 0,
   itemPayment: 0,
   isSolo: false,
   isRevisit: false,
   isHappyhour: false,
+  hasSixtyMinutesMassage: false,
   paymentMethod: "won",
+  massageText: "",
   form: null,
 };
 
@@ -55,7 +58,7 @@ export default Object.freeze({
   },
 
   // 아이템 리스트 저장
-  saveItemAll(itemKey: ItemKey, cartItems: CartItem[]) {
+  saveItemAll(itemKey: ItemKey, cartItems: CartItemType[]) {
     let carts: Carts = this.findAll();
 
     carts.items[itemKey] = cartItems;
@@ -69,7 +72,7 @@ export default Object.freeze({
 
   // 아이템 추가
   addItem(itemKey: ItemKey, form: FormType) {
-    let cartItems: CartItem[] = this.findItemAll(itemKey);
+    let cartItems: CartItemType[] = this.findItemAll(itemKey);
 
     // TODO. 해피아워 여부
     // isHappyhour
@@ -96,8 +99,8 @@ export default Object.freeze({
   },
 
   // 아이템 업데이트
-  updateItem(itemKey: ItemKey, newCartItem: CartItem) {
-    let cartItems: CartItem[] = this.findItemAll(itemKey);
+  updateItem(itemKey: ItemKey, newCartItem: CartItemType) {
+    let cartItems: CartItemType[] = this.findItemAll(itemKey);
     cartItems = cartItems.map((cartItem) =>
       cartItem.seq === newCartItem.seq ? newCartItem : cartItem
     );
@@ -113,7 +116,7 @@ export default Object.freeze({
     carts.totalItemCnt = cntType === "up" ? totalItemCnt + 1 : totalItemCnt - 1;
     this.saveAll(carts);
 
-    let tempCartItems: CartItem[] = [];
+    let tempCartItems: CartItemType[] = [];
 
     Object.keys(carts.items).forEach((key) => {
       let cartItems = carts.items[key];
@@ -127,14 +130,14 @@ export default Object.freeze({
 
     tempCartItems.forEach((cartItem, idx) => {
       let isRevisit = idx === 0 ? false : true; // 첫번째 패키지는 재방문 적용 안됌
-      let newCartItem: CartItem = { ...cartItem, isRevisit };
+      let newCartItem: CartItemType = { ...cartItem, isRevisit };
       this.updateItem(cartItem.key, newCartItem);
     });
   },
 
   // 최종 데이터
-  getCarts() {
-    let result: CartItem[] = [];
+  getCarts(): CartsResult {
+    let result: CartItemType[] = [];
     let carts: Carts = this.findAll();
     let totalPricePeso = 0;
     let totalPriceWon = 0;
@@ -144,13 +147,14 @@ export default Object.freeze({
     let totalPaymentWon = 0;
 
     Object.keys(carts.items).forEach((key) => {
-      let cartItems: CartItem[] = carts.items[key];
+      let cartItems: CartItemType[] = carts.items[key];
 
       let newCartItems = cartItems.map((cartItem) => {
         let itemPrice = 0;
         let itemDiscount = 0;
         let itemPayment = 0;
         let massageText = "";
+        let hasSixtyMinutesMassage = false;
         let {
           isRevisit,
           isHappyhour,
@@ -162,8 +166,14 @@ export default Object.freeze({
         massageList.forEach((massageItem, idx) => {
           let { massage, sex } = massageItem;
           let [massageKor, massagEng, price] = massage.split("/");
-          itemPrice +=
+          let temp_price =
             paymentMethod === "peso" ? Number(price) / 25 : Number(price);
+          let afterText = paymentMethod === "won" ? "원" : "페소";
+          itemPrice += temp_price;
+
+          if (massagEng.includes("60")) {
+            hasSixtyMinutesMassage = true;
+          }
 
           if (!massagEng.includes("60") && isRevisit) {
             itemDiscount += DISCOUNT_MAP.isRevisit[paymentMethod];
@@ -178,8 +188,9 @@ export default Object.freeze({
           }
           sex = sex === "f" ? "여" : "남";
           massageText +=
-            `${massageKor} (${sex})` +
-            (idx < massageList.length - 1 ? ` ・ ` : "");
+            `${massageKor} (${sex}) ${changeNumberWithComma(
+              temp_price
+            )} ${afterText}` + (idx < massageList.length - 1 ? ` ・ ` : "");
         });
         itemPayment = itemPrice - itemDiscount;
 
@@ -199,6 +210,7 @@ export default Object.freeze({
           itemDiscount,
           itemPayment,
           massageText,
+          hasSixtyMinutesMassage,
         };
         result.push(newCartItem);
         return newCartItem;
@@ -221,6 +233,7 @@ export default Object.freeze({
         totalDiscountWon,
         totalPaymentPeso,
         totalPaymentWon,
+        totalItemCnt: result.length,
       },
       cartItems: result,
     };
