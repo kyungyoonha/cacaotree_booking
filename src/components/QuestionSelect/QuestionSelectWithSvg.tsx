@@ -4,6 +4,8 @@ import * as S from "./styled";
 import { QuestionSelectWithSvgProps } from "./types";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import styled from "styled-components";
 
 const QuestionSelectWithSvg = ({
   title,
@@ -58,7 +60,32 @@ const QuestionSelectWithSvg = ({
         </Button>
       </div>
 
-      <Alert description={selectItem.description} type="warning" showIcon />
+      <Alert
+        description={selectItem.description}
+        type="warning"
+        showIcon
+        style={{ marginBottom: "20px" }}
+      />
+      {selectItem.imageList.map((src, idx) => {
+        return (
+          <S.ImageWrapper
+            key={idx}
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            <Image
+              className="custom-img"
+              alt="Image Alt"
+              src={src}
+              layout="fill"
+              objectFit="contain"
+              sizes="100vw"
+            />
+          </S.ImageWrapper>
+        );
+      })}
     </S.Wrapper>
   );
 };

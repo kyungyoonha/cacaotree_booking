@@ -61,7 +61,14 @@ export const StyledRadioGroup = styled(Radio.Group)`
 
   .ant-radio-button-checked {
     background: ${(props) => props.theme.background};
-    border-radius: 15px;
+  }
+
+  label:first-child .ant-radio-button-checked {
+    border-radius: 7px 0 0 7px;
+  }
+
+  label:last-child .ant-radio-button-checked {
+    border-radius: 0 7px 7px 0;
   }
 `;
 

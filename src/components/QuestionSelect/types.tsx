@@ -17,6 +17,7 @@ interface SelectItemWithSvg {
   title: React.ReactNode;
   description: string;
   href: string;
+  imageList: string[];
 }
 
 interface SelectItemWithSubtitle {
@@ -26,4 +27,5 @@ interface SelectItemWithSubtitle {
   subTitle: React.ReactNode;
   description: string;
   href: string;
+  imageList: string[];
 }

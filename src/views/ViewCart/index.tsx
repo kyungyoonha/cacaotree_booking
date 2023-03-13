@@ -5,16 +5,12 @@ import styled from "styled-components";
 import { Button } from "antd";
 import { changeNumberWithComma } from "src/utilities/funcs";
 import { useUIContext } from "src/contexts";
+import CartRecommend from "./CartRecommend";
 
 const ViewCart = () => {
   const {
     carts: {
-      summary: {
-        totalDiscountPeso,
-        totalDiscountWon,
-        totalPaymentPeso,
-        totalPaymentWon,
-      },
+      summary: { totalPaymentPeso, totalPaymentWon },
       cartItems,
     },
     getCartsAll,
@@ -34,7 +30,9 @@ const ViewCart = () => {
             cartItem={cartItem}
           />
         ))}
+        <CartRecommend />
       </CardWrapper>
+
       <CartFooter>
         <div className="inner">
           <span>

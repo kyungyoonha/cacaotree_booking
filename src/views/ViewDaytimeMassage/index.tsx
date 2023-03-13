@@ -1,32 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LayoutQuestion from "@components/LayoutQuestion";
 import { StyledButton, StyledForm, StyledH1 } from "@styles/styledComponents";
-import { Form, DatePicker } from "antd";
+import { Form, DatePicker, message } from "antd";
 import dayjs from "dayjs";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import FormItemMassage from "@components/FormItemMassage";
 import massageDaytime from "@configs/massage-daytime";
 import { FormDaytimeMassage, ItemKey } from "@types";
-import CartService from "src/services/CartService";
 import { useRouter } from "next/router";
+import { useUIContext } from "src/contexts";
+import CartService from "src/services/CartService";
+import InputTimePicker from "@components/InputTimePicker";
 
 const ViewDaytimeMassage = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormDaytimeMassage>();
   const pick = Form.useWatch("pick", form);
   const drop = Form.useWatch("drop", form);
-
-  const urlPath = router.asPath.split("/")[2];
+  const { onFinishForm, dispatch } = useUIContext();
+  const urlPath = router.pathname.split("/")[2];
+  const cartId = router.query.cartId as string;
 
   const onFinish = (values: FormDaytimeMassage) => {
-    CartService.addItem(urlPath as ItemKey, values);
-
-    console.log(CartService.findAll());
+    onFinishForm(
+      {
+        key: urlPath as ItemKey,
+        form: values,
+        seq: cartId ? Number(cartId) : null,
+      },
+      dispatch
+    );
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    message.error(errorInfo);
   };
+
+  useEffect(() => {
+    if (!cartId) return;
+    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+    form.setFieldsValue({
+      ...data.form,
+      date: dayjs(data.form.date),
+    });
+  }, [urlPath, form, cartId]);
 
   return (
     <LayoutQuestion>
@@ -52,7 +69,6 @@ const ViewDaytimeMassage = () => {
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
-            defaultValue={dayjs()}
           />
         </Form.Item>
 
@@ -123,6 +139,18 @@ const ViewDaytimeMassage = () => {
             },
           ]}
         />
+
+        <StyledH1 style={{ textAlign: "center" }}>
+          마사지 시간을 선택해주세요.
+        </StyledH1>
+        <Form.Item
+          label="드랍시간"
+          name="massageTime"
+          rules={[{ required: true, message: "마사지 시간을 입력해주세요." }]}
+          style={{ width: "100%" }}
+        >
+          <InputTimePicker placeholder="마사지시간을 입력해주세요." />
+        </Form.Item>
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

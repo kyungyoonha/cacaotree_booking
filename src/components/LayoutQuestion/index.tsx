@@ -1,4 +1,5 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import ModalMessage from "@components/ModalMessage";
 import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
@@ -17,6 +18,7 @@ const LayoutQuestion = ({ children }: LayoutQuestionProps) => {
       <QuestionHeader>
         <ArrowLeftOutlined onClick={onClickArrow} />
       </QuestionHeader>
+      <ModalMessage />
       {children}
     </Wrapper>
   );
@@ -38,4 +40,5 @@ const QuestionHeader = styled.div`
   width: 100%;
   height: 40px;
   padding-left: 10px;
+  margin-top: 20px;
 `;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -6,29 +6,49 @@ import {
   StyledH1,
   StyledInput,
 } from "@styles/styledComponents";
-import { DatePicker, Form, TimePicker } from "antd";
+import { DatePicker, Form, message, TimePicker } from "antd";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import massageLastday from "@configs/massage-lastday";
 import dayjs from "dayjs";
 import FormItemMassage from "@components/FormItemMassage";
 import { FormLastdayHopping, ItemKey } from "@types";
-import CartService from "src/services/CartService";
 import { useRouter } from "next/router";
+import { useUIContext } from "src/contexts";
+import CartService from "src/services/CartService";
+import InputTimePicker from "@components/InputTimePicker";
 
 const ViewLastdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayHopping>();
   const pick = Form.useWatch("pick", form);
-  const urlPath = router.asPath.split("/")[2];
+  const urlPath = "lastday-hopping";
+  const { onFinishForm, dispatch } = useUIContext();
+  const cartId = router.query.cartId as string;
 
-  const onFinish = (values: any) => {
-    console.log("Success", values);
-    CartService.addItem(urlPath as ItemKey, values);
+  const onFinish = (values: FormLastdayHopping) => {
+    onFinishForm(
+      {
+        key: urlPath as ItemKey,
+        form: values,
+        seq: cartId ? Number(cartId) : null,
+      },
+      dispatch
+    );
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    message.error(errorInfo);
   };
+
+  useEffect(() => {
+    if (!cartId) return;
+    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+
+    form.setFieldsValue({
+      ...data.form,
+      date: dayjs(data.form.date),
+    });
+  }, [urlPath, form, cartId]);
 
   return (
     <LayoutQuestion>
@@ -54,13 +74,21 @@ const ViewLastdayHopping = () => {
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
-            defaultValue={dayjs()}
           />
         </Form.Item>
 
         <StyledH1 style={{ textAlign: "center" }}>
-          픽업 장소를 적어주세요.
+          픽업 정보를 적어주세요.
         </StyledH1>
+
+        <Form.Item
+          label="픽업시간"
+          name="pickTime"
+          rules={[{ required: true, message: "픽업시간을 입력해주세요." }]}
+          style={{ width: "100%" }}
+        >
+          <InputTimePicker placeholder="픽업시간을 입력해주세요." />
+        </Form.Item>
 
         <FormItemInputWithOption
           value={pick}
@@ -88,21 +116,12 @@ const ViewLastdayHopping = () => {
         <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>
 
         <Form.Item
-          label="드랍시간을 입력해주세요."
+          label="드랍시간"
           name="departTime"
-          style={{ width: "100%" }}
           rules={[{ required: true, message: "드랍시간을 입력해주세요." }]}
+          style={{ width: "100%" }}
         >
-          <TimePicker
-            style={{
-              width: "100%",
-              height: "60px",
-              borderRadius: "10px",
-            }}
-            format="HH:mm"
-            placeholder="드랍시간을 입력해주세요.(최소 비행 2시간 전으로 해주시는 것이 좋습니다.)"
-            size="large"
-          />
+          <InputTimePicker placeholder="드랍시간을 입력해주세요.(최소 비행 2시간 전으로 해주시는 것이 좋습니다.)" />
         </Form.Item>
 
         <Form.Item

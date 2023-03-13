@@ -6,6 +6,10 @@ const nextConfig = {
   images: {
     domains: ["user-images.githubusercontent.com"],
   },
+  compiler: {
+    // Enables the styled-components SWC transform
+    styledComponents: true,
+  },
 };
 
 module.exports = nextConfig;

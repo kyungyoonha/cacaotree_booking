@@ -67,7 +67,7 @@ export default Object.freeze({
 
   // 아이템 찾기
   findItemBySeq(itemKey: ItemKey, seq: number) {
-    return this.findAll()[itemKey].find((v) => v.seq === seq);
+    return this.findAll().items[itemKey].find((v) => v.seq === seq);
   },
 
   // 아이템 추가

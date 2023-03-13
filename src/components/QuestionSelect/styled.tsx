@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   width: 700px;
   margin-bottom: 40px;
-  margin-top: 80px;
+  margin-top: 50px;
 
   & > h1.title {
     text-align: center;
@@ -89,7 +89,6 @@ export const ItemWrapper = styled.div`
 
   &.active {
     background-color: ${(props) => props.theme.background};
-    /* color: #fff; */
     border: 1px solid ${(props) => props.theme.main};
   }
 
@@ -119,5 +118,20 @@ export const ItemWrapper = styled.div`
       width: 40px;
       height: 40px;
     }
+  }
+`;
+
+export const ImageWrapper = styled.div`
+  .custom-img {
+    object-fit: contain !important;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+  }
+  .unset-img {
+    width: 100%;
+  }
+  .unset-img > div {
+    position: unset !important;
   }
 `;

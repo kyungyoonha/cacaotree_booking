@@ -13,6 +13,10 @@ const productMap = {
   },
   "lastday-massage": {
     name: "마지막날 공항드랍 패키지",
+    src: "https://user-images.githubusercontent.com/29701385/224727535-b197094d-5f7e-4b72-b724-e24839b44405.png",
+  },
+  "lastday-hopping": {
+    name: "마지막날 호핑 패키지",
     src: "https://user-images.githubusercontent.com/29701385/222971702-ddc2fbe1-761b-4ec1-bf53-1c1f00d59d7c.png",
   },
 };

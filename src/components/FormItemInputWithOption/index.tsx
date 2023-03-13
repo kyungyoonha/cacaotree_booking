@@ -46,31 +46,34 @@ const FormItemPick = ({
   };
 
   return (
-    <Form.Item
-      label={label}
-      name={name}
-      rules={[{ required: true, message: placeholder }]}
-      style={{ width: "100%" }}
-    >
-      <StyledRadioGroup
-        defaultValue={defaultValue}
-        size="large"
-        onChange={onChangeRadio}
+    <>
+      <Form.Item label={label} style={{ width: "100%", marginBottom: "0" }}>
+        <StyledRadioGroup
+          defaultValue={defaultValue}
+          size="large"
+          onChange={onChangeRadio}
+        >
+          {options.map((option) => (
+            <StyledRadioButton key={option.key} value={option.key}>
+              {option.title}
+            </StyledRadioButton>
+          ))}
+        </StyledRadioGroup>
+      </Form.Item>
+      <Form.Item
+        name={name}
+        rules={[{ required: true, message: placeholder }]}
+        style={{ width: "100%" }}
       >
-        {options.map((option) => (
-          <StyledRadioButton key={option.key} value={option.key}>
-            {option.title}
-          </StyledRadioButton>
-        ))}
-      </StyledRadioGroup>
-      <StyledInput
-        value={value}
-        size="large"
-        placeholder={placeholder}
-        disabled={disabled}
-        onChange={onChangeInput}
-      />
-    </Form.Item>
+        <StyledInput
+          value={value}
+          size="large"
+          placeholder={placeholder}
+          disabled={disabled}
+          onChange={onChangeInput}
+        />
+      </Form.Item>
+    </>
   );
 };
 

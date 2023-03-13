@@ -11,6 +11,8 @@ import { changeNumberWithComma } from "src/utilities/funcs";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { useUIContext } from "src/contexts";
+import { useRouter } from "next/router";
+import route from "@configs/route";
 
 interface CartItemProps {
   cartItem: CartItemType;
@@ -29,14 +31,15 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     isSolo,
     hasSixtyMinutesMassage,
   } = cartItem;
+  const router = useRouter();
   const { getCartsAll, dispatch } = useUIContext();
   const { name, src } = productMap[cartItem.key];
   const afterText = paymentMethod === "won" ? "원" : "페소";
 
   const onClickDelete = () => {
+    message.success("삭제 완료되었습니다.");
     CartService.removeItem(key as ItemKey, seq);
     getCartsAll({}, dispatch);
-    message.success("삭제 완료되었습니다.");
   };
 
   const onChangePaymentMethod = (e) => {
@@ -47,6 +50,11 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     };
     CartService.updateItem(key as ItemKey, newCartItem);
     getCartsAll({}, dispatch);
+  };
+
+  const onClickUpdate = () => {
+    const path = route[key];
+    router.push(`${path}?cartId=${seq}`);
   };
 
   return (
@@ -106,7 +114,9 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           )}
           <br />
 
-          <Button size="small">수정하기</Button>
+          <Button size="small" onClick={onClickUpdate}>
+            수정하기
+          </Button>
         </div>
 
         <div className="item">
@@ -128,7 +138,9 @@ const CartItem = ({ cartItem }: CartItemProps) => {
             </Radio.Button>
           </Radio.Group>
           {key.includes("first") && (
-            <p style={{ color: "red" }}>첫날팩은 계좌이체만 가능합니다.</p>
+            <p style={{ color: "red", marginTop: "5px" }}>
+              첫날팩은 계좌이체만 가능합니다.
+            </p>
           )}
         </div>
       </CartItemWrapper>

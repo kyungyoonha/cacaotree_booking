@@ -1,5 +1,12 @@
 import React, { useReducer, useMemo } from "react";
-import { State, Action, ActionType, getCartsAll } from "./types";
+import {
+  State,
+  Action,
+  ActionType,
+  getCartsAll,
+  onFinishForm,
+  onOpenModalForm,
+} from "./types";
 
 const initialState: State = {
   carts: {
@@ -14,7 +21,10 @@ const initialState: State = {
     },
     cartItems: [],
   },
+  modalOpenForm: false,
   getCartsAll,
+  onFinishForm,
+  onOpenModalForm,
   dispatch: () => null,
 };
 
@@ -24,6 +34,12 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         carts: action.payload,
+      };
+
+    case ActionType.OPEN_MODAL_FORM:
+      return {
+        ...state,
+        modalOpenForm: action.payload,
       };
   }
 };

@@ -3,9 +3,10 @@ import { Alert, Button, Radio } from "antd";
 import { QuestionSelectWithSubtitleProps } from "./types";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 import styled from "styled-components";
-import { Wrapper, ItemsWrapper, ItemWrapper } from "./styled";
+import { Wrapper, ItemsWrapper, ItemWrapper, ImageWrapper } from "./styled";
 import { SCREENS } from "@configs/screens";
 
 const QuestionSelectWithOption = ({
@@ -67,7 +68,32 @@ const QuestionSelectWithOption = ({
         </Button>
       </div>
 
-      <Alert description={selectItem.description} type="success" showIcon />
+      <Alert
+        description={selectItem.description}
+        type="success"
+        showIcon
+        style={{ marginBottom: "20px" }}
+      />
+      {selectItem.imageList.map((src, idx) => {
+        return (
+          <ImageWrapper
+            key={idx}
+            style={{
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            <Image
+              className="custom-img"
+              alt="Image Alt"
+              src={src}
+              layout="fill"
+              objectFit="contain"
+              sizes="100vw"
+            />
+          </ImageWrapper>
+        );
+      })}
     </StyledWrapper>
   );
 };

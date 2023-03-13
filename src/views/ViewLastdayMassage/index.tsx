@@ -5,30 +5,50 @@ import {
   StyledH1,
   StyledInput,
 } from "@styles/styledComponents";
-import { DatePicker, Form, TimePicker } from "antd";
-import React from "react";
+import { DatePicker, Form, message, TimePicker } from "antd";
+import React, { useEffect } from "react";
 import massageLastday from "@configs/massage-lastday";
 import dayjs from "dayjs";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import FormItemMassage from "@components/FormItemMassage";
 import { FormLastdayMassage, ItemKey } from "@types";
-import CartService from "src/services/CartService";
 import { useRouter } from "next/router";
+import { useUIContext } from "src/contexts";
+import CartService from "src/services/CartService";
+import InputTimePicker from "@components/InputTimePicker";
 
 const ViewLastdayMassage = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayMassage>();
-  const urlPath = router.asPath.split("/")[2];
+  const urlPath = router.pathname.split("/")[2];
   const pick = Form.useWatch("pick", form);
+  const { onFinishForm, dispatch } = useUIContext();
+  const cartId = router.query.cartId as string;
 
-  const onFinish = (values: any) => {
-    console.log("Success", values);
-    CartService.addItem(urlPath as ItemKey, values);
+  const onFinish = (values: FormLastdayMassage) => {
+    onFinishForm(
+      {
+        key: urlPath as ItemKey,
+        form: values,
+        seq: cartId ? Number(cartId) : null,
+      },
+      dispatch
+    );
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    message.error(errorInfo);
   };
+
+  useEffect(() => {
+    if (!cartId) return;
+    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+
+    form.setFieldsValue({
+      ...data.form,
+      date: dayjs(data.form.date),
+    });
+  }, [urlPath, form, cartId]);
 
   return (
     <LayoutQuestion>
@@ -54,13 +74,23 @@ const ViewLastdayMassage = () => {
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
-            defaultValue={dayjs()}
           />
         </Form.Item>
 
+        <FormItemMassage form={form} selectOption={massageLastday} />
+
         <StyledH1 style={{ textAlign: "center" }}>
-          픽업 장소를 적어주세요.
+          픽업정보를 적어주세요.
         </StyledH1>
+
+        <Form.Item
+          label="픽업시간"
+          name="pickTime"
+          rules={[{ required: true, message: "픽업시간을 입력해주세요." }]}
+          style={{ width: "100%" }}
+        >
+          <InputTimePicker placeholder="픽업시간을 입력해주세요." />
+        </Form.Item>
 
         <FormItemInputWithOption
           value={pick}
@@ -94,21 +124,12 @@ const ViewLastdayMassage = () => {
         <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>
 
         <Form.Item
-          label="드랍시간을 입력해주세요."
+          label="드랍시간"
           name="departTime"
-          style={{ width: "100%" }}
           rules={[{ required: true, message: "드랍시간을 입력해주세요." }]}
+          style={{ width: "100%" }}
         >
-          <TimePicker
-            style={{
-              width: "100%",
-              height: "60px",
-              borderRadius: "10px",
-            }}
-            format="HH:mm"
-            placeholder="드랍시간을 입력해주세요.(최소 비행 2시간 전으로 해주시는 것이 좋습니다.)"
-            size="large"
-          />
+          <InputTimePicker placeholder="드랍시간을 입력해주세요.(최소 비행 2시간 전으로 해주시는 것이 좋습니다.)" />
         </Form.Item>
 
         <Form.Item
@@ -120,8 +141,6 @@ const ViewLastdayMassage = () => {
         >
           <StyledInput disabled size="large" />
         </Form.Item>
-
-        <FormItemMassage form={form} selectOption={massageLastday} />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

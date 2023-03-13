@@ -1,5 +1,5 @@
-import React from "react";
-import { DatePicker, Form, TimePicker } from "antd";
+import React, { useEffect } from "react";
+import { DatePicker, Form, message, TimePicker } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -12,23 +12,45 @@ import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import dayjs from "dayjs";
 import FormItemMassage from "@components/FormItemMassage";
 import { FormFirstdayMassage, ItemKey } from "@types";
-import CartService from "src/services/CartService";
 import { useRouter } from "next/router";
+import { useUIContext } from "src/contexts";
+import CartService from "src/services/CartService";
+import InputTimePicker from "@components/InputTimePicker";
 
 const ViewFirstdayMassage = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormFirstdayMassage>();
   const drop = Form.useWatch("drop", form);
-  const urlPath = router.asPath.split("/")[2];
+  const urlPath = router.pathname.split("/")[2];
+  const { onFinishForm, dispatch } = useUIContext();
+  const cartId = router.query.cartId as string;
 
-  const onFinish = (values: any) => {
-    console.log("Success", values);
-    CartService.addItem(urlPath as ItemKey, values);
+  const onFinish = (values: FormFirstdayMassage) => {
+    console.log({ values });
+    onFinishForm(
+      {
+        key: urlPath as ItemKey,
+        form: values,
+        seq: cartId ? Number(cartId) : null,
+      },
+      dispatch
+    );
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    message.error(errorInfo);
   };
+
+  useEffect(() => {
+    if (!cartId) return;
+    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+
+    form.setFieldsValue({
+      ...data.form,
+      date: dayjs(data.form.date),
+      arrivalTime: dayjs(data.form.arrivalTime),
+    });
+  }, [urlPath, form, cartId]);
 
   return (
     <LayoutQuestion>
@@ -54,7 +76,6 @@ const ViewFirstdayMassage = () => {
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
-            defaultValue={dayjs()}
           />
         </Form.Item>
 
@@ -64,16 +85,7 @@ const ViewFirstdayMassage = () => {
           rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
           style={{ width: "100%" }}
         >
-          <TimePicker
-            style={{
-              width: "100%",
-              height: "60px",
-              borderRadius: "10px",
-            }}
-            format="HH:mm"
-            placeholder="도착시간을 선택해주세요."
-            size="large"
-          />
+          <InputTimePicker placeholder="도착시간을 선택해주세요." />
         </Form.Item>
 
         <Form.Item
@@ -94,6 +106,8 @@ const ViewFirstdayMassage = () => {
         >
           <StyledInput disabled size="large" />
         </Form.Item>
+
+        <FormItemMassage form={form} selectOption={massageFirstday} />
 
         <StyledH1 style={{ textAlign: "center" }}>
           드랍 장소를 적어주세요.
@@ -133,8 +147,6 @@ const ViewFirstdayMassage = () => {
             },
           ]}
         />
-
-        <FormItemMassage form={form} selectOption={massageFirstday} />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료
