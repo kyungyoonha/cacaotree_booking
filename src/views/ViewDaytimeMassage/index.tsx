@@ -106,6 +106,17 @@ const ViewDaytimeMassage = () => {
             },
           ]}
         />
+        <StyledH1 style={{ textAlign: "center" }}>
+          마사지 시간을 선택해주세요.
+        </StyledH1>
+        <Form.Item
+          label="마사지 시간"
+          name="massageTime"
+          rules={[{ required: true, message: "마사지 시간을 입력해주세요." }]}
+          style={{ width: "100%" }}
+        >
+          <InputTimePicker placeholder="마사지시간을 입력해주세요." />
+        </Form.Item>
 
         <StyledH1 style={{ textAlign: "center" }}>
           드랍 장소를 적어주세요.
@@ -139,18 +150,6 @@ const ViewDaytimeMassage = () => {
             },
           ]}
         />
-
-        <StyledH1 style={{ textAlign: "center" }}>
-          마사지 시간을 선택해주세요.
-        </StyledH1>
-        <Form.Item
-          label="드랍시간"
-          name="massageTime"
-          rules={[{ required: true, message: "마사지 시간을 입력해주세요." }]}
-          style={{ width: "100%" }}
-        >
-          <InputTimePicker placeholder="마사지시간을 입력해주세요." />
-        </Form.Item>
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

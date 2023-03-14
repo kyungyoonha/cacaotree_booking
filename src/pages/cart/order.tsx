@@ -1,13 +1,14 @@
 import React from "react";
 import LayoutBasic from "@components/LayoutBasic";
-import ViewCart from "@views/ViewCart";
-import theme from "@styles/theme";
 
-const CartPage = () => {
+import theme from "@styles/theme";
+import ViewOrder from "@views/ViewOrder";
+
+const OrderPage = () => {
   return (
     <LayoutBasic background={theme.gray}>
-      <ViewCart />
+      <ViewOrder />
     </LayoutBasic>
   );
 };
-export default CartPage;
+export default OrderPage;

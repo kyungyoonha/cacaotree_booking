@@ -2,7 +2,7 @@ import Logo from "@components/Logo";
 import { Badge, Tooltip } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useUIContext } from "src/contexts";
 import styled from "styled-components";
 
@@ -11,7 +11,13 @@ const Header = () => {
     carts: {
       summary: { totalItemCnt },
     },
+    getCartsAll,
+    dispatch,
   } = useUIContext();
+
+  useEffect(() => {
+    getCartsAll({}, dispatch);
+  }, [getCartsAll, dispatch]);
 
   return (
     <Wrapper>

@@ -6,8 +6,10 @@ import { Button } from "antd";
 import { changeNumberWithComma } from "src/utilities/funcs";
 import { useUIContext } from "src/contexts";
 import CartRecommend from "./CartRecommend";
+import { useRouter } from "next/router";
 
 const ViewCart = () => {
+  const router = useRouter();
   const {
     carts: {
       summary: { totalPaymentPeso, totalPaymentWon },
@@ -24,6 +26,19 @@ const ViewCart = () => {
   return (
     <Wrapper>
       <CardWrapper>
+        {!cartItems.length && (
+          <CardEmptyWrapper>
+            <p>장바구니에 담긴 상품이 없습니다</p>
+            원하는 상품을 장바구니에 담아보세요!
+            <Button
+              size="large"
+              style={{ marginTop: "15px", borderRadius: 0 }}
+              onClick={() => router.push("/")}
+            >
+              상품 추가하기
+            </Button>
+          </CardEmptyWrapper>
+        )}
         {cartItems.map((cartItem) => (
           <CartItem
             key={`${cartItem.key}-${cartItem.seq}`}
@@ -61,6 +76,7 @@ const ViewCart = () => {
               borderRadius: "5px",
               marginLeft: "10px",
             }}
+            onClick={() => router.push("/cart/order")}
           >
             주문 완료하기
           </Button>
@@ -95,6 +111,21 @@ const CardWrapper = styled.div`
 
   .ant-card-head {
     border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+  }
+`;
+
+const CardEmptyWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 0 150px;
+
+  & > p {
+    margin-bottom: 5px;
+    font-size: 20px;
+    color: ${(props) => props.theme.main};
+    font-weight: bold;
   }
 `;
 
