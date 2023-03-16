@@ -16,6 +16,8 @@ import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
 import CartService from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
+import FormItemMassageTime from "@components/FormItemMassageTime";
+import FormItemEtc from "@components/FormItemEtc";
 
 const ViewLastdayMassage = () => {
   const router = useRouter();
@@ -83,15 +85,6 @@ const ViewLastdayMassage = () => {
           픽업정보를 적어주세요.
         </StyledH1>
 
-        <Form.Item
-          label="픽업시간"
-          name="pickTime"
-          rules={[{ required: true, message: "픽업시간을 입력해주세요." }]}
-          style={{ width: "100%" }}
-        >
-          <InputTimePicker placeholder="픽업시간을 입력해주세요." />
-        </Form.Item>
-
         <FormItemInputWithOption
           value={pick}
           onChange={(value) => form.setFieldValue("pick", value)}
@@ -121,6 +114,8 @@ const ViewLastdayMassage = () => {
           ]}
         />
 
+        <FormItemMassageTime />
+
         <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>
 
         <Form.Item
@@ -141,6 +136,8 @@ const ViewLastdayMassage = () => {
         >
           <StyledInput disabled size="large" />
         </Form.Item>
+
+        <FormItemEtc />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

@@ -1,6 +1,7 @@
 import Storage from "./index";
 import { CartItemType, Carts, CartsResult, FormType, ItemKey } from "@types";
 import { changeNumberWithComma } from "src/utilities/funcs";
+import dayjs from "dayjs";
 
 const KEY = "cacaotree-cart";
 
@@ -74,13 +75,17 @@ export default Object.freeze({
   addItem(itemKey: ItemKey, form: FormType) {
     let cartItems: CartItemType[] = this.findItemAll(itemKey);
 
-    // TODO. 해피아워 여부
-    // isHappyhour
+    let isHappyhour = false;
+    if (!itemKey.includes("firstday")) {
+      const hour = dayjs(form.massageTime).hour();
+      isHappyhour = hour < 16 ? true : false;
+    }
 
     cartItems.push({
       ...defaultCartItem,
       key: itemKey,
       isSolo: form.pax === 1 ? true : false,
+      isHappyhour,
       form: form,
       seq: cartItems.reduce((seq, cur) => Math.max(seq, cur.seq), 0) + 1,
     });
@@ -186,6 +191,7 @@ export default Object.freeze({
           if (isSolo) {
             itemPrice += DISCOUNT_MAP.isSolo[paymentMethod];
           }
+
           sex = sex === "f" ? "여" : "남";
           massageText +=
             `${massageKor} (${sex}) ${changeNumberWithComma(

@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
 import CartService from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
+import FormItemEtc from "@components/FormItemEtc";
 
 const ViewFirstdayHopping = () => {
   const router = useRouter();
@@ -136,6 +137,8 @@ const ViewFirstdayHopping = () => {
             },
           ]}
         />
+
+        <FormItemEtc />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

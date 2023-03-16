@@ -7,13 +7,27 @@ type Props = {
   value?: string;
   onChange?: (e) => void;
   placeholder?: string;
+  startTime?: number;
+  endTime?: number;
+  isHappyhour?: boolean;
 };
 const { Option } = Select;
 
-const InputTimePicker = ({ value, onChange, placeholder }: Props) => {
+const InputTimePicker = ({
+  value,
+  onChange,
+  placeholder,
+  startTime = 0,
+  endTime = 25,
+  isHappyhour = false,
+}: Props) => {
   const [selectTime, setSelectTime] = useState<string>(null);
 
+  let hourList = [...Array(24).keys()];
+  hourList = hourList.filter((i) => i >= startTime && i < endTime);
+
   const onChangeSelect = (time) => {
+    // let tempTime = time.split(" ")[0];
     let hour = time.split(":")[0];
     let mins = time.split(":")[1];
 
@@ -43,13 +57,14 @@ const InputTimePicker = ({ value, onChange, placeholder }: Props) => {
       placeholder={placeholder}
       size="large"
     >
-      {[...Array(24).keys()].map((h) => {
+      {hourList.map((h) => {
         return ["00", "15", "30", "45"].map((m) => {
           let hour = String(h).length === 1 ? "0" + h : h;
           let stringTime = hour + ":" + m;
           return (
             <Option key={stringTime} value={stringTime}>
               {stringTime}
+              {isHappyhour && h < 16 && ` (해피아워 할인)`}
             </Option>
           );
         });

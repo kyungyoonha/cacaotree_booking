@@ -21,18 +21,24 @@ export interface FormBasicMassage {
   massageList: Massage[];
   pick: string;
   drop: string;
+  massageTime?: Date;
 }
 
-export interface FormDaytimeMassage extends FormBasicMassage {}
+export interface FormDaytimeMassage extends FormBasicMassage {
+  massageTime: Date;
+}
 export interface FormFirstdayMassage extends FormBasicMassage {
   arrivalTime: Date;
   pickFlight: string;
 }
 export interface FormFirstdayHopping extends FormFirstdayMassage {}
 export interface FormLastdayMassage extends FormBasicMassage {
+  massageTime: Date;
   departTime: Date;
 }
-export interface FormLastdayHopping extends FormLastdayMassage {}
+export interface FormLastdayHopping extends FormLastdayMassage {
+  massageTime: Date;
+}
 
 export type FormType =
   | FormDaytimeMassage
