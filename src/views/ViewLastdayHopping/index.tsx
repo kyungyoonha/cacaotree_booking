@@ -6,7 +6,7 @@ import {
   StyledH1,
   StyledInput,
 } from "@styles/styledComponents";
-import { DatePicker, Form, message, TimePicker } from "antd";
+import { DatePicker, Form, message } from "antd";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import massageLastday from "@configs/massage-lastday";
 import dayjs from "dayjs";
@@ -22,7 +22,7 @@ const ViewLastdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayHopping>();
   const pick = Form.useWatch("pick", form);
-  const urlPath = "lastday-hopping";
+  const urlPath = router.pathname.split("/")[2];
   const { onFinishForm, dispatch } = useUIContext();
   const cartId = router.query.cartId as string;
 

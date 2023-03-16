@@ -1,32 +1,30 @@
-import React, { useEffect } from "react";
-import { DatePicker, Form, message, TimePicker } from "antd";
+import FormItemEtc from "@components/FormItemEtc";
+import FormItemMassage from "@components/FormItemMassage";
+import InputTimePicker from "@components/InputTimePicker";
 import LayoutQuestion from "@components/LayoutQuestion";
+import massageFirstday from "@configs/massage-firstday";
 import {
   StyledButton,
   StyledForm,
   StyledH1,
   StyledInput,
+  StyledSelect,
 } from "@styles/styledComponents";
-import massageFirstday from "@configs/massage-firstday";
-import FormItemInputWithOption from "@components/FormItemInputWithOption";
+import { FormFirstdaySouth, ItemKey } from "@types";
+import { DatePicker, Form, message } from "antd";
 import dayjs from "dayjs";
-import FormItemMassage from "@components/FormItemMassage";
-import { FormFirstdayMassage, ItemKey } from "@types";
 import { useRouter } from "next/router";
+import React from "react";
 import { useUIContext } from "src/contexts";
-import CartService from "src/services/CartService";
-import InputTimePicker from "@components/InputTimePicker";
-import FormItemEtc from "@components/FormItemEtc";
 
-const ViewFirstdayMassage = () => {
+const ViewFirstdaySouth = () => {
   const router = useRouter();
-  const [form] = Form.useForm<FormFirstdayMassage>();
-  const drop = Form.useWatch("drop", form);
   const urlPath = router.pathname.split("/")[2];
+  const [form] = Form.useForm();
   const { onFinishForm, dispatch } = useUIContext();
   const cartId = router.query.cartId as string;
 
-  const onFinish = (values: FormFirstdayMassage) => {
+  const onFinish = (values: FormFirstdaySouth) => {
     onFinishForm(
       {
         key: urlPath as ItemKey,
@@ -40,18 +38,6 @@ const ViewFirstdayMassage = () => {
   const onFinishFailed = (errorInfo: any) => {
     message.error(errorInfo);
   };
-
-  useEffect(() => {
-    if (!cartId) return;
-    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
-
-    form.setFieldsValue({
-      ...data.form,
-      date: dayjs(data.form.date),
-      arrivalTime: dayjs(data.form.arrivalTime),
-    });
-  }, [urlPath, form, cartId]);
-
   return (
     <LayoutQuestion>
       <StyledForm
@@ -110,44 +96,50 @@ const ViewFirstdayMassage = () => {
         <FormItemMassage form={form} selectOption={massageFirstday} />
 
         <StyledH1 style={{ textAlign: "center" }}>
-          드랍 장소를 적어주세요.
+          투어 정보를 입력해주세요.
         </StyledH1>
 
-        <FormItemInputWithOption
-          value={drop}
-          onChange={(value) => form.setFieldValue("drop", value)}
-          label="드랍장소"
-          name="drop"
-          placeholder="드랍장소를 입력해주세요."
-          defaultValue="mactan"
-          options={[
-            {
-              key: "mactan",
-              title: "막탄지역",
-              disabled: false,
-              value: "",
-            },
-            {
-              key: "cebu",
-              title: "세부시티, 코르도바",
-              disabled: true,
-              value: "개별적으로 스파로 오겠습니다.",
-            },
-            {
-              key: "port",
-              title: "항구드랍",
-              disabled: true,
-              value: "항구드랍 (1인 200페소 추가)",
-            },
-            {
-              key: "no-need",
-              title: "필요 없습니다.",
-              disabled: true,
-              value: "필요 없습니다.",
-            },
-          ]}
-        />
+        <Form.Item
+          label="투어 선택"
+          name="tour"
+          rules={[{ required: true, message: "인원수를 입력해주세요." }]}
+          style={{ width: "100%" }}
+        >
+          <StyledSelect
+            options={[
+              {
+                label: "오슬롭(고래상어)+투말록",
+                value: "oslob",
+              },
+              {
+                label: "오슬롭(고래상어)+투말록+캐녀닝",
+                value: "oslob+canyon",
+              },
+              {
+                label: "오슬롭(고래상어)+투말록+모알보알 호핑",
+                value: "oslob+moal",
+              },
+              { label: "모알보알 호핑+캐녀닝", value: "moal+canyon" },
+            ]}
+            size="large"
+            style={{ height: "60px" }}
+            placeholder="투어를 선택해주세요."
+          />
+        </Form.Item>
 
+        <Form.Item
+          label="드랍장소"
+          name="드랍장소"
+          rules={[
+            { required: true, message: "투어 후 드랍장소를 입력해주세요." },
+          ]}
+          style={{ width: "100%" }}
+        >
+          <StyledInput
+            size="large"
+            placeholder="투어 후 드랍장소를 입력해주세요."
+          />
+        </Form.Item>
         <FormItemEtc />
 
         <StyledButton type="primary" htmlType="submit">
@@ -158,4 +150,4 @@ const ViewFirstdayMassage = () => {
   );
 };
 
-export default ViewFirstdayMassage;
+export default ViewFirstdaySouth;

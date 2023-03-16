@@ -32,6 +32,9 @@ export interface FormFirstdayMassage extends FormBasicMassage {
   pickFlight: string;
 }
 export interface FormFirstdayHopping extends FormFirstdayMassage {}
+export interface FormFirstdaySouth extends FormFirstdayMassage {
+  package: string;
+}
 export interface FormLastdayMassage extends FormBasicMassage {
   massageTime: Date;
   departTime: Date;
@@ -44,15 +47,13 @@ export type FormType =
   | FormDaytimeMassage
   | FormFirstdayMassage
   | FormFirstdayHopping
+  | FormFirstdaySouth
   | FormLastdayMassage
   | FormLastdayHopping;
 
 export interface CartItemType {
   seq?: number;
   key?: string;
-  isSolo: boolean;
-  isRevisit: boolean;
-  isHappyhour: boolean;
   hasSixtyMinutesMassage: boolean;
   itemPrice?: number;
   itemDiscount?: number;
@@ -60,6 +61,16 @@ export interface CartItemType {
   paymentMethod?: "peso" | "won";
   massageText: string;
   form: FormType;
+  discountByPax: Discount[];
+  discountByTeam: Discount[];
+}
+
+export interface Discount {
+  key: string;
+  title: string;
+  peso: number;
+  won: number;
+  color: string;
 }
 
 export interface Carts {
@@ -78,18 +89,23 @@ export interface Carts {
   items: {
     "daytime-massage": CartItemType[];
     "firstday-massage": CartItemType[];
-    "firstday-hopping": CartItemType[];
+    "firstday-pirate": CartItemType[];
+    "firstday-gold": CartItemType[];
+    "firstday-south": CartItemType[];
     "lastday-massage": CartItemType[];
-    "lastday-hopping": CartItemType[];
+    "lastday-gold": CartItemType[];
+    "lastday-pirate": CartItemType[];
   };
 }
 
 export type ItemKey =
   | "daytime-massage"
   | "firstday-massage"
-  | "firstday-hopping"
+  | "firstday-gold"
+  | "firstday-pirate"
   | "lastday-massage"
-  | "lastday-hopping";
+  | "lastday-gold"
+  | "lastday-pirate";
 
 export interface CartsResult {
   summary: {

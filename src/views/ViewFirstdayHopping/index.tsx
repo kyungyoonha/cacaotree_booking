@@ -22,7 +22,7 @@ import FormItemEtc from "@components/FormItemEtc";
 const ViewFirstdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormFirstdayHopping>();
-  const urlPath = "firstday-hopping";
+  const urlPath = router.pathname.split("/")[2];
   const { onFinishForm, dispatch } = useUIContext();
 
   const drop = Form.useWatch("drop", form);
@@ -133,7 +133,7 @@ const ViewFirstdayHopping = () => {
               key: "cebu",
               title: "세부시티(편도 500페소)",
               disabled: false,
-              value: "",
+              value: "세부시티(편도 500페소)",
             },
           ]}
         />

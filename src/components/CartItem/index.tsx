@@ -26,15 +26,17 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     itemDiscount,
     itemPayment,
     itemPrice,
-    isHappyhour,
-    isRevisit,
-    isSolo,
     hasSixtyMinutesMassage,
+    discountByPax,
   } = cartItem;
   const router = useRouter();
   const { getCartsAll, dispatch } = useUIContext();
-  const { name, src } = productMap[cartItem.key];
+  const { title, subtitle, thumbnail } = productMap[cartItem.key];
   const afterText = paymentMethod === "won" ? "원" : "페소";
+
+  let isSolo = !!discountByPax.filter((i) => i.key === "solo").length;
+  let isRevisit = !!discountByPax.filter((i) => i.key === "revisit").length;
+  let isHappyhour = !!discountByPax.filter((i) => i.key === "happyhour").length;
 
   const onClickDelete = () => {
     message.success("삭제 완료되었습니다.");
@@ -66,17 +68,19 @@ const CartItem = ({ cartItem }: CartItemProps) => {
             checked={true}
             style={{ marginRight: "10px" }}
           />
-          {name}
-          {isHappyhour && (
-            <Tag style={{ marginLeft: "5px" }} color="cyan">
-              해피아워 할인
-            </Tag>
-          )}
-          {isRevisit && (
-            <Tag style={{ marginLeft: "5px" }} color="green">
-              재방문 할인
-            </Tag>
-          )}
+
+          {`${title} ${subtitle ? " +" + subtitle : ""}`}
+          {discountByPax.map((item) => {
+            return (
+              <Tag
+                key={item.key}
+                style={{ marginLeft: "5px" }}
+                color={item.color}
+              >
+                {item.title}
+              </Tag>
+            );
+          })}
         </div>
       }
       extra={
@@ -90,7 +94,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <Image
             width="130"
             height="130"
-            src={src}
+            src={thumbnail}
             alt="image"
             style={{ borderRadius: "10px" }}
           />

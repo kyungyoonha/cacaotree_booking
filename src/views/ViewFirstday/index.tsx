@@ -1,9 +1,16 @@
 import LayoutQuestion from "@components/LayoutQuestion";
 import { QuestionSelectWithSubtitle } from "@components/QuestionSelect";
+import productMap from "@configs/productMap";
 import React from "react";
-import { itemList } from "./feature";
 
 const ViewFirstday = () => {
+  const keys = Object.keys(productMap).filter((item) =>
+    item.includes("firstday")
+  );
+
+  const itemList = Object.values(productMap).filter((item) =>
+    keys.includes(item.id)
+  );
   return (
     <LayoutQuestion>
       <QuestionSelectWithSubtitle

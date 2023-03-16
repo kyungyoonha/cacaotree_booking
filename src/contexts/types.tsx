@@ -53,7 +53,7 @@ export const onFinishForm = (
     CartService.addItem(key, form);
   }
 
-  // onOpenModalForm(true, dispatch);
+  onOpenModalForm(true, dispatch);
 };
 
 export const onOpenModalForm = (

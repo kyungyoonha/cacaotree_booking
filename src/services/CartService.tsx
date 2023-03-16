@@ -2,6 +2,7 @@ import Storage from "./index";
 import { CartItemType, Carts, CartsResult, FormType, ItemKey } from "@types";
 import { changeNumberWithComma } from "src/utilities/funcs";
 import dayjs from "dayjs";
+import discountMap from "@configs/discountMap";
 
 const KEY = "cacaotree-cart";
 
@@ -21,9 +22,12 @@ const defualtCart: Carts = {
   items: {
     "daytime-massage": [],
     "firstday-massage": [],
-    "firstday-hopping": [],
+    "firstday-gold": [],
+    "firstday-pirate": [],
+    "firstday-south": [],
     "lastday-massage": [],
-    "lastday-hopping": [],
+    "lastday-pirate": [],
+    "lastday-gold": [],
   },
 };
 
@@ -31,13 +35,12 @@ const defaultCartItem: CartItemType = {
   itemPrice: 0,
   itemDiscount: 0,
   itemPayment: 0,
-  isSolo: false,
-  isRevisit: false,
-  isHappyhour: false,
   hasSixtyMinutesMassage: false,
   paymentMethod: "won",
   massageText: "",
   form: null,
+  discountByPax: [],
+  discountByTeam: [],
 };
 
 export default Object.freeze({
@@ -75,20 +78,17 @@ export default Object.freeze({
   addItem(itemKey: ItemKey, form: FormType) {
     let cartItems: CartItemType[] = this.findItemAll(itemKey);
 
-    let isHappyhour = false;
-    if (!itemKey.includes("firstday")) {
-      const hour = dayjs(form.massageTime).hour();
-      isHappyhour = hour < 16 ? true : false;
-    }
-
-    cartItems.push({
+    let newCartItem = {
       ...defaultCartItem,
       key: itemKey,
-      isSolo: form.pax === 1 ? true : false,
-      isHappyhour,
-      form: form,
+      form,
       seq: cartItems.reduce((seq, cur) => Math.max(seq, cur.seq), 0) + 1,
-    });
+    };
+
+    newCartItem = this.checkHappyhour(newCartItem);
+    newCartItem = this.checkSolo(newCartItem);
+
+    cartItems.push(newCartItem);
 
     this.saveItemAll(itemKey, cartItems);
     this.changeCount("up");
@@ -106,6 +106,10 @@ export default Object.freeze({
   // 아이템 업데이트
   updateItem(itemKey: ItemKey, newCartItem: CartItemType) {
     let cartItems: CartItemType[] = this.findItemAll(itemKey);
+
+    newCartItem = this.checkHappyhour(newCartItem);
+    newCartItem = this.checkSolo(newCartItem);
+
     cartItems = cartItems.map((cartItem) =>
       cartItem.seq === newCartItem.seq ? newCartItem : cartItem
     );
@@ -121,21 +125,21 @@ export default Object.freeze({
     carts.totalItemCnt = cntType === "up" ? totalItemCnt + 1 : totalItemCnt - 1;
     this.saveAll(carts);
 
-    let tempCartItems: CartItemType[] = [];
+    let sortedCartItems: CartItemType[] = [];
 
     Object.keys(carts.items).forEach((key) => {
       let cartItems = carts.items[key];
-      cartItems.forEach((cartItem) => tempCartItems.push(cartItem));
+      cartItems.forEach((cartItem) => sortedCartItems.push(cartItem));
     });
 
-    tempCartItems = tempCartItems.sort(
+    sortedCartItems = sortedCartItems.sort(
       (a, b) =>
         new Date(a.form.date).getTime() - new Date(b.form.date).getTime()
     );
 
-    tempCartItems.forEach((cartItem, idx) => {
-      let isRevisit = idx === 0 ? false : true; // 첫번째 패키지는 재방문 적용 안됌
-      let newCartItem: CartItemType = { ...cartItem, isRevisit };
+    // [재방문 할인]
+    sortedCartItems.forEach((cartItem, idx) => {
+      let newCartItem = this.checkRevisit(cartItem, idx !== 0 ? true : false);
       this.updateItem(cartItem.key, newCartItem);
     });
   },
@@ -161,12 +165,16 @@ export default Object.freeze({
         let massageText = "";
         let hasSixtyMinutesMassage = false;
         let {
-          isRevisit,
-          isHappyhour,
-          isSolo,
           paymentMethod,
+          discountByPax,
           form: { massageList },
         } = cartItem;
+
+        let isSolo = !!discountByPax.filter((i) => i.key === "solo").length;
+        let isRevisit = !!discountByPax.filter((i) => i.key === "revisit")
+          .length;
+        let isHappyhour = !!discountByPax.filter((i) => i.key === "happyhour")
+          .length;
 
         massageList.forEach((massageItem, idx) => {
           let { massage, sex } = massageItem;
@@ -181,15 +189,15 @@ export default Object.freeze({
           }
 
           if (!massagEng.includes("60") && isRevisit) {
-            itemDiscount += DISCOUNT_MAP.isRevisit[paymentMethod];
+            itemDiscount += discountMap.revisit[paymentMethod];
           }
 
           if (!massagEng.includes("60") && isHappyhour) {
-            itemDiscount += DISCOUNT_MAP.isHappyhour[paymentMethod];
+            itemDiscount += discountMap.happyhour[paymentMethod];
           }
 
           if (isSolo) {
-            itemPrice += DISCOUNT_MAP.isSolo[paymentMethod];
+            itemPrice -= discountMap.solo[paymentMethod];
           }
 
           sex = sex === "f" ? "여" : "남";
@@ -244,19 +252,38 @@ export default Object.freeze({
       cartItems: result,
     };
   },
-});
+  checkHappyhour(cartItem: CartItemType) {
+    let { discountByPax, key, form } = cartItem;
+    discountByPax = discountByPax.filter((item) => item.key !== "happyhour");
 
-const DISCOUNT_MAP = {
-  isRevisit: {
-    peso: 240,
-    won: 6000,
+    if (!key.includes("firstday")) {
+      const hour = dayjs(form.massageTime).hour();
+      if (hour < 16) {
+        discountByPax.push(discountMap["happyhour"]);
+      }
+    }
+    return { ...cartItem, discountByPax };
   },
-  isHappyhour: {
-    peso: 240,
-    won: 6000,
+  checkSolo(cartItem: CartItemType) {
+    let {
+      discountByPax,
+      form: { pax },
+    } = cartItem;
+    discountByPax = discountByPax.filter((item) => item.key !== "solo");
+
+    if (pax === 1) {
+      discountByPax.push(discountMap["solo"]);
+    }
+
+    return { ...cartItem, discountByPax };
   },
-  isSolo: {
-    peso: 400,
-    won: 10000,
+  checkRevisit(cartItem: CartItemType, isRevisit) {
+    let { discountByPax } = cartItem;
+    discountByPax = discountByPax.filter((item) => item.key !== "revisit");
+
+    if (isRevisit) {
+      discountByPax.push(discountMap["revisit"]);
+    }
+    return { ...cartItem, discountByPax };
   },
-};
+});

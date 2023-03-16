@@ -4,7 +4,7 @@ import {
   StyledRadioGroup,
 } from "@styles/styledComponents";
 import { Form } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface Props {
   value: string;
@@ -23,7 +23,7 @@ interface Option {
   value: string;
 }
 
-const FormItemPick = ({
+const FormItemInputWithOption = ({
   value,
   onChange,
   label,
@@ -32,18 +32,21 @@ const FormItemPick = ({
   defaultValue,
   options,
 }: Props) => {
-  const [disabled, setDisabled] = useState(false);
+  const [selectItem, setSelectItem] = useState<Option>();
 
   const onChangeInput = (e) => onChange(e.target.value);
 
   const onChangeRadio = (e) => {
-    const { disabled, value } = options.find(
-      (item) => e.target.value === item.key
-    );
+    const { value } = options.find((item) => e.target.value === item.key);
 
-    setDisabled(disabled);
     onChange(value);
   };
+
+  useEffect(() => {
+    const newSelectedItem = options.find((item) => value === item.value);
+
+    setSelectItem(newSelectedItem);
+  }, [options, value]);
 
   return (
     <>
@@ -52,6 +55,7 @@ const FormItemPick = ({
           defaultValue={defaultValue}
           size="large"
           onChange={onChangeRadio}
+          value={selectItem?.key}
         >
           {options.map((option) => (
             <StyledRadioButton key={option.key} value={option.key}>
@@ -69,7 +73,7 @@ const FormItemPick = ({
           value={value}
           size="large"
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={selectItem?.disabled}
           onChange={onChangeInput}
         />
       </Form.Item>
@@ -77,4 +81,4 @@ const FormItemPick = ({
   );
 };
 
-export default FormItemPick;
+export default FormItemInputWithOption;
