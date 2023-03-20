@@ -22,20 +22,15 @@ import FormItemEtc from "@components/FormItemEtc";
 const ViewLastdayMassage = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayMassage>();
-  const urlPath = router.pathname.split("/")[2];
+  const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
+
   const pick = Form.useWatch("pick", form);
-  const { onFinishForm, dispatch } = useUIContext();
-  const cartId = router.query.cartId as string;
+  const itemKey = router.pathname.split("/")[2] as ItemKey;
+  const seq = router.query.seq ? Number(router.query.seq) : null;
 
   const onFinish = (values: FormLastdayMassage) => {
-    onFinishForm(
-      {
-        key: urlPath as ItemKey,
-        form: values,
-        seq: cartId ? Number(cartId) : null,
-      },
-      dispatch
-    );
+    const newCartItem = { ...cartItem, key: itemKey, form: values };
+    onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -43,14 +38,17 @@ const ViewLastdayMassage = () => {
   };
 
   useEffect(() => {
-    if (!cartId) return;
-    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+    if (!seq) return;
+    const prevCartItem = CartService.findItemBySeq(itemKey, seq);
+    const cartItemForm = prevCartItem.form as FormLastdayMassage;
+
+    onChangeCartItem(prevCartItem, dispatch);
 
     form.setFieldsValue({
-      ...data.form,
-      date: dayjs(data.form.date),
+      ...cartItemForm,
+      date: dayjs(cartItemForm.date),
     });
-  }, [urlPath, form, cartId]);
+  }, [itemKey, form, seq, dispatch, onChangeCartItem]);
 
   return (
     <LayoutQuestion>
@@ -97,19 +95,19 @@ const ViewLastdayMassage = () => {
               key: "mactan",
               title: "막탄지역",
               disabled: false,
-              value: "",
+              suffixText: "",
             },
             {
               key: "cebu",
               title: "세부시티, 코르도바",
               disabled: true,
-              value: "개별적으로 스파로 오겠습니다.",
+              suffixText: "개별적으로 스파로 오겠습니다.",
             },
             {
               key: "no-need",
               title: "필요 없습니다.",
               disabled: true,
-              value: "필요 없습니다.",
+              suffixText: "필요 없습니다.",
             },
           ]}
         />

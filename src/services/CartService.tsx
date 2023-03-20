@@ -2,7 +2,7 @@ import Storage from "./index";
 import { CartItemType, Carts, CartsResult, FormType, ItemKey } from "@types";
 import { changeNumberWithComma } from "src/utilities/funcs";
 import dayjs from "dayjs";
-import discountMap from "@configs/discountMap";
+import couponMap from "@configs/couponMap";
 
 const KEY = "cacaotree-cart";
 
@@ -31,7 +31,8 @@ const defualtCart: Carts = {
   },
 };
 
-const defaultCartItem: CartItemType = {
+export const defaultCartItem: CartItemType = {
+  key: null,
   itemPrice: 0,
   itemDiscount: 0,
   itemPayment: 0,
@@ -39,8 +40,7 @@ const defaultCartItem: CartItemType = {
   paymentMethod: "won",
   massageText: "",
   form: null,
-  discountByPax: [],
-  discountByTeam: [],
+  couponList: [],
 };
 
 export default Object.freeze({
@@ -70,28 +70,27 @@ export default Object.freeze({
   },
 
   // 아이템 찾기
-  findItemBySeq(itemKey: ItemKey, seq: number) {
+  findItemBySeq(itemKey: ItemKey, seq: number): CartItemType {
     return this.findAll().items[itemKey].find((v) => v.seq === seq);
   },
 
   // 아이템 추가
-  addItem(itemKey: ItemKey, form: FormType) {
+  addItem(itemKey: ItemKey, cartItem: CartItemType) {
     let cartItems: CartItemType[] = this.findItemAll(itemKey);
 
     let newCartItem = {
-      ...defaultCartItem,
-      key: itemKey,
-      form,
+      ...cartItem,
       seq: cartItems.reduce((seq, cur) => Math.max(seq, cur.seq), 0) + 1,
     };
 
-    newCartItem = this.checkHappyhour(newCartItem);
-    newCartItem = this.checkSolo(newCartItem);
+    newCartItem = this.checkCouponHappyhour(newCartItem);
+    newCartItem = this.checkCouponSolo(newCartItem);
 
     cartItems.push(newCartItem);
 
     this.saveItemAll(itemKey, cartItems);
     this.changeCount("up");
+    return newCartItem;
   },
 
   // 아이템 제거
@@ -107,8 +106,8 @@ export default Object.freeze({
   updateItem(itemKey: ItemKey, newCartItem: CartItemType) {
     let cartItems: CartItemType[] = this.findItemAll(itemKey);
 
-    newCartItem = this.checkHappyhour(newCartItem);
-    newCartItem = this.checkSolo(newCartItem);
+    newCartItem = this.checkCouponHappyhour(newCartItem);
+    newCartItem = this.checkCouponSolo(newCartItem);
 
     cartItems = cartItems.map((cartItem) =>
       cartItem.seq === newCartItem.seq ? newCartItem : cartItem
@@ -139,7 +138,10 @@ export default Object.freeze({
 
     // [재방문 할인]
     sortedCartItems.forEach((cartItem, idx) => {
-      let newCartItem = this.checkRevisit(cartItem, idx !== 0 ? true : false);
+      let newCartItem = this.checkCouponRevisit(
+        cartItem,
+        idx !== 0 ? true : false
+      );
       this.updateItem(cartItem.key, newCartItem);
     });
   },
@@ -166,15 +168,22 @@ export default Object.freeze({
         let hasSixtyMinutesMassage = false;
         let {
           paymentMethod,
-          discountByPax,
+          couponList,
           form: { massageList },
         } = cartItem;
 
-        let isSolo = !!discountByPax.filter((i) => i.key === "solo").length;
-        let isRevisit = !!discountByPax.filter((i) => i.key === "revisit")
-          .length;
-        let isHappyhour = !!discountByPax.filter((i) => i.key === "happyhour")
-          .length;
+        let couponsPerTeam = couponList.filter((i) => i.type === "perTeam");
+        couponsPerTeam.forEach((coupon) => {
+          itemDiscount += coupon[paymentMethod];
+        });
+
+        // 솔로인경우 제외
+        let couponePerPax = couponList.filter((i) => i.type === "perPax");
+
+        let isSolo = !!couponList.filter((i) => i.key === "solo").length;
+        // let isRevisit = !!couponList.filter((i) => i.key === "revisit").length;
+        // let isHappyhour = !!couponList.filter((i) => i.key === "happyhour")
+        //   .length;
 
         massageList.forEach((massageItem, idx) => {
           let { massage, sex } = massageItem;
@@ -186,18 +195,23 @@ export default Object.freeze({
 
           if (massagEng.includes("60")) {
             hasSixtyMinutesMassage = true;
+          } else {
+            couponePerPax.forEach((coupon) => {
+              if (coupon.key === "solo") return;
+              itemDiscount += coupon[paymentMethod];
+            });
           }
 
-          if (!massagEng.includes("60") && isRevisit) {
-            itemDiscount += discountMap.revisit[paymentMethod];
-          }
+          // if (!massagEng.includes("60") && isRevisit) {
+          //   itemDiscount += couponMap.revisit[paymentMethod];
+          // }
 
-          if (!massagEng.includes("60") && isHappyhour) {
-            itemDiscount += discountMap.happyhour[paymentMethod];
-          }
+          // if (!massagEng.includes("60") && isHappyhour) {
+          //   itemDiscount += couponMap.happyhour[paymentMethod];
+          // }
 
           if (isSolo) {
-            itemPrice -= discountMap.solo[paymentMethod];
+            itemPrice -= couponMap.solo[paymentMethod];
           }
 
           sex = sex === "f" ? "여" : "남";
@@ -252,38 +266,56 @@ export default Object.freeze({
       cartItems: result,
     };
   },
-  checkHappyhour(cartItem: CartItemType) {
-    let { discountByPax, key, form } = cartItem;
-    discountByPax = discountByPax.filter((item) => item.key !== "happyhour");
-
+  checkCouponHappyhour(cartItem: CartItemType) {
+    let { couponList, key, form } = cartItem;
+    couponList = couponList.filter((item) => item.key !== "happyhour");
     if (!key.includes("firstday")) {
       const hour = dayjs(form.massageTime).hour();
       if (hour < 16) {
-        discountByPax.push(discountMap["happyhour"]);
+        couponList.push(couponMap["happyhour"]);
       }
     }
-    return { ...cartItem, discountByPax };
+    return { ...cartItem, couponList };
   },
-  checkSolo(cartItem: CartItemType) {
-    let {
-      discountByPax,
-      form: { pax },
-    } = cartItem;
-    discountByPax = discountByPax.filter((item) => item.key !== "solo");
-
-    if (pax === 1) {
-      discountByPax.push(discountMap["solo"]);
+  checkCouponSolo(cartItem: CartItemType) {
+    let { couponList, form } = cartItem;
+    couponList = couponList.filter((item) => item.key !== "solo");
+    if (form.pax === 1) {
+      couponList.push(couponMap["solo"]);
     }
 
-    return { ...cartItem, discountByPax };
+    return { ...cartItem, couponList };
   },
-  checkRevisit(cartItem: CartItemType, isRevisit) {
-    let { discountByPax } = cartItem;
-    discountByPax = discountByPax.filter((item) => item.key !== "revisit");
+  checkCouponRevisit(cartItem: CartItemType, isRevisit) {
+    let { couponList } = cartItem;
+
+    couponList = couponList.filter((item) => item.key !== "revisit");
 
     if (isRevisit) {
-      discountByPax.push(discountMap["revisit"]);
+      couponList.push(couponMap["revisit"]);
     }
-    return { ...cartItem, discountByPax };
+    return { ...cartItem, couponList };
+  },
+
+  // 쿠폰 초기화
+  removeCoupons(cartItem: CartItemType, removeCouponKeys: string[]) {
+    let { couponList } = cartItem;
+
+    couponList = couponList.filter(
+      (coupon) => !removeCouponKeys.includes(coupon.key)
+    );
+    cartItem["couponList"] = couponList;
+    this.updateItem(cartItem.key, cartItem);
+  },
+
+  // 쿠폰 추가
+  addCoupons(cartItem: CartItemType, addCoupons: string[]) {
+    let { couponList } = cartItem;
+
+    addCoupons.forEach((couponKey) => {
+      couponList.push(couponMap[couponKey]);
+    });
+
+    this.updateItem(cartItem.key, cartItem);
   },
 });

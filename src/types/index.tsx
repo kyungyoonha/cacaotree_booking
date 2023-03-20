@@ -53,7 +53,7 @@ export type FormType =
 
 export interface CartItemType {
   seq?: number;
-  key?: string;
+  key: string;
   hasSixtyMinutesMassage: boolean;
   itemPrice?: number;
   itemDiscount?: number;
@@ -61,16 +61,16 @@ export interface CartItemType {
   paymentMethod?: "peso" | "won";
   massageText: string;
   form: FormType;
-  discountByPax: Discount[];
-  discountByTeam: Discount[];
+  couponList: Coupon[];
 }
 
-export interface Discount {
+export interface Coupon {
   key: string;
   title: string;
   peso: number;
   won: number;
   color: string;
+  type: "perPax" | "perTeam";
 }
 
 export interface Carts {

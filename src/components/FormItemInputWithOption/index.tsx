@@ -9,6 +9,7 @@ import React, { useState, useEffect } from "react";
 interface Props {
   value: string;
   onChange: (e) => void;
+  onChangeCoupon?: (coupon: string) => void;
   label: string;
   name: string;
   placeholder: string;
@@ -20,33 +21,50 @@ interface Option {
   key: string;
   title: string;
   disabled: boolean;
-  value: string;
+  suffixText: string;
+  coupon?: string;
 }
 
 const FormItemInputWithOption = ({
   value,
   onChange,
+  onChangeCoupon,
   label,
   name,
   placeholder,
   defaultValue,
   options,
 }: Props) => {
-  const [selectItem, setSelectItem] = useState<Option>();
+  const [selectItem, setSelectItem] = useState<Option>(options[0]);
+  const [afterText, setAfterText] = useState<string>("");
 
-  const onChangeInput = (e) => onChange(e.target.value);
+  const { key, disabled, suffixText, coupon } = selectItem;
+
+  const onChnageAfterText = (e) => setAfterText(e.target.value);
 
   const onChangeRadio = (e) => {
-    const { value } = options.find((item) => e.target.value === item.key);
-
-    onChange(value);
+    const newSeletedItem = options.find((item) => item.key === e.target.value);
+    setSelectItem(newSeletedItem);
+    setAfterText("");
+    onChangeCoupon && onChangeCoupon(newSeletedItem.coupon);
   };
 
   useEffect(() => {
-    const newSelectedItem = options.find((item) => value === item.value);
+    let text = suffixText;
+    text += suffixText && afterText ? ` / ${afterText}` : afterText;
+
+    onChange(text);
+  }, [suffixText, afterText, onChange]);
+
+  useEffect(() => {
+    if (!value) return;
+    const newSelectedItem = options.find(
+      (item) => item.suffixText && value.indexOf(item.suffixText) !== -1
+    );
 
     setSelectItem(newSelectedItem);
-  }, [options, value]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
 
   return (
     <>
@@ -55,7 +73,7 @@ const FormItemInputWithOption = ({
           defaultValue={defaultValue}
           size="large"
           onChange={onChangeRadio}
-          value={selectItem?.key}
+          value={key}
         >
           {options.map((option) => (
             <StyledRadioButton key={option.key} value={option.key}>
@@ -64,18 +82,31 @@ const FormItemInputWithOption = ({
           ))}
         </StyledRadioGroup>
       </Form.Item>
+      {!!suffixText && (
+        <Form.Item style={{ width: "100%" }}>
+          <StyledInput value={suffixText} size="large" disabled={true} />
+        </Form.Item>
+      )}
+      {!disabled && (
+        <Form.Item
+          rules={[{ required: true, message: placeholder }]}
+          style={{ width: "100%" }}
+        >
+          <StyledInput
+            value={afterText}
+            size="large"
+            placeholder={placeholder}
+            onChange={onChnageAfterText}
+          />
+        </Form.Item>
+      )}
       <Form.Item
         name={name}
         rules={[{ required: true, message: placeholder }]}
         style={{ width: "100%" }}
+        hidden
       >
-        <StyledInput
-          value={value}
-          size="large"
-          placeholder={placeholder}
-          disabled={selectItem?.disabled}
-          onChange={onChangeInput}
-        />
+        <StyledInput value={value} size="large" placeholder={placeholder} />
       </Form.Item>
     </>
   );

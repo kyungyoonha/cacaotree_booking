@@ -21,20 +21,15 @@ import FormItemEtc from "@components/FormItemEtc";
 const ViewLastdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayHopping>();
+  const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
+
   const pick = Form.useWatch("pick", form);
-  const urlPath = router.pathname.split("/")[2];
-  const { onFinishForm, dispatch } = useUIContext();
-  const cartId = router.query.cartId as string;
+  const itemKey = router.pathname.split("/")[2] as ItemKey;
+  const seq = router.query.seq ? Number(router.query.seq) : null;
 
   const onFinish = (values: FormLastdayHopping) => {
-    onFinishForm(
-      {
-        key: urlPath as ItemKey,
-        form: values,
-        seq: cartId ? Number(cartId) : null,
-      },
-      dispatch
-    );
+    const newCartItem = { ...cartItem, key: itemKey, form: values };
+    onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -42,14 +37,16 @@ const ViewLastdayHopping = () => {
   };
 
   useEffect(() => {
-    if (!cartId) return;
-    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+    if (!seq) return;
+    const prevCartItem = CartService.findItemBySeq(itemKey, seq);
+    const cartItemForm = prevCartItem.form as FormLastdayHopping;
 
+    onChangeCartItem(prevCartItem, dispatch);
     form.setFieldsValue({
-      ...data.form,
-      date: dayjs(data.form.date),
+      ...cartItemForm,
+      date: dayjs(cartItemForm.date),
     });
-  }, [urlPath, form, cartId]);
+  }, [itemKey, form, seq, dispatch, onChangeCartItem]);
 
   return (
     <LayoutQuestion>
@@ -103,13 +100,13 @@ const ViewLastdayHopping = () => {
               key: "mactan",
               title: "막탄지역",
               disabled: false,
-              value: "",
+              suffixText: "",
             },
             {
               key: "cebu",
               title: "세부시티(편도 500페소)",
               disabled: false,
-              value: "",
+              suffixText: "세부시티(편도 500페소)",
             },
           ]}
         />

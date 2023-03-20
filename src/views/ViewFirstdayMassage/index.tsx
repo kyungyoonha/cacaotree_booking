@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { DatePicker, Form, message, TimePicker } from "antd";
+import React, { useEffect, useState } from "react";
+import { DatePicker, Form, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -17,40 +17,50 @@ import { useUIContext } from "src/contexts";
 import CartService from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
 import FormItemEtc from "@components/FormItemEtc";
+import DROP_OPTIONS from "./feature";
+import couponMap from "@configs/couponMap";
 
 const ViewFirstdayMassage = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormFirstdayMassage>();
+  const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
+
   const drop = Form.useWatch("drop", form);
-  const urlPath = router.pathname.split("/")[2];
-  const { onFinishForm, dispatch } = useUIContext();
-  const cartId = router.query.cartId as string;
+  const itemKey = router.pathname.split("/")[2] as ItemKey;
+  const seq = router.query.seq ? Number(router.query.seq) : null;
 
   const onFinish = (values: FormFirstdayMassage) => {
-    onFinishForm(
-      {
-        key: urlPath as ItemKey,
-        form: values,
-        seq: cartId ? Number(cartId) : null,
-      },
-      dispatch
-    );
+    const newCartItem = { ...cartItem, key: itemKey, form: values };
+
+    onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     message.error(errorInfo);
   };
 
-  useEffect(() => {
-    if (!cartId) return;
-    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+  const onChangeCoupon = (couponKey) => {
+    const { couponList } = cartItem;
+    let except = DROP_OPTIONS.filter((i) => !!i.coupon).map((i) => i.coupon);
+    let initCoupons = couponList.filter((item) => !except.includes(item.key));
 
+    const newCoupons = couponKey
+      ? [...initCoupons, couponMap[couponKey]]
+      : initCoupons;
+    onChangeCartItem({ ...cartItem, couponList: newCoupons }, dispatch);
+  };
+
+  useEffect(() => {
+    if (!seq) return;
+    const initCartItem = CartService.findItemBySeq(itemKey, seq);
+    const cartItemForm = initCartItem.form as FormFirstdayMassage;
     form.setFieldsValue({
-      ...data.form,
-      date: dayjs(data.form.date),
-      arrivalTime: dayjs(data.form.arrivalTime),
+      ...cartItemForm,
+      date: dayjs(cartItemForm.date),
+      arrivalTime: dayjs(cartItemForm.arrivalTime),
     });
-  }, [urlPath, form, cartId]);
+    onChangeCartItem(initCartItem, dispatch);
+  }, [itemKey, form, seq, dispatch, onChangeCartItem]);
 
   return (
     <LayoutQuestion>
@@ -116,36 +126,12 @@ const ViewFirstdayMassage = () => {
         <FormItemInputWithOption
           value={drop}
           onChange={(value) => form.setFieldValue("drop", value)}
+          onChangeCoupon={onChangeCoupon}
           label="드랍장소"
           name="drop"
           placeholder="드랍장소를 입력해주세요."
           defaultValue="mactan"
-          options={[
-            {
-              key: "mactan",
-              title: "막탄지역",
-              disabled: false,
-              value: "",
-            },
-            {
-              key: "cebu",
-              title: "세부시티, 코르도바",
-              disabled: true,
-              value: "개별적으로 스파로 오겠습니다.",
-            },
-            {
-              key: "port",
-              title: "항구드랍",
-              disabled: true,
-              value: "항구드랍 (1인 200페소 추가)",
-            },
-            {
-              key: "no-need",
-              title: "필요 없습니다.",
-              disabled: true,
-              value: "필요 없습니다.",
-            },
-          ]}
+          options={DROP_OPTIONS}
         />
 
         <FormItemEtc />

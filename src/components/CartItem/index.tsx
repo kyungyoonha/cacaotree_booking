@@ -27,16 +27,16 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     itemPayment,
     itemPrice,
     hasSixtyMinutesMassage,
-    discountByPax,
+    couponList,
   } = cartItem;
   const router = useRouter();
   const { getCartsAll, dispatch } = useUIContext();
   const { title, subtitle, thumbnail } = productMap[cartItem.key];
   const afterText = paymentMethod === "won" ? "원" : "페소";
 
-  let isSolo = !!discountByPax.filter((i) => i.key === "solo").length;
-  let isRevisit = !!discountByPax.filter((i) => i.key === "revisit").length;
-  let isHappyhour = !!discountByPax.filter((i) => i.key === "happyhour").length;
+  let isSolo = !!couponList.filter((i) => i.key === "solo").length;
+  let isRevisit = !!couponList.filter((i) => i.key === "revisit").length;
+  let isHappyhour = !!couponList.filter((i) => i.key === "happyhour").length;
 
   const onClickDelete = () => {
     message.success("삭제 완료되었습니다.");
@@ -56,7 +56,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
 
   const onClickUpdate = () => {
     const path = route[key];
-    router.push(`${path}?cartId=${seq}`);
+    router.push(`${path}?seq=${seq}`);
   };
 
   return (
@@ -70,7 +70,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           />
 
           {`${title} ${subtitle ? " +" + subtitle : ""}`}
-          {discountByPax.map((item) => {
+          {couponList.map((item) => {
             return (
               <Tag
                 key={item.key}

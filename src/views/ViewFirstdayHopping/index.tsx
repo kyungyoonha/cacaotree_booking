@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { DatePicker, Form, message, TimePicker } from "antd";
+import React, { useEffect, useState } from "react";
+import { DatePicker, Form, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -12,31 +12,26 @@ import massageFirstday from "@configs/massage-firstday";
 import dayjs from "dayjs";
 import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import FormItemMassage from "@components/FormItemMassage";
-import { FormFirstdayHopping, ItemKey } from "@types";
+import { CartItemType, FormFirstdayHopping, ItemKey } from "@types";
 import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
-import CartService from "src/services/CartService";
+import CartService, { defaultCartItem } from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
 import FormItemEtc from "@components/FormItemEtc";
 
 const ViewFirstdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormFirstdayHopping>();
-  const urlPath = router.pathname.split("/")[2];
+  const [cartItem, setCartItem] = useState<CartItemType>(defaultCartItem);
   const { onFinishForm, dispatch } = useUIContext();
 
   const drop = Form.useWatch("drop", form);
-  const cartId = router.query.cartId as string;
+  const itemKey = router.pathname.split("/")[2] as ItemKey;
+  const seq = router.query.seq ? Number(router.query.seq) : null;
 
   const onFinish = (values: FormFirstdayHopping) => {
-    onFinishForm(
-      {
-        key: urlPath as ItemKey,
-        form: values,
-        seq: cartId ? Number(cartId) : null,
-      },
-      dispatch
-    );
+    const newCartItem = { ...cartItem, key: itemKey, form: values };
+    onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -44,15 +39,18 @@ const ViewFirstdayHopping = () => {
   };
 
   useEffect(() => {
-    if (!cartId) return;
-    const data = CartService.findItemBySeq(urlPath as ItemKey, Number(cartId));
+    if (!seq) return;
+    const prevCartItem = CartService.findItemBySeq(itemKey, seq);
+    const cartItemForm = prevCartItem.form as FormFirstdayHopping;
+
+    setCartItem(prevCartItem);
 
     form.setFieldsValue({
-      ...data.form,
-      date: dayjs(data.form.date),
-      arrivalTime: dayjs(data.form.arrivalTime),
+      ...cartItemForm,
+      date: dayjs(cartItemForm.date),
+      arrivalTime: dayjs(cartItemForm.arrivalTime),
     });
-  }, [urlPath, form, cartId]);
+  }, [itemKey, form, seq]);
 
   return (
     <LayoutQuestion>
@@ -127,13 +125,13 @@ const ViewFirstdayHopping = () => {
               key: "mactan",
               title: "막탄지역",
               disabled: false,
-              value: "",
+              suffixText: "",
             },
             {
               key: "cebu",
               title: "세부시티(편도 500페소)",
               disabled: false,
-              value: "세부시티(편도 500페소)",
+              suffixText: "세부시티(편도 500페소)",
             },
           ]}
         />

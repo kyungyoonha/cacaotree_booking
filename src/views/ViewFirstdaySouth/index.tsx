@@ -14,30 +14,40 @@ import { FormFirstdaySouth, ItemKey } from "@types";
 import { DatePicker, Form, message } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { useUIContext } from "src/contexts";
+import CartService from "src/services/CartService";
 
 const ViewFirstdaySouth = () => {
   const router = useRouter();
-  const urlPath = router.pathname.split("/")[2];
   const [form] = Form.useForm();
-  const { onFinishForm, dispatch } = useUIContext();
-  const cartId = router.query.cartId as string;
+  const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
+
+  const itemKey = router.pathname.split("/")[2] as ItemKey;
+  const seq = router.query.seq ? Number(router.query.seq) : null;
 
   const onFinish = (values: FormFirstdaySouth) => {
-    onFinishForm(
-      {
-        key: urlPath as ItemKey,
-        form: values,
-        seq: cartId ? Number(cartId) : null,
-      },
-      dispatch
-    );
+    const newCartItem = { ...cartItem, key: itemKey, form: values };
+    onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     message.error(errorInfo);
   };
+
+  useEffect(() => {
+    if (!seq) return;
+    const prevCartItem = CartService.findItemBySeq(itemKey, seq);
+    const cartItemForm = prevCartItem.form as FormFirstdaySouth;
+
+    onChangeCartItem(prevCartItem, dispatch);
+
+    form.setFieldsValue({
+      ...cartItemForm,
+      date: dayjs(cartItemForm.date),
+      arrivalTime: dayjs(cartItemForm.arrivalTime),
+    });
+  }, [itemKey, form, seq, dispatch, onChangeCartItem]);
   return (
     <LayoutQuestion>
       <StyledForm

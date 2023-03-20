@@ -1,4 +1,5 @@
 import React, { useReducer, useMemo } from "react";
+import { defaultCartItem } from "src/services/CartService";
 import {
   State,
   Action,
@@ -6,6 +7,7 @@ import {
   getCartsAll,
   onFinishForm,
   onOpenModalForm,
+  onChangeCartItem,
 } from "./types";
 
 const initialState: State = {
@@ -21,10 +23,12 @@ const initialState: State = {
     },
     cartItems: [],
   },
+  cartItem: defaultCartItem,
   modalOpenForm: false,
   getCartsAll,
   onFinishForm,
   onOpenModalForm,
+  onChangeCartItem,
   dispatch: () => null,
 };
 
@@ -40,6 +44,12 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         modalOpenForm: action.payload,
+      };
+
+    case ActionType.CHANGE_CART_ITEM:
+      return {
+        ...state,
+        cartItem: action.payload,
       };
   }
 };

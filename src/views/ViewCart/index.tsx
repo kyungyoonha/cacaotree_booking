@@ -22,7 +22,7 @@ const ViewCart = () => {
   useEffect(() => {
     getCartsAll({}, dispatch);
   }, [getCartsAll, dispatch]);
-
+  console.log(cartItems);
   return (
     <Wrapper>
       <CardWrapper>
