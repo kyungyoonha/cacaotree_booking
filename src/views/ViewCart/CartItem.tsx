@@ -78,15 +78,9 @@ const CartItem = ({ cartItem }: CartItemProps) => {
         </Button>
       }
     >
-      <CartItemWrapper>
-        <div className="item">
-          <Image
-            width="130"
-            height="130"
-            src={thumbnail}
-            alt="image"
-            style={{ borderRadius: "10px" }}
-          />
+      <CartItemBody>
+        <CartItemBodyDetail className="item">
+          <Image width="130" height="130" src={thumbnail} alt="image" />
           <div className="item detail">
             <p>예약날짜: {dayjs(cartItem?.form?.date).format("YYYY-MM-DD")}</p>
             <p>총인원수: {cartItem?.form.pax} 명</p>
@@ -97,23 +91,21 @@ const CartItem = ({ cartItem }: CartItemProps) => {
               </p>
             )}
             <br />
-            <div>
-              {couponList.map((item) => {
-                return (
-                  <Tag
-                    key={item.key}
-                    style={{ marginRight: "10px" }}
-                    color={item.color}
-                  >
-                    {item.title}
-                  </Tag>
-                );
-              })}
-            </div>
           </div>
-        </div>
+        </CartItemBodyDetail>
 
-        <div className="item">
+        <CartItemBodyCoupon className="item">
+          <span>추가/할인 쿠폰</span>
+          {couponList.map((item) => {
+            return (
+              <Tag key={item.key} color={item.color}>
+                {item.title}
+              </Tag>
+            );
+          })}
+        </CartItemBodyCoupon>
+
+        <CartItemBodyPayment className="item">
           <StatisticText
             title={paymentMethod === "won" ? "계좌이체" : "페소지불"}
             value={itemPrice}
@@ -122,12 +114,18 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <Radio.Group
             defaultValue="won"
             buttonStyle="solid"
-            style={{ marginTop: "10px" }}
             onChange={onChangePaymentMethod}
             value={paymentMethod}
+            className="radio-wrapper"
           >
-            <Radio.Button value="won">계좌이체</Radio.Button>
-            <Radio.Button value="peso" disabled={key.includes("first")}>
+            <Radio.Button value="won" className="radio-item">
+              계좌이체
+            </Radio.Button>
+            <Radio.Button
+              value="peso"
+              className="radio-item"
+              disabled={key.includes("first")}
+            >
               페소지불
             </Radio.Button>
           </Radio.Group>
@@ -136,9 +134,9 @@ const CartItem = ({ cartItem }: CartItemProps) => {
               첫날팩은 계좌이체만 가능합니다.
             </p>
           )}
-        </div>
-      </CartItemWrapper>
-      <CartPriceWrapper>
+        </CartItemBodyPayment>
+      </CartItemBody>
+      <CartItemFooter>
         <div className="item">
           <StatisticText
             title="선택상품금액"
@@ -156,21 +154,23 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <TextSymbol>-</TextSymbol>
           <StatisticText
             title="할인금액"
-            value={itemDiscount}
+            value={-itemDiscount}
             afterText={afterText}
             valueColor="red"
           />
         </div>
         <div className="item">
-          <TextTotal>총 금액 </TextTotal>
-          <TextTotal className="active">
-            {`${changeNumberWithComma(itemPayment)} ${afterText}`}
+          <TextTotal>
+            <span>총 금액 </span>
+            <span className="active">
+              {`${changeNumberWithComma(itemPayment)} ${afterText}`}
+            </span>
           </TextTotal>
           <Button onClick={onClickUpdate} style={{ marginLeft: "5px" }}>
             수정하기
           </Button>
         </div>
-      </CartPriceWrapper>
+      </CartItemFooter>
     </StyledCard>
   );
 };
@@ -183,51 +183,100 @@ const StyledCard = styled(Card)`
   max-width: 1000px;
 `;
 
-const CartItemWrapper = styled.div`
+const CartItemBody = styled.div`
   display: flex;
   border-bottom: 1px solid ${(props) => props.theme.line3};
+  padding: 20px;
 
-  & > div.item {
+  & > .item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex: 1;
-    padding: 20px;
     border-right: 1px solid ${(props) => props.theme.line3};
   }
 
-  & > div:first-child {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-
-    img {
-      margin-right: 20px;
-    }
-  }
-
-  & > div:last-child {
-    width: 300px;
-    flex: none;
+  & > .item:last-child {
     border-right: none;
-  }
-
-  & > div.item.detail {
-    align-items: flex-start;
   }
 
   @media (max-width: ${SCREENS.md}) {
     flex-direction: column;
 
-    & > div.item.detail {
-      background: ${(props) => props.theme.gray};
-      margin: 20px;
+    & > .item {
+      border-right: none;
+      padding: 20px 0px;
     }
   }
 `;
 
-const CartPriceWrapper = styled.div`
+const CartItemBodyDetail = styled.div`
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  flex: 1;
+
+  img {
+    margin-right: 20px;
+    border-radius: 10px;
+  }
+
+  @media (max-width: ${SCREENS.md}) {
+    border-right: none;
+    padding: 0 !important;
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+`;
+
+const CartItemBodyCoupon = styled.div`
+  width: auto;
+  padding: 0 30px;
+
+  & > span {
+    margin: 0 10px 10px 0;
+  }
+
+  @media (max-width: ${SCREENS.md}) {
+    flex-direction: row !important;
+    width: 100%;
+    background: ${(props) => props.theme.gray};
+    padding: 20px 10px !important;
+
+    & > span {
+      margin: 0 10px 0 0;
+    }
+  }
+`;
+
+const CartItemBodyPayment = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: auto;
+  flex: none;
+
+  @media (max-width: ${SCREENS.md}) {
+    width: 100%;
+
+    .radio-wrapper {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .radio-item {
+      width: 50%;
+      text-align: center;
+      border-radius: 0;
+      height: 40px;
+      padding: 5px;
+    }
+  }
+`;
+
+const CartItemFooter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -243,6 +292,18 @@ const CartPriceWrapper = styled.div`
   & > div:last-child {
     border-right: none;
   }
+
+  @media (max-width: ${SCREENS.md}) {
+    flex-direction: column;
+    padding: 20px;
+
+    & > .item {
+      flex-direction: column;
+      width: 100%;
+      margin-bottom: 5px;
+      border-right: none;
+    }
+  }
 `;
 
 const TextSymbol = styled.div`
@@ -251,17 +312,39 @@ const TextSymbol = styled.div`
   align-items: center;
   padding: 20px;
   font-size: 30px;
+
+  @media (max-width: ${SCREENS.md}) {
+    display: none;
+  }
 `;
 
-const TextTotal = styled.span`
+const TextTotal = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-  font-size: 20px;
-  font-weight: bold;
+  min-width: 220px;
 
-  &.active {
-    color: ${(props) => props.theme.main};
+  & > span {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    flex: 1;
+
+    &.active {
+      color: ${(props) => props.theme.main};
+    }
+  }
+  @media (max-width: ${SCREENS.md}) {
+    margin-top: 15px;
+    padding: 10px 0;
+    border-top: 1px solid ${(props) => props.theme.line3};
+    width: 100%;
+    & > span {
+      margin: 0;
+    }
+
+    & > span:last-child {
+      justify-content: flex-end;
+    }
   }
 `;

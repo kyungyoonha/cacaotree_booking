@@ -35,6 +35,7 @@ export const defaultCartItem: CartItemType = {
   key: null,
   itemPrice: 0,
   itemDiscount: 0,
+  itemAdditional: 0,
   itemPayment: 0,
   hasSixtyMinutesMassage: false,
   paymentMethod: "won",
@@ -159,10 +160,10 @@ export default Object.freeze({
 
     Object.keys(carts.items).forEach((key) => {
       let cartItems: CartItemType[] = carts.items[key];
-
       let newCartItems = cartItems.map((cartItem) => {
         let itemPrice = 0;
         let itemDiscount = 0;
+        let itemAdditional = 0;
         let itemPayment = 0;
         let massageText = "";
         let hasSixtyMinutesMassage = false;
@@ -172,18 +173,18 @@ export default Object.freeze({
           form: { massageList },
         } = cartItem;
 
-        let couponsPerTeam = couponList.filter((i) => i.type === "perTeam");
-        couponsPerTeam.forEach((coupon) => {
+        let downPerPax = couponList.filter((i) => i.isPerPax && !i.isPriceUp);
+        let downPerTeam = couponList.filter((i) => !i.isPerPax && !i.isPriceUp);
+        let upPerPax = couponList.filter((i) => i.isPerPax && i.isPriceUp);
+        let upPerTeam = couponList.filter((i) => !i.isPerPax && i.isPriceUp);
+
+        downPerTeam.forEach((coupon) => {
           itemDiscount += coupon[paymentMethod];
         });
 
-        // 솔로인경우 제외
-        let couponePerPax = couponList.filter((i) => i.type === "perPax");
-
-        let isSolo = !!couponList.filter((i) => i.key === "solo").length;
-        // let isRevisit = !!couponList.filter((i) => i.key === "revisit").length;
-        // let isHappyhour = !!couponList.filter((i) => i.key === "happyhour")
-        //   .length;
+        upPerTeam.forEach((coupon) => {
+          itemAdditional += coupon[paymentMethod];
+        });
 
         massageList.forEach((massageItem, idx) => {
           let { massage, sex } = massageItem;
@@ -196,22 +197,13 @@ export default Object.freeze({
           if (massagEng.includes("60")) {
             hasSixtyMinutesMassage = true;
           } else {
-            couponePerPax.forEach((coupon) => {
-              if (coupon.key === "solo") return;
+            downPerPax.forEach((coupon) => {
               itemDiscount += coupon[paymentMethod];
             });
-          }
 
-          // if (!massagEng.includes("60") && isRevisit) {
-          //   itemDiscount += couponMap.revisit[paymentMethod];
-          // }
-
-          // if (!massagEng.includes("60") && isHappyhour) {
-          //   itemDiscount += couponMap.happyhour[paymentMethod];
-          // }
-
-          if (isSolo) {
-            itemPrice -= couponMap.solo[paymentMethod];
+            upPerPax.forEach((coupon) => {
+              itemAdditional += coupon[paymentMethod];
+            });
           }
 
           sex = sex === "f" ? "여" : "남";
@@ -220,14 +212,14 @@ export default Object.freeze({
               temp_price
             )} ${afterText}` + (idx < massageList.length - 1 ? ` ・ ` : "");
         });
-        itemPayment = itemPrice - itemDiscount;
+        itemPayment = itemPrice + itemAdditional - itemDiscount;
 
         if (paymentMethod === "peso") {
-          totalPricePeso += itemPrice;
+          totalPricePeso += itemPrice + itemAdditional;
           totalDiscountPeso += itemDiscount;
           totalPaymentPeso += itemPayment;
         } else {
-          totalPriceWon += itemPrice;
+          totalPriceWon += itemPrice + itemAdditional;
           totalDiscountWon += itemDiscount;
           totalPaymentWon += itemPayment;
         }
@@ -236,6 +228,7 @@ export default Object.freeze({
           ...cartItem,
           itemPrice,
           itemDiscount,
+          itemAdditional,
           itemPayment,
           massageText,
           hasSixtyMinutesMassage,
@@ -280,7 +273,8 @@ export default Object.freeze({
   checkCouponSolo(cartItem: CartItemType) {
     let { couponList, form } = cartItem;
     couponList = couponList.filter((item) => item.key !== "solo");
-    if (form.pax === 1) {
+
+    if (Number(form.pax) === 1) {
       couponList.push(couponMap["solo"]);
     }
 
@@ -297,25 +291,25 @@ export default Object.freeze({
     return { ...cartItem, couponList };
   },
 
-  // 쿠폰 초기화
-  removeCoupons(cartItem: CartItemType, removeCouponKeys: string[]) {
-    let { couponList } = cartItem;
+  // // 쿠폰 초기화
+  // removeCoupons(cartItem: CartItemType, removeCouponKeys: string[]) {
+  //   let { couponList } = cartItem;
 
-    couponList = couponList.filter(
-      (coupon) => !removeCouponKeys.includes(coupon.key)
-    );
-    cartItem["couponList"] = couponList;
-    this.updateItem(cartItem.key, cartItem);
-  },
+  //   couponList = couponList.filter(
+  //     (coupon) => !removeCouponKeys.includes(coupon.key)
+  //   );
+  //   cartItem["couponList"] = couponList;
+  //   this.updateItem(cartItem.key, cartItem);
+  // },
 
-  // 쿠폰 추가
-  addCoupons(cartItem: CartItemType, addCoupons: string[]) {
-    let { couponList } = cartItem;
+  // // 쿠폰 추가
+  // addCoupons(cartItem: CartItemType, addCoupons: string[]) {
+  //   let { couponList } = cartItem;
 
-    addCoupons.forEach((couponKey) => {
-      couponList.push(couponMap[couponKey]);
-    });
+  //   addCoupons.forEach((couponKey) => {
+  //     couponList.push(couponMap[couponKey]);
+  //   });
 
-    this.updateItem(cartItem.key, cartItem);
-  },
+  //   this.updateItem(cartItem.key, cartItem);
+  // },
 });

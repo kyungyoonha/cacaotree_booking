@@ -56,8 +56,9 @@ export interface CartItemType {
   key: string;
   hasSixtyMinutesMassage: boolean;
   itemPrice?: number;
-  itemDiscount?: number;
-  itemPayment?: number;
+  itemDiscount: number;
+  itemAdditional: number;
+  itemPayment: number;
   paymentMethod?: "peso" | "won";
   massageText: string;
   form: FormType;
@@ -70,7 +71,8 @@ export interface Coupon {
   peso: number;
   won: number;
   color: string;
-  type: "perPax" | "perTeam";
+  isPerPax: boolean;
+  isPriceUp: boolean;
 }
 
 export interface Carts {

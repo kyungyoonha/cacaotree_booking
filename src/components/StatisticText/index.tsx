@@ -1,3 +1,4 @@
+import { SCREENS } from "@configs/screens";
 import React from "react";
 import { changeNumberWithComma } from "src/utilities/funcs";
 import styled from "styled-components";
@@ -32,6 +33,12 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: ${SCREENS.md}) {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 const Title = styled.div``;

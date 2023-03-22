@@ -13,7 +13,8 @@ const QuestionSelectWithOption = ({
   title,
   itemList,
   buttonName,
-}: QuestionSelectWithSubtitleProps) => {
+}: // value 내려옴 맞으면 선택
+QuestionSelectWithSubtitleProps) => {
   const router = useRouter();
   const [selectItem, setSelectItem] = useState(itemList[0]);
 
