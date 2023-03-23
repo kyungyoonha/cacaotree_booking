@@ -95,14 +95,16 @@ const CartItem = ({ cartItem }: CartItemProps) => {
         </CartItemBodyDetail>
 
         <CartItemBodyCoupon className="item">
-          <span>추가/할인 쿠폰</span>
-          {couponList.map((item) => {
-            return (
-              <Tag key={item.key} color={item.color}>
-                {item.title}
-              </Tag>
-            );
-          })}
+          <span>추가/할인</span>
+          <div className="tag-wrapper">
+            {couponList.map((item) => {
+              return (
+                <Tag key={item.key} color={item.color}>
+                  {item.title}
+                </Tag>
+              );
+            })}
+          </div>
         </CartItemBodyCoupon>
 
         <CartItemBodyPayment className="item">
@@ -232,11 +234,19 @@ const CartItemBodyDetail = styled.div`
 const CartItemBodyCoupon = styled.div`
   width: auto;
   padding: 0 30px;
+  display: flex;
+  align-items: center;
+  text-align: center;
 
-  & > span {
-    margin: 0 10px 10px 0;
+  & span {
+    margin: 0 7px 7px 0;
   }
 
+  & > .tag-wrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+  }
   @media (max-width: ${SCREENS.md}) {
     flex-direction: row !important;
     width: 100%;
@@ -245,6 +255,11 @@ const CartItemBodyCoupon = styled.div`
 
     & > span {
       margin: 0 10px 0 0;
+    }
+
+    & > .tag-wrapper {
+      flex-direction: row;
+      flex-wrap: wrap;
     }
   }
 `;
