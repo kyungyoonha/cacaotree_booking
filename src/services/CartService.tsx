@@ -1,5 +1,12 @@
 import Storage from "./index";
-import { CartItemType, Carts, CartsResult, FormType, ItemKey } from "@types";
+import {
+  CartItemType,
+  Carts,
+  CartsResult,
+  FormType,
+  ItemKey,
+  OrderInfo,
+} from "@types";
 import { changeNumberWithComma } from "src/utilities/funcs";
 import dayjs from "dayjs";
 import couponMap from "@configs/couponMap";
@@ -53,6 +60,13 @@ export default Object.freeze({
   // 전체 데이터 저장
   saveAll(carts: Carts) {
     return Storage.set(KEY, carts);
+  },
+
+  saveOrderInfo(form: OrderInfo) {
+    let carts: Carts = this.findAll();
+    carts.formBasic = form;
+    this.saveAll(carts);
+    return this.getCarts();
   },
 
   // 아이템 리스트 찾기
@@ -257,6 +271,7 @@ export default Object.freeze({
         totalItemCnt: result.length,
       },
       cartItems: result,
+      orderInfo: carts.formBasic,
     };
   },
   checkCouponHappyhour(cartItem: CartItemType) {
@@ -290,26 +305,4 @@ export default Object.freeze({
     }
     return { ...cartItem, couponList };
   },
-
-  // // 쿠폰 초기화
-  // removeCoupons(cartItem: CartItemType, removeCouponKeys: string[]) {
-  //   let { couponList } = cartItem;
-
-  //   couponList = couponList.filter(
-  //     (coupon) => !removeCouponKeys.includes(coupon.key)
-  //   );
-  //   cartItem["couponList"] = couponList;
-  //   this.updateItem(cartItem.key, cartItem);
-  // },
-
-  // // 쿠폰 추가
-  // addCoupons(cartItem: CartItemType, addCoupons: string[]) {
-  //   let { couponList } = cartItem;
-
-  //   addCoupons.forEach((couponKey) => {
-  //     couponList.push(couponMap[couponKey]);
-  //   });
-
-  //   this.updateItem(cartItem.key, cartItem);
-  // },
 });

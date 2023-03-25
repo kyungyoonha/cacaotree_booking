@@ -75,12 +75,14 @@ export interface Coupon {
   isPriceUp: boolean;
 }
 
+export interface OrderInfo {
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export interface Carts {
-  formBasic: {
-    name: string;
-    email: string;
-    phone: string;
-  };
+  formBasic: OrderInfo;
   totalItemCnt: number;
   totalPricePeso: number;
   totalPriceWon: number;
@@ -120,4 +122,5 @@ export interface CartsResult {
     totalPaymentWon: number;
   };
   cartItems: CartItemType[];
+  orderInfo: OrderInfo;
 }

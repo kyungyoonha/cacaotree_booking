@@ -22,6 +22,7 @@ const initialState: State = {
       totalItemCnt: 0,
     },
     cartItems: [],
+    orderInfo: null,
   },
   cartItem: defaultCartItem,
   modalOpenForm: false,

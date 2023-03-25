@@ -99,7 +99,7 @@ const ViewFirstdayHopping = () => {
 
         <Form.Item
           label="픽업장소"
-          name="픽업장소"
+          name="pick"
           rules={[{ required: true, message: "" }]}
           initialValue="막탄공항"
           style={{ width: "100%" }}

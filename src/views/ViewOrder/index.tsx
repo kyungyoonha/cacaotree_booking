@@ -7,11 +7,18 @@ import {
 import { Form, message } from "antd";
 import React from "react";
 import { StyledH1 } from "@styles/styledComponents";
+import CartService from "src/services/CartService";
+import { OrderInfo } from "@types";
+import { useUIContext } from "src/contexts";
 
 const ViewOrder = () => {
   const [form] = Form.useForm();
+  const { getCartsAll, dispatch } = useUIContext();
 
-  const onFinish = (values) => {};
+  const onFinish = (values: OrderInfo) => {
+    CartService.saveOrderInfo(values);
+    getCartsAll({}, dispatch);
+  };
   const onFinishFailed = (errorInfo: any) => {
     message.error(errorInfo);
   };
