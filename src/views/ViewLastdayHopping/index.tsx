@@ -16,14 +16,14 @@ import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
 import CartService from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
-import FormItemEtc from "@components/FormItemEtc";
+import FormItemMemo from "@components/FormItemMemo";
 
 const ViewLastdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayHopping>();
   const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
 
-  const pick = Form.useWatch("pick", form);
+  const pick = Form.useWatch("pickLocation", form);
   const itemKey = router.pathname.split("/")[2] as ItemKey;
   const seq = router.query.seq ? Number(router.query.seq) : null;
 
@@ -33,7 +33,7 @@ const ViewLastdayHopping = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error(errorInfo);
+    message.error("잠시후에 다시 시도해주세요.");
   };
 
   useEffect(() => {
@@ -90,9 +90,9 @@ const ViewLastdayHopping = () => {
 
         <FormItemInputWithOption
           value={pick}
-          onChange={(value) => form.setFieldValue("pick", value)}
+          onChange={(value) => form.setFieldValue("pickLocation", value)}
           label="픽업장소"
-          name="pick"
+          name="pickLocation"
           placeholder="픽업장소를 입력해주세요."
           defaultValue="mactan"
           options={[
@@ -100,7 +100,7 @@ const ViewLastdayHopping = () => {
               key: "mactan",
               title: "막탄지역",
               disabled: false,
-              suffixText: "",
+              suffixText: "막탄지역",
             },
             {
               key: "cebu",
@@ -124,7 +124,7 @@ const ViewLastdayHopping = () => {
 
         <Form.Item
           label="드랍장소"
-          name="drop"
+          name="dropLocation"
           rules={[{ required: true, message: "" }]}
           initialValue="막탄공항"
           style={{ width: "100%" }}
@@ -134,7 +134,7 @@ const ViewLastdayHopping = () => {
 
         <FormItemMassage form={form} selectOption={massageLastday} />
 
-        <FormItemEtc />
+        <FormItemMemo />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

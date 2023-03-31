@@ -36,6 +36,7 @@ const FormItemInputWithOption = ({
   options,
 }: Props) => {
   const [selectItem, setSelectItem] = useState<Option>(options[0]);
+
   const [afterText, setAfterText] = useState<string>("");
 
   const { key, disabled, suffixText, coupon } = selectItem;

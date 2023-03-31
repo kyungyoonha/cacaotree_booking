@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
 import CartService, { defaultCartItem } from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
-import FormItemEtc from "@components/FormItemEtc";
+import FormItemMemo from "@components/FormItemMemo";
 
 const ViewFirstdayHopping = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const ViewFirstdayHopping = () => {
   const [cartItem, setCartItem] = useState<CartItemType>(defaultCartItem);
   const { onFinishForm, dispatch } = useUIContext();
 
-  const drop = Form.useWatch("drop", form);
+  const drop = Form.useWatch("dropLocation", form);
   const itemKey = router.pathname.split("/")[2] as ItemKey;
   const seq = router.query.seq ? Number(router.query.seq) : null;
 
@@ -35,7 +35,7 @@ const ViewFirstdayHopping = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error(errorInfo);
+    message.error("잠시후에 다시 시도해주세요.");
   };
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const ViewFirstdayHopping = () => {
     form.setFieldsValue({
       ...cartItemForm,
       date: dayjs(cartItemForm.date),
-      arrivalTime: dayjs(cartItemForm.arrivalTime),
+      pickTime: dayjs(cartItemForm.pickTime),
     });
   }, [itemKey, form, seq]);
 
@@ -81,7 +81,7 @@ const ViewFirstdayHopping = () => {
 
         <Form.Item
           label="도착시간"
-          name="arrivalTime"
+          name="pickTime"
           rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
           style={{ width: "100%" }}
         >
@@ -99,7 +99,7 @@ const ViewFirstdayHopping = () => {
 
         <Form.Item
           label="픽업장소"
-          name="pick"
+          name="pickLocation"
           rules={[{ required: true, message: "" }]}
           initialValue="막탄공항"
           style={{ width: "100%" }}
@@ -115,9 +115,9 @@ const ViewFirstdayHopping = () => {
 
         <FormItemInputWithOption
           value={drop}
-          onChange={(value) => form.setFieldValue("drop", value)}
+          onChange={(value) => form.setFieldValue("dropLocation", value)}
           label="드랍장소"
-          name="drop"
+          name="dropLocation"
           placeholder="드랍장소를 입력해주세요."
           defaultValue="mactan"
           options={[
@@ -125,7 +125,7 @@ const ViewFirstdayHopping = () => {
               key: "mactan",
               title: "막탄지역",
               disabled: false,
-              suffixText: "",
+              suffixText: "막탄지역",
             },
             {
               key: "cebu",
@@ -136,7 +136,7 @@ const ViewFirstdayHopping = () => {
           ]}
         />
 
-        <FormItemEtc />
+        <FormItemMemo />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

@@ -15,8 +15,6 @@ const HomeView = () => {
     sendEmail(carts);
   };
 
-  console.log(carts);
-
   return (
     <LayoutQuestion>
       {loading && <div>fewfewfewfweefewfewef</div>}

@@ -9,7 +9,7 @@ interface LogoProps {
   href?: string;
 }
 
-const Logo = ({ width, height, margin, href }: LogoProps) => {
+const Logo = ({ width, height, margin, href = "" }: LogoProps) => {
   return (
     <Link href={href}>
       <Image

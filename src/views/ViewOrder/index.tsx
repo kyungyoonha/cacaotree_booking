@@ -5,25 +5,53 @@ import {
   StyledInput,
 } from "@styles/styledComponents";
 import { Form, message } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyledH1 } from "@styles/styledComponents";
 import CartService from "src/services/CartService";
 import { OrderInfo } from "@types";
+import { EmailResponse } from "src/pages/api/nodemailer";
+import useMutation from "src/libs/useMutation";
+import ModalSpin from "@components/ModalSpin";
 import { useUIContext } from "src/contexts";
 
 const ViewOrder = () => {
   const [form] = Form.useForm();
-  const { getCartsAll, dispatch } = useUIContext();
+  const {
+    carts: { orderInfo },
+  } = useUIContext();
+  const [
+    sendEmail,
+    { loading: loadingEmail, data: dataEmail, error: errorEmail },
+  ] = useMutation<EmailResponse>("/api/nodemailer");
+
+  const [
+    addBooking,
+    { loading: loadingBooking, data: dataBooking, error: errorBooking },
+  ] = useMutation<EmailResponse>("/api/addBooking");
 
   const onFinish = (values: OrderInfo) => {
     CartService.saveOrderInfo(values);
-    getCartsAll({}, dispatch);
+    const carts = CartService.getCarts();
+    addBooking(carts);
   };
   const onFinishFailed = (errorInfo: any) => {
-    message.error(errorInfo);
+    message.error("잠시후에 다시 시도해주세요.");
   };
+
+  useEffect(() => {
+    if (!errorEmail) return;
+    message.error("예약서 작성이 실패하였습니다.");
+  }, [errorEmail]);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...orderInfo,
+    });
+  }, [form, orderInfo]);
+
   return (
     <LayoutQuestion>
+      <ModalSpin loading={loadingBooking} />
       <StyledH1>대표 예약자 정보를 입력해주세요.</StyledH1>
       <StyledForm
         form={form}

@@ -1,4 +1,4 @@
-import FormItemEtc from "@components/FormItemEtc";
+import FormItemMemo from "@components/FormItemMemo";
 import FormItemMassage from "@components/FormItemMassage";
 import InputTimePicker from "@components/InputTimePicker";
 import LayoutQuestion from "@components/LayoutQuestion";
@@ -32,7 +32,7 @@ const ViewFirstdaySouth = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error(errorInfo);
+    message.error("잠시후에 다시 시도해주세요.");
   };
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const ViewFirstdaySouth = () => {
     form.setFieldsValue({
       ...cartItemForm,
       date: dayjs(cartItemForm.date),
-      arrivalTime: dayjs(cartItemForm.arrivalTime),
+      pickTime: dayjs(cartItemForm.pickTime),
     });
   }, [itemKey, form, seq, dispatch, onChangeCartItem]);
   return (
@@ -77,7 +77,7 @@ const ViewFirstdaySouth = () => {
 
         <Form.Item
           label="도착시간"
-          name="arrivalTime"
+          name="pickTime"
           rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
           style={{ width: "100%" }}
         >
@@ -95,7 +95,7 @@ const ViewFirstdaySouth = () => {
 
         <Form.Item
           label="픽업장소"
-          name="pick"
+          name="pickLocation"
           rules={[{ required: true, message: "" }]}
           initialValue="막탄공항"
           style={{ width: "100%" }}
@@ -150,7 +150,7 @@ const ViewFirstdaySouth = () => {
             placeholder="투어 후 드랍장소를 입력해주세요."
           />
         </Form.Item>
-        <FormItemEtc />
+        <FormItemMemo />
 
         <StyledButton type="primary" htmlType="submit">
           작성 완료

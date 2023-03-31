@@ -28,7 +28,7 @@ export interface FormDaytimeMassage extends FormBasicMassage {
   massageTime: Date;
 }
 export interface FormFirstdayMassage extends FormBasicMassage {
-  arrivalTime: Date;
+  pickTime: Date;
   pickFlight: string;
 }
 export interface FormFirstdayHopping extends FormFirstdayMassage {}

@@ -2,7 +2,7 @@ import { StyledH1 } from "@styles/styledComponents";
 import { Form, Input } from "antd";
 import React from "react";
 
-const FormItemEtc = () => {
+const FormItemMemo = () => {
   return (
     <>
       <StyledH1 style={{ textAlign: "center" }}>
@@ -10,7 +10,7 @@ const FormItemEtc = () => {
       </StyledH1>
       <Form.Item
         label="기타사항"
-        name="etc"
+        name="memo"
         rules={[{ required: true, message: "기타사항을 입력해주세요." }]}
         style={{ width: "100%" }}
       >
@@ -23,4 +23,4 @@ const FormItemEtc = () => {
   );
 };
 
-export default FormItemEtc;
+export default FormItemMemo;

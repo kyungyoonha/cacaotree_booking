@@ -17,7 +17,7 @@ export type EmailRequest = {
 
 export type EmailResponse = {
   error?: string;
-  status?: string;
+  ok?: string;
   message?: string;
 };
 
@@ -63,7 +63,7 @@ const handler = async (
   const { totalPaymentPeso, totalPaymentWon } = summary;
 
   if (req.method !== "POST") {
-    return res.status(404).send({ status: "fail", error: "Begone." });
+    return res.status(404).send({ ok: "fail", error: "Begone." });
   }
 
   try {
@@ -214,7 +214,7 @@ const handler = async (
                             )
                             .join("")
                         : value;
-                    value = ["arrivalTime", "massageTime"].includes(key)
+                    value = ["pickTime", "massageTime"].includes(key)
                       ? dayjs(value).format("HH시 mm분")
                       : value;
                     value = ["date"].includes(key)
@@ -300,7 +300,7 @@ const handler = async (
                                                                     
                                                                     <tr>
                                                                         <td colspan="3" style="color: #737373; line-height: 20px; padding:0;padding-bottom:24px;">
-                                                                            모든 특별 요청 사항 반영 여부는 체크인 시 숙소 여건에 따라 달라질 수 있습니다.
+                                                                            예약정보를 한번 더 확인해주세요.
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -494,9 +494,9 @@ const handler = async (
     `,
     });
 
-    res.status(200).send({ status: "done", message: "message has been sent" });
+    res.status(200).send({ ok: "done", message: "message has been sent" });
   } catch (error) {
-    res.status(500).send({ status: "fail", error: `${error}` });
+    res.status(500).send({ ok: "fail", error: `${error}` });
   }
 };
 
