@@ -7,7 +7,7 @@ type Product = {
   href: string;
   thumbnail: string;
   imageList: string[];
-  format: {
+  format?: {
     package: string;
     pickLocation?: string;
     massageTime?: string;
@@ -41,11 +41,6 @@ const productMap: ProductMap = {
       "https://user-images.githubusercontent.com/29701385/223688305-8d3f11da-3b0e-4adf-84be-cf24ecbc5ae6.png",
       "https://user-images.githubusercontent.com/29701385/223688286-8f987bba-307e-44bc-b66d-bf9c9cc9347f.png",
     ],
-    format: {
-      package: "[1] Airport Pick",
-      pickLocation: "Airport",
-      massageTime: "after Arrive",
-    },
   },
   "firstday-pirate": {
     id: "firstday-pirate",
@@ -61,11 +56,6 @@ const productMap: ProductMap = {
       "https://user-images.githubusercontent.com/29701385/224490792-0b2ff7c7-d600-4b81-9152-52ef534846d9.png",
       "https://user-images.githubusercontent.com/29701385/224490797-a950a5e7-5700-43b9-9f9e-2c912df44676.png",
     ],
-    format: {
-      package: "[1] Airport Pick",
-      pickLocation: "Airport",
-      massageTime: "after Arrive",
-    },
   },
   "firstday-gold": {
     id: "firstday-gold",
@@ -82,11 +72,6 @@ const productMap: ProductMap = {
       "https://user-images.githubusercontent.com/29701385/224490784-903e1e74-4277-4baf-8d90-5312386ef4ed.png",
       "https://user-images.githubusercontent.com/29701385/224490789-345047ad-7d79-4ddc-be09-0fcb00ca5ea3.png",
     ],
-    format: {
-      package: "[1] Airport Pick",
-      pickLocation: "Airport",
-      massageTime: "after Arrive",
-    },
   },
   "firstday-south": {
     id: "firstday-south",
@@ -105,10 +90,6 @@ const productMap: ProductMap = {
       "https://user-images.githubusercontent.com/29701385/225563248-e17b80f1-d3f8-4d60-8d6a-ad8d78259f7e.png",
       "https://user-images.githubusercontent.com/29701385/225563254-e406e3fa-2af3-487a-9c75-12817a28a880.png",
     ],
-    format: {
-      package: "[1] Airport Pick",
-      pickLocation: "Airport",
-    },
   },
   "daytime-massage": {
     id: "daytime-massage",
@@ -121,11 +102,6 @@ const productMap: ProductMap = {
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/222971698-80b80417-e605-4365-ad4c-571949053f53.jpeg",
     imageList: [],
-    format: {
-      package: "[2] Daytime",
-      pickTime: "?",
-      dropTime: "After Massage",
-    },
   },
   "lastday-massage": {
     id: "lastday-massage",
@@ -137,9 +113,6 @@ const productMap: ProductMap = {
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/224727535-b197094d-5f7e-4b72-b724-e24839b44405.png",
     imageList: [],
-    format: {
-      package: "[4] Airport Drop",
-    },
   },
   "lastday-pirate": {
     id: "lastday-pirate",
@@ -151,9 +124,6 @@ const productMap: ProductMap = {
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/222971702-ddc2fbe1-761b-4ec1-bf53-1c1f00d59d7c.png",
     imageList: [],
-    format: {
-      package: "[4] Airport Drop",
-    },
   },
   "lastday-gold": {
     id: "lastday-gold",
@@ -165,9 +135,6 @@ const productMap: ProductMap = {
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/222971702-ddc2fbe1-761b-4ec1-bf53-1c1f00d59d7c.png",
     imageList: [],
-    format: {
-      package: "[4] Airport Drop",
-    },
   },
 };
 

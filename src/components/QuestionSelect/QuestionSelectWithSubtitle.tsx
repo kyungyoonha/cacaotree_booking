@@ -102,7 +102,7 @@ QuestionSelectWithSubtitleProps) => {
 export default QuestionSelectWithOption;
 
 const StyledWrapper = styled(Wrapper)`
-  width: 500px;
+  width: 600px;
 
   @media (max-width: ${SCREENS.md}) {
     width: 100%;

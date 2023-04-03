@@ -4,8 +4,8 @@ import {
   StyledRadioGroup,
 } from "@styles/styledComponents";
 import { FormItemInputOption } from "@types";
-import { Form, FormInstance } from "antd";
-import React, { useState, useEffect } from "react";
+import { Form, FormInstance, Input } from "antd";
+import React, { useState, useEffect, useMemo } from "react";
 
 interface Props {
   form: FormInstance<any>;
@@ -13,29 +13,35 @@ interface Props {
   onChangeCoupon?: (coupon: string) => void;
   label: string;
   name: string;
+  placeholder: string;
   options: FormItemInputOption[];
 }
 
 const FormItemInputWithOption = ({
   form,
   value,
-  onChangeCoupon,
+  // onChangeCoupon,
   label,
   name,
+  placeholder,
   options,
 }: Props) => {
-  const [selectItem, setSelectItem] = useState<FormItemInputOption>(options[0]);
+  const [selectKey, setSelectKey] = useState<string>(options[0].key);
   const [afterText, setAfterText] = useState<string>("");
 
-  const { key, disabled, suffixText, autoOptions, placeholder } = selectItem;
+  const { key, disabled, suffixText, autoOptions } = useMemo(() => {
+    return options.find((item) => item.key === selectKey);
+  }, [options, selectKey]);
 
-  const onChnageAfterText = (e) => setAfterText(e.target.value);
+  // const [selectItem, setSelectItem] = useState<FormItemInputOption>(options[0]);
 
   const onChangeRadio = (e) => {
-    const newSeletedItem = options.find((item) => item.key === e.target.value);
-    setSelectItem(newSeletedItem);
+    // const newSeletedItem = options.find((item) => item.key === e.target.value);
+    // setSelectItem(newSeletedItem);
+    setSelectKey(e.target.value);
     setAfterText("");
-    onChangeCoupon && onChangeCoupon(newSeletedItem.coupon);
+
+    // onChangeCoupon && onChangeCoupon(newSeletedItem.coupon);
   };
 
   useEffect(() => {
@@ -43,7 +49,7 @@ const FormItemInputWithOption = ({
     text += suffixText && afterText ? ` / ${afterText}` : afterText;
 
     form.setFieldValue(name, text);
-  }, [suffixText, afterText, name, form]);
+  }, [suffixText, afterText, form, name]);
 
   useEffect(() => {
     if (!value) return;
@@ -51,7 +57,8 @@ const FormItemInputWithOption = ({
       (item) => item.suffixText && value.indexOf(item.suffixText) !== -1
     );
 
-    setSelectItem(newSelectedItem);
+    // setSelectItem(newSelectedItem);
+    setSelectKey(newSelectedItem.key);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
@@ -85,28 +92,32 @@ const FormItemInputWithOption = ({
             value={afterText}
             size="large"
             placeholder={placeholder}
-            onChange={onChnageAfterText}
+            onChange={(e) => setAfterText(e.target.value)}
           />
         </Form.Item>
       )}
 
       {autoOptions &&
-        Object.keys(autoOptions).map((autoOptionKey) => {
+        Object.keys(autoOptions).map((keykey) => {
           return (
-            <Form.Item key={autoOptionKey} name={autoOptionKey}>
-              {autoOptionKey}
-              <StyledInput value={autoOptions[autoOptionKey]} />
+            <Form.Item
+              key={keykey}
+              name={keykey}
+              initialValue={autoOptions[keykey]}
+            >
+              few
+              <Input value={autoOptions[keykey]} />
             </Form.Item>
           );
         })}
 
       <Form.Item
         name={name}
-        rules={[{ required: true }]}
+        rules={[{ required: true, message: placeholder }]}
         style={{ width: "100%" }}
         hidden
       >
-        <StyledInput value={value} size="large" />
+        <StyledInput value={value} size="large" placeholder={placeholder} />
       </Form.Item>
     </>
   );

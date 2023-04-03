@@ -16,12 +16,14 @@ export interface Massage {
 }
 
 export interface FormBasicMassage {
+  package: string;
   date: Date;
   pax: number;
   massageList: Massage[];
   pick: string;
   drop: string;
   massageTime?: Date;
+  couponList: string[];
 }
 
 export interface FormDaytimeMassage extends FormBasicMassage {
@@ -32,9 +34,7 @@ export interface FormFirstdayMassage extends FormBasicMassage {
   pickFlight: string;
 }
 export interface FormFirstdayHopping extends FormFirstdayMassage {}
-export interface FormFirstdaySouth extends FormFirstdayMassage {
-  package: string;
-}
+export interface FormFirstdaySouth extends FormFirstdayMassage {}
 export interface FormLastdayMassage extends FormBasicMassage {
   massageTime: Date;
   departTime: Date;
@@ -65,8 +65,15 @@ export interface CartItemType {
   couponList: Coupon[];
 }
 
+export type CouponKey =
+  | "revisit"
+  | "happyhour"
+  | "solo"
+  | "dropPort"
+  | "hoppingDropCebu";
+
 export interface Coupon {
-  key: string;
+  key: CouponKey;
   title: string;
   peso: number;
   won: number;
@@ -123,4 +130,16 @@ export interface CartsResult {
   };
   cartItems: CartItemType[];
   orderInfo: OrderInfo;
+}
+
+export interface FormItemInputOption {
+  key: string;
+  title: string;
+  disabled: boolean;
+  suffixText: string;
+  coupon?: string;
+  placeholder?: string;
+  autoOptions?: {
+    [key: string]: string;
+  };
 }

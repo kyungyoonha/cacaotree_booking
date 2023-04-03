@@ -36,9 +36,10 @@ const GlobalStyles = createGlobalStyle`
     .ant-input {
         border-radius: 0;
         width: 100%;
+    }
 
-        
-        
+    .ant-form-item{
+        width: 100%;
     }
 
     .ant-input-number-group-addon {

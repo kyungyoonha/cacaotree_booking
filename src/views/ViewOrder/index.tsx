@@ -32,6 +32,7 @@ const ViewOrder = () => {
   const onFinish = (values: OrderInfo) => {
     CartService.saveOrderInfo(values);
     const carts = CartService.getCarts();
+    console.log(carts);
     addBooking(carts);
   };
   const onFinishFailed = (errorInfo: any) => {
@@ -48,6 +49,12 @@ const ViewOrder = () => {
       ...orderInfo,
     });
   }, [form, orderInfo]);
+
+  useEffect(() => {
+    if (dataBooking?.ok) {
+      message.success("성공");
+    }
+  }, [dataBooking]);
 
   return (
     <LayoutQuestion>

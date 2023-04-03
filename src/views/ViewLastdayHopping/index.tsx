@@ -7,7 +7,6 @@ import {
   StyledInput,
 } from "@styles/styledComponents";
 import { DatePicker, Form, message } from "antd";
-import FormItemInputWithOption from "@components/FormItemInputWithOption";
 import massageLastday from "@configs/massage-lastday";
 import dayjs from "dayjs";
 import FormItemMassage from "@components/FormItemMassage";
@@ -17,13 +16,13 @@ import { useUIContext } from "src/contexts";
 import CartService from "src/services/CartService";
 import InputTimePicker from "@components/InputTimePicker";
 import FormItemMemo from "@components/FormItemMemo";
+import FormItemPickDrop from "@components/FormItemPickDrop";
 
 const ViewLastdayHopping = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayHopping>();
   const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
 
-  const pick = Form.useWatch("pickLocation", form);
   const itemKey = router.pathname.split("/")[2] as ItemKey;
   const seq = router.query.seq ? Number(router.query.seq) : null;
 
@@ -59,6 +58,21 @@ const ViewLastdayHopping = () => {
         requiredMark={false}
       >
         <StyledH1>예약날짜를 선택해주세요.</StyledH1>
+        <Form.Item name="package" hidden initialValue="[4] Airport Drop" />
+        <Form.Item name="dropLocation" hidden initialValue="Airport" />
+        <Form.Item label="쿠폰 목록" required>
+          <Form.List name="couponList">
+            {(fields) => (
+              <>
+                {fields.map((field) => (
+                  <Form.Item {...field} key={field.key}>
+                    <StyledInput />
+                  </Form.Item>
+                ))}
+              </>
+            )}
+          </Form.List>
+        </Form.Item>
 
         <Form.Item
           label="예약날짜"
@@ -79,36 +93,28 @@ const ViewLastdayHopping = () => {
           픽업 정보를 적어주세요.
         </StyledH1>
 
-        <Form.Item
-          label="픽업시간"
-          name="pickTime"
-          rules={[{ required: true, message: "픽업시간을 입력해주세요." }]}
-          style={{ width: "100%" }}
-        >
-          <InputTimePicker placeholder="픽업시간을 입력해주세요." />
-        </Form.Item>
-
-        <FormItemInputWithOption
-          value={pick}
-          onChange={(value) => form.setFieldValue("pickLocation", value)}
-          label="픽업장소"
-          name="pickLocation"
-          placeholder="픽업장소를 입력해주세요."
-          defaultValue="mactan"
-          options={[
-            {
-              key: "mactan",
+        <FormItemPickDrop
+          form={form}
+          keyLocation="pickLocation"
+          keyTime="pickTime"
+          titleLocation="픽업장소"
+          titleTime="픽업시간"
+          options={{
+            mactan: {
               title: "막탄지역",
-              disabled: false,
-              suffixText: "막탄지역",
+              disabledLoc: false,
+              disabledTime: false,
+              fixedValueLoc: "",
+              fixedValueTime: "",
             },
-            {
-              key: "cebu",
-              title: "세부시티(편도 500페소)",
-              disabled: false,
-              suffixText: "세부시티(편도 500페소)",
+            cebu: {
+              title: "세부시티, 코르도바",
+              disabledLoc: true,
+              disabledTime: true,
+              fixedValueLoc: "개별적으로 이동하겠습니다.",
+              fixedValueTime: "개별적으로 이동하겠습니다.",
             },
-          ]}
+          }}
         />
 
         <StyledH1>공항드랍 정보를 입력해주세요.</StyledH1>

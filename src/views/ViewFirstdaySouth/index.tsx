@@ -59,6 +59,22 @@ const ViewFirstdaySouth = () => {
         requiredMark={false}
       >
         <StyledH1>공항픽업 정보를 입력해주세요.</StyledH1>
+        <Form.Item name="package" hidden initialValue="[1] Airport Pick" />
+        <Form.Item name="massageTime" hidden initialValue="after Arrive" />
+
+        <Form.Item label="쿠폰 목록" required>
+          <Form.List name="couponList">
+            {(fields) => (
+              <>
+                {fields.map((field) => (
+                  <Form.Item {...field} key={field.key}>
+                    <StyledInput />
+                  </Form.Item>
+                ))}
+              </>
+            )}
+          </Form.List>
+        </Form.Item>
 
         <Form.Item
           label="예약날짜"
