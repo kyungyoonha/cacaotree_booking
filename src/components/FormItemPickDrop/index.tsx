@@ -1,4 +1,4 @@
-import { Form, FormInstance } from "antd";
+import { Form, FormInstance, Input } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import { Coupon, CouponKey } from "@types";
 import {
@@ -38,8 +38,10 @@ const FormItemPickDrop = ({
   titleTime,
   options,
 }: Props) => {
+  const FORM_NAME_SELECT_KEY = keyLocation + "_hidden";
   const defaultKey = Object.keys(options)[0];
   const valueLocation = Form.useWatch(keyLocation, form);
+  const initSelectKey = Form.useWatch(FORM_NAME_SELECT_KEY, form);
   const couponList = Form.useWatch("couponList", form);
 
   const valueTime = Form.useWatch(keyTime, form);
@@ -66,6 +68,7 @@ const FormItemPickDrop = ({
     const { fixedValueLoc, fixedValueTime, couponKey } = options[newKey];
     setSelectKey(e.target.value);
 
+    form.setFieldValue(FORM_NAME_SELECT_KEY, newKey);
     form.setFieldValue(keyLocation, fixedValueLoc);
     form.setFieldValue(keyTime, fixedValueTime);
 
@@ -80,7 +83,10 @@ const FormItemPickDrop = ({
     if (!valueLocation) return;
   }, [valueLocation]);
 
-  console.log({ couponList });
+  useEffect(() => {
+    if (!initSelectKey) return;
+    setSelectKey(initSelectKey);
+  }, [initSelectKey]);
 
   return (
     <>
@@ -97,6 +103,11 @@ const FormItemPickDrop = ({
             </StyledRadioButton>
           ))}
         </StyledRadioGroup>
+      </Form.Item>
+
+      <Form.Item name={FORM_NAME_SELECT_KEY} initialValue={selectKey} hidden>
+        -
+        <Input value={selectKey} />
       </Form.Item>
 
       <Form.Item

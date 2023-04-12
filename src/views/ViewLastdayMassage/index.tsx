@@ -30,10 +30,15 @@ const ViewLastdayMassage = () => {
   const onFinish = (values: FormLastdayMassage) => {
     const newCartItem = { ...cartItem, key: itemKey, form: values };
     onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
+    message.success("장바구니 추가완료");
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error("잠시후에 다시 시도해주세요.");
+    let errorMessage = "잠시후에 다시 시도해주세요.";
+    if (errorInfo?.errorFields.length) {
+      errorMessage = errorInfo.errorFields[0]?.errors[0];
+    }
+    message.error(errorMessage);
   };
 
   useEffect(() => {
@@ -58,12 +63,13 @@ const ViewLastdayMassage = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         requiredMark={false}
+        scrollToFirstError={true}
       >
         <StyledH1>예약날짜를 선택해주세요.</StyledH1>
         <Form.Item name="package" hidden initialValue="[4] Airport Drop" />
         <Form.Item name="dropLocation" hidden initialValue="Airport" />
 
-        <Form.Item label="쿠폰 목록" required>
+        <Form.Item label="쿠폰 목록" required hidden>
           <Form.List name="couponList">
             {(fields) => (
               <>

@@ -1,7 +1,7 @@
 const route = {
   "firstday-massage": "/firstday/firstday-massage",
-  "firstday-gold": "/firstday/firstday-hopping",
-  "firstday-pirate": "/firstday/firstday-hopping",
+  "firstday-gold": "/firstday/firstday-gold",
+  "firstday-pirate": "/firstday/firstday-pirate",
   "firstday-hopping": "/firstday/firstday-hopping",
   "daytime-massage": "/daytime/daytime-massage",
   "lastday-massage": "/lastday/lastday-massage",

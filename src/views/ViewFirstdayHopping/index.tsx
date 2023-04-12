@@ -31,10 +31,17 @@ const ViewFirstdayHopping = () => {
   const onFinish = (values: FormFirstdayHopping) => {
     const newCartItem = { ...cartItem, key: itemKey, form: values };
     onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
+    message.success("장바구니 추가완료");
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error("잠시후에 다시 시도해주세요.");
+    console.log({ errorInfo });
+    let errorMessage = "잠시후에 다시 시도해주세요.";
+
+    if (errorInfo?.errorFields.length) {
+      errorMessage = errorInfo.errorFields[0]?.errors[0];
+    }
+    message.error(errorMessage);
   };
 
   useEffect(() => {
@@ -60,12 +67,22 @@ const ViewFirstdayHopping = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         requiredMark={false}
+        scrollToFirstError={true}
+        // scrollToFirstError={{
+        //   behavior: "smooth",
+        //   block: "center",
+        //   inline: "center",
+        // }}
       >
         <StyledH1>공항픽업 정보를 입력해주세요.</StyledH1>
         <Form.Item name="package" hidden initialValue="[1] Airport Pick" />
-        <Form.Item name="massageTime" hidden initialValue="after Arrive" />
+        <Form.Item
+          name="companyComb"
+          hidden
+          initialValue={itemKey === "firstday-gold" ? "골드호핑" : "해적호핑"}
+        />
 
-        <Form.Item label="쿠폰 목록" required>
+        <Form.Item label="쿠폰 목록" required hidden>
           <Form.List name="couponList">
             {(fields) => (
               <>
@@ -104,7 +121,11 @@ const ViewFirstdayHopping = () => {
           name="pickFlight"
           rules={[{ required: true, message: "항공기 편명을 입력해주세요." }]}
         >
-          <StyledInput placeholder="항공기 편명을 입력해주세요." size="large" />
+          <StyledInput
+            placeholder="항공기 편명을 입력해주세요."
+            size="large"
+            autoFocus
+          />
         </Form.Item>
         <Form.Item
           label="픽업장소"
@@ -121,8 +142,8 @@ const ViewFirstdayHopping = () => {
 
         <FormItemPickDrop
           form={form}
-          keyLocation="hoppingDropLocation"
-          keyTime="hoppingDropTime"
+          keyLocation="dropLocationComb"
+          keyTime="dropTimeComb"
           titleLocation="(호핑 후) 드랍장소"
           titleTime="(호핑 후) 드랍시간"
           options={{

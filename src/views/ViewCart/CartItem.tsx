@@ -14,6 +14,7 @@ import { useUIContext } from "src/contexts";
 import { useRouter } from "next/router";
 import route from "@configs/route";
 import { SCREENS } from "@configs/screens";
+import couponMap from "@configs/couponMap";
 
 interface CartItemProps {
   cartItem: CartItemType;
@@ -29,13 +30,15 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     itemPayment,
     itemPrice,
     hasSixtyMinutesMassage,
-    couponList,
+    form,
   } = cartItem;
+  console.log({ cartItem });
   const router = useRouter();
   const { getCartsAll, dispatch } = useUIContext();
-  const { title, subtitle, thumbnail } = productMap[cartItem.key];
+  const { title, subTitle, thumbnail } = productMap[cartItem.key];
   const afterText = paymentMethod === "won" ? "원" : "페소";
 
+  const couponList = form.couponList.map((key) => couponMap[key]);
   let downPerPax = couponList.filter((i) => i.isPerPax && !i.isPriceUp);
 
   const onClickDelete = () => {
@@ -69,7 +72,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
             style={{ marginRight: "10px" }}
           />
 
-          {`${title} ${subtitle ? " +" + subtitle : ""}`}
+          {`${title} ${subTitle ? subTitle : ""}`}
         </div>
       }
       extra={
@@ -335,7 +338,7 @@ const TextSymbol = styled.div`
 
 const TextTotal = styled.div`
   display: flex;
-  min-width: 220px;
+  min-width: 240px;
 
   & > span {
     display: flex;

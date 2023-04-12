@@ -13,12 +13,14 @@ import { EmailResponse } from "src/pages/api/nodemailer";
 import useMutation from "src/libs/useMutation";
 import ModalSpin from "@components/ModalSpin";
 import { useUIContext } from "src/contexts";
+import { useRouter } from "next/router";
 
 const ViewOrder = () => {
   const [form] = Form.useForm();
-  const {
-    carts: { orderInfo },
-  } = useUIContext();
+  const { carts } = useUIContext();
+  const { orderInfo } = carts;
+  const router = useRouter();
+
   const [
     sendEmail,
     { loading: loadingEmail, data: dataEmail, error: errorEmail },
@@ -32,11 +34,15 @@ const ViewOrder = () => {
   const onFinish = (values: OrderInfo) => {
     CartService.saveOrderInfo(values);
     const carts = CartService.getCarts();
-    console.log(carts);
     addBooking(carts);
+    sendEmail(carts);
   };
   const onFinishFailed = (errorInfo: any) => {
-    message.error("잠시후에 다시 시도해주세요.");
+    let errorMessage = "잠시후에 다시 시도해주세요.";
+    if (errorInfo?.errorFields.length) {
+      errorMessage = errorInfo.errorFields[0]?.errors[0];
+    }
+    message.error(errorMessage);
   };
 
   useEffect(() => {
@@ -51,10 +57,12 @@ const ViewOrder = () => {
   }, [form, orderInfo]);
 
   useEffect(() => {
-    if (dataBooking?.ok) {
-      message.success("성공");
+    if (dataBooking?.ok && dataEmail?.ok) {
+      message.success("예약서 작성이 완료되었습니다.");
+      CartService.removeAll();
+      router.push("/");
     }
-  }, [dataBooking]);
+  }, [dataBooking, dataEmail, router]);
 
   return (
     <LayoutQuestion>
@@ -67,6 +75,7 @@ const ViewOrder = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         requiredMark={false}
+        scrollToFirstError={true}
       >
         <Form.Item
           label="예약자 성함"

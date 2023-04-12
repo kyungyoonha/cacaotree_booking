@@ -10,4 +10,9 @@ export default Object.freeze({
     if (typeof window === "undefined") return null;
     localStorage.setItem(key, JSON.stringify(value));
   },
+
+  remove(key: string) {
+    if (typeof window === "undefined") return null;
+    localStorage.removeItem(key);
+  },
 });

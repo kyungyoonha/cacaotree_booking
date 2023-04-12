@@ -48,7 +48,7 @@ export const defaultCartItem: CartItemType = {
   paymentMethod: "won",
   massageText: "",
   form: null,
-  couponList: [],
+  // couponList: [],
 };
 
 export default Object.freeze({
@@ -60,6 +60,10 @@ export default Object.freeze({
   // 전체 데이터 저장
   saveAll(carts: Carts) {
     return Storage.set(KEY, carts);
+  },
+
+  removeAll() {
+    return Storage.remove(KEY);
   },
 
   saveOrderInfo(form: OrderInfo) {
@@ -183,14 +187,14 @@ export default Object.freeze({
         let hasSixtyMinutesMassage = false;
         let {
           paymentMethod,
-          couponList,
-          form: { massageList },
+          form: { massageList, couponList },
         } = cartItem;
+        let coupons = couponList.map((couponKey) => couponMap[couponKey]);
 
-        let downPerPax = couponList.filter((i) => i.isPerPax && !i.isPriceUp);
-        let downPerTeam = couponList.filter((i) => !i.isPerPax && !i.isPriceUp);
-        let upPerPax = couponList.filter((i) => i.isPerPax && i.isPriceUp);
-        let upPerTeam = couponList.filter((i) => !i.isPerPax && i.isPriceUp);
+        let downPerPax = coupons.filter((i) => i.isPerPax && !i.isPriceUp);
+        let downPerTeam = coupons.filter((i) => !i.isPerPax && !i.isPriceUp);
+        let upPerPax = coupons.filter((i) => i.isPerPax && i.isPriceUp);
+        let upPerTeam = coupons.filter((i) => !i.isPerPax && i.isPriceUp);
 
         downPerTeam.forEach((coupon) => {
           itemDiscount += coupon[paymentMethod];
@@ -275,34 +279,37 @@ export default Object.freeze({
     };
   },
   checkCouponHappyhour(cartItem: CartItemType) {
-    let { couponList, key, form } = cartItem;
-    couponList = couponList.filter((item) => item.key !== "happyhour");
+    let { key, form } = cartItem;
+    let { massageTime, couponList } = form;
+    couponList = couponList.filter((item) => item !== "happyhour");
     if (!key.includes("firstday")) {
-      const hour = dayjs(form.massageTime).hour();
+      const hour = dayjs(massageTime).hour();
       if (hour < 16) {
-        couponList.push(couponMap["happyhour"]);
+        couponList.push("happyhour");
       }
     }
-    return { ...cartItem, couponList };
+    return { ...cartItem, form: { ...form, couponList } };
   },
   checkCouponSolo(cartItem: CartItemType) {
-    let { couponList, form } = cartItem;
-    couponList = couponList.filter((item) => item.key !== "solo");
+    let { form } = cartItem;
+    let { couponList } = form;
+    couponList = couponList.filter((item) => item !== "solo");
 
     if (Number(form.pax) === 1) {
-      couponList.push(couponMap["solo"]);
+      couponList.push("solo");
     }
 
-    return { ...cartItem, couponList };
+    return { ...cartItem, form: { ...form, couponList } };
   },
   checkCouponRevisit(cartItem: CartItemType, isRevisit) {
-    let { couponList } = cartItem;
+    let { form } = cartItem;
+    let { couponList } = form;
 
-    couponList = couponList.filter((item) => item.key !== "revisit");
+    couponList = couponList.filter((item) => item !== "revisit");
 
     if (isRevisit) {
-      couponList.push(couponMap["revisit"]);
+      couponList.push("revisit");
     }
-    return { ...cartItem, couponList };
+    return { ...cartItem, form: { ...form, couponList } };
   },
 });

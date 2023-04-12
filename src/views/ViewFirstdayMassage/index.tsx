@@ -30,10 +30,15 @@ const ViewFirstdayMassage = () => {
     const newCartItem = { ...cartItem, key: itemKey, form: values };
 
     onFinishForm({ itemKey, cartItem: newCartItem }, dispatch);
+    message.success("장바구니 추가완료");
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    message.error("잠시후에 다시 시도해주세요.");
+    let errorMessage = "잠시후에 다시 시도해주세요.";
+    if (errorInfo?.errorFields.length) {
+      errorMessage = errorInfo.errorFields[0]?.errors[0];
+    }
+    message.error(errorMessage);
   };
 
   useEffect(() => {
@@ -57,12 +62,12 @@ const ViewFirstdayMassage = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
         requiredMark={false}
+        scrollToFirstError={true}
       >
         <StyledH1>공항픽업 정보를 입력해주세요.</StyledH1>
         <Form.Item name="package" hidden initialValue="[1] Airport Pick" />
-        <Form.Item name="massageTime" hidden initialValue="after Arrive" />
 
-        <Form.Item label="쿠폰 목록" required>
+        <Form.Item label="쿠폰 목록" required hidden>
           <Form.List name="couponList">
             {(fields) => (
               <>

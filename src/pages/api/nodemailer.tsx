@@ -202,6 +202,8 @@ const handler = async (
 
                 const formHTML = Object.keys(form)
                   .map((key) => {
+                    console.log(key);
+                    if (!translator[key]) return "";
                     let value = form[key];
                     value =
                       key === "massageList"
@@ -215,11 +217,15 @@ const handler = async (
                             .join("")
                         : value;
                     value = ["pickTime", "massageTime"].includes(key)
-                      ? dayjs(value).format("HH시 mm분")
+                      ? dayjs(form[key]).format("HH시 mm분")
                       : value;
                     value = ["date"].includes(key)
                       ? dayjs(form[key]).format("YYYY년 MM월 DD일")
                       : value;
+
+                    if (key === "massageTime") {
+                      console.log("??", form[key]);
+                    }
 
                     return `
                           <tr>
@@ -354,6 +360,7 @@ const handler = async (
                     </table>
                 </td>
             </tr>
+            <!--
             <tr>
                 <td style="margin: 0;padding: 0;padding-top: 16px;">
                     <table align="center" border="0" cellspacing="0" cellpadding="0" width="100%" style="font-size: 14px; color: #2A2A2E; border: 1px solid #DDDFE2; padding: 0; margin: 0 auto;max-width: 650px;border-radius: 8px;background-color: #FFFFFF;">
@@ -396,6 +403,7 @@ const handler = async (
                     </table>
                 </td>
             </tr>
+            -->
             <!-- Important notes info -->
             <tr>
                 <td style="padding:0;margin:0;padding-top: 16px;">

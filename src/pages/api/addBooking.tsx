@@ -86,9 +86,38 @@ export default async function handler(
       tempResultRow[formKey] = value;
     });
 
+    if (
+      key === "firstday-gold" ||
+      key === "firstday-pirate" ||
+      key === "firstday-south"
+    ) {
+      tempResultRow["dollar"] =
+        "[" +
+        formEtc["companyComb"] +
+        "]" +
+        (key === "firstday-south"
+          ? `\n패키지명: ${formEtc["packageComb"]}`
+          : "") +
+        "\n고객이름 " +
+        name +
+        "\n인원수: " +
+        formEtc["pax"] +
+        "\n날짜: " +
+        dayjs(formEtc["date"]).format("YYYY-MM-DD") +
+        "\n픽업장소: 카카오트리스파\n드랍장소: " +
+        formEtc["dropLocationComb"] +
+        "\n연락처: " +
+        phone +
+        "\n기타: " +
+        formEtc["memo"];
+
+      tempResultRow["dropLocation"] = "Tour Pickup";
+      tempResultRow["massageTime"] = "After Massage";
+    }
+
     result.push(tempResultRow);
   });
-  console.log(result);
+
   try {
     await doc.useServiceAccountAuth({
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -102,8 +131,6 @@ export default async function handler(
 
     res.status(200).json({ ok: true, result: {} });
   } catch (error) {
-    console.log(error);
-
     res.status(500).json({ ok: false, error });
   }
 }

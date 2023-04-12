@@ -60,7 +60,7 @@ const productMap: ProductMap = {
   "firstday-gold": {
     id: "firstday-gold",
     alt: "첫날 0.5박 패키지 + 골드호핑",
-    title: "첫날 0.5박 패키지",
+    title: "첫날 0.5박 패키지 ",
     subTitle: "+ 골드호핑",
     description: "막탄 내 원하는 곳에서 픽업 및 드랍이 가능한 패키지입니다.",
     href: "/firstday/firstday-gold",

@@ -14,6 +14,7 @@ import { useUIContext } from "src/contexts";
 import { useRouter } from "next/router";
 import route from "@configs/route";
 import { SCREENS } from "@configs/screens";
+import couponMap from "@configs/couponMap";
 
 interface CartItemProps {
   cartItem: CartItemType;
@@ -29,14 +30,17 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     itemPayment,
     itemPrice,
     hasSixtyMinutesMassage,
-    couponList,
+    form,
   } = cartItem;
   const router = useRouter();
   const { getCartsAll, dispatch } = useUIContext();
   const { title, subtitle, thumbnail } = productMap[cartItem.key];
   const afterText = paymentMethod === "won" ? "원" : "페소";
 
-  let downPerPax = couponList.filter((i) => i.isPerPax && !i.isPriceUp);
+  const couponList = form.couponList;
+  let downPerPax = couponList.filter(
+    (i) => couponMap[i].isPerPax && !couponMap[i].isPriceUp
+  );
 
   const onClickDelete = () => {
     message.success("삭제 완료되었습니다.");
@@ -98,14 +102,14 @@ const CartItem = ({ cartItem }: CartItemProps) => {
             )}
             <br />
             <div>
-              {couponList.map((item) => {
+              {couponList.map((couponKey) => {
                 return (
                   <Tag
-                    key={item.key}
+                    key={couponMap[couponKey].key}
                     style={{ marginRight: "10px" }}
-                    color={item.color}
+                    color={couponMap[couponKey].color}
                   >
-                    {item.title}
+                    {couponMap[couponKey].title}
                   </Tag>
                 );
               })}

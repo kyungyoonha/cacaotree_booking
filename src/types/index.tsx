@@ -62,7 +62,7 @@ export interface CartItemType {
   paymentMethod?: "peso" | "won";
   massageText: string;
   form: FormType;
-  couponList: Coupon[];
+  // couponList: Coupon[];
 }
 
 export type CouponKey =
