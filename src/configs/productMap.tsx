@@ -51,7 +51,7 @@ const productMap: ProductMap = {
       "마지막날 체크아웃 후 짐보관 및 공항드랍이 가능한 패키지입니다.",
     href: "/firstday/firstday-pirate",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/222971706-fc3764b8-897f-40df-90f1-6d5fb465be93.jpeg",
+      "https://user-images.githubusercontent.com/29701385/232400769-77899617-6f94-4393-85f0-4bb7ca8e642f.png",
     imageList: [
       "https://user-images.githubusercontent.com/29701385/224490792-0b2ff7c7-d600-4b81-9152-52ef534846d9.png",
       "https://user-images.githubusercontent.com/29701385/224490797-a950a5e7-5700-43b9-9f9e-2c912df44676.png",
@@ -65,7 +65,7 @@ const productMap: ProductMap = {
     description: "막탄 내 원하는 곳에서 픽업 및 드랍이 가능한 패키지입니다.",
     href: "/firstday/firstday-gold",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/222971706-fc3764b8-897f-40df-90f1-6d5fb465be93.jpeg",
+      "https://user-images.githubusercontent.com/29701385/232400767-fee2d5ac-b92d-4471-b855-283420a9f721.png",
     imageList: [
       "https://user-images.githubusercontent.com/29701385/224490773-5531829a-c935-47b4-8feb-6d411e2e365d.png",
       "https://user-images.githubusercontent.com/29701385/224490778-496ab12a-d558-4daf-89f4-7ec611ad3a6a.png",
@@ -82,7 +82,7 @@ const productMap: ProductMap = {
       "오슬롭 / 캐녀닝 / 모알보알 호핑을 같이 즐길 수 있는 패키지 입니다.",
     href: "/firstday/firstday-south",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/222971706-fc3764b8-897f-40df-90f1-6d5fb465be93.jpeg",
+      "https://user-images.githubusercontent.com/29701385/232401575-66f97679-38f8-4e32-b8b8-f7d0636a02ad.png",
     imageList: [
       "https://user-images.githubusercontent.com/29701385/225563653-f2db6963-086e-429b-9081-7b42998905d8.png",
       "https://user-images.githubusercontent.com/29701385/225563235-58e9dedf-dc43-4bfe-acab-2cc5a92df65a.png",
@@ -122,7 +122,7 @@ const productMap: ProductMap = {
     description: "-",
     href: "/lastday/lastday-pirate",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/222971702-ddc2fbe1-761b-4ec1-bf53-1c1f00d59d7c.png",
+      "https://user-images.githubusercontent.com/29701385/232401559-39c8e13f-158f-4d6d-9913-b0eac1e40a28.png",
     imageList: [],
   },
   "lastday-gold": {
@@ -133,7 +133,7 @@ const productMap: ProductMap = {
     description: "-",
     href: "/lastday/lastday-gold",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/222971702-ddc2fbe1-761b-4ec1-bf53-1c1f00d59d7c.png",
+      "https://user-images.githubusercontent.com/29701385/232401540-68afb6a2-13dc-4035-9f3d-0a415b321701.png",
     imageList: [],
   },
 };
