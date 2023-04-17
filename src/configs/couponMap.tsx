@@ -11,7 +11,7 @@ interface CoupMapType {
 const couponMap: CoupMapType = {
   revisit: {
     key: "revisit",
-    title: "재방문 할인",
+    title: "할인: 재방문(1인 240페소)",
     peso: 240,
     won: 6000,
     color: "green",
@@ -20,7 +20,7 @@ const couponMap: CoupMapType = {
   },
   happyhour: {
     key: "happyhour",
-    title: "해피아워 할인",
+    title: "할인: 해피아워(1인 240페소)",
     peso: 240,
     won: 6000,
     color: "cyan",
@@ -29,7 +29,7 @@ const couponMap: CoupMapType = {
   },
   solo: {
     key: "solo",
-    title: "1인 차지(추가)",
+    title: "추가: 1인 차지(1인 400페소)",
     peso: 400,
     won: 10000,
     color: "red",
@@ -38,7 +38,7 @@ const couponMap: CoupMapType = {
   },
   dropPort: {
     key: "dropPort",
-    title: "항구드랍(추가)",
+    title: "추가: 항구드랍(1인 200페소)",
     peso: 200,
     won: 5000,
     color: "red",
@@ -47,7 +47,7 @@ const couponMap: CoupMapType = {
   },
   hoppingDropCebu: {
     key: "hoppingDropCebu",
-    title: "세부시티 드랍(추가)",
+    title: "추가: 세부시티드랍(팀당 500페소)",
     peso: 500,
     won: 12500,
     color: "red",

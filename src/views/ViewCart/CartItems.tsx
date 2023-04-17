@@ -19,7 +19,7 @@ const CartItems = ({ cartItems }: CartItemsProps) => {
         <CartItem key={`${cartItem.key}-${cartItem.seq}`} cartItem={cartItem} />
       ))}
 
-      {!cartItems.length && (
+      {!cartItems.length ? (
         <CardEmptyWrapper>
           <p>장바구니에 담긴 상품이 없습니다</p>
           원하는 상품을 장바구니에 담아보세요!
@@ -31,6 +31,14 @@ const CartItems = ({ cartItems }: CartItemsProps) => {
             상품 추가하기
           </Button>
         </CardEmptyWrapper>
+      ) : (
+        <Button
+          size="large"
+          style={{ margin: "20px 0", borderRadius: 0 }}
+          onClick={() => router.push("/")}
+        >
+          상품 추가하기
+        </Button>
       )}
     </Wrapper>
   );
