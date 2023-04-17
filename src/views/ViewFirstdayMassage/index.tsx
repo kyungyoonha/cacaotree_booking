@@ -68,7 +68,7 @@ const ViewFirstdayMassage = () => {
         <Form.Item name="package" hidden initialValue="[1] Airport Pick" />
 
         <Form.Item label="쿠폰 목록" required hidden>
-          <Form.List name="couponList">
+          <Form.List name="couponList" initialValue={[]}>
             {(fields) => (
               <>
                 {fields.map((field) => (

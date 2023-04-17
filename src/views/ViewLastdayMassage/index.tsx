@@ -70,7 +70,7 @@ const ViewLastdayMassage = () => {
         <Form.Item name="dropLocation" hidden initialValue="Airport" />
 
         <Form.Item label="쿠폰 목록" required hidden>
-          <Form.List name="couponList">
+          <Form.List name="couponList" initialValue={[]}>
             {(fields) => (
               <>
                 {fields.map((field) => (

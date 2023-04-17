@@ -35,9 +35,7 @@ const ViewFirstdayHopping = () => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log({ errorInfo });
     let errorMessage = "잠시후에 다시 시도해주세요.";
-
     if (errorInfo?.errorFields.length) {
       errorMessage = errorInfo.errorFields[0]?.errors[0];
     }
@@ -83,7 +81,7 @@ const ViewFirstdayHopping = () => {
         />
 
         <Form.Item label="쿠폰 목록" required hidden>
-          <Form.List name="couponList">
+          <Form.List name="couponList" initialValue={[]}>
             {(fields) => (
               <>
                 {fields.map((field) => (

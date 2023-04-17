@@ -61,7 +61,7 @@ const ViewDaytimeMassage = () => {
         <Form.Item name="package" hidden initialValue="[2] Daytime" />
 
         <Form.Item label="쿠폰 목록" required hidden>
-          <Form.List name="couponList">
+          <Form.List name="couponList" initialValue={[]}>
             {(fields) => (
               <>
                 {fields.map((field) => (

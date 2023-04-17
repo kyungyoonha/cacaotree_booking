@@ -281,6 +281,9 @@ export default Object.freeze({
   checkCouponHappyhour(cartItem: CartItemType) {
     let { key, form } = cartItem;
     let { massageTime, couponList } = form;
+
+    couponList = couponList ? couponList : [];
+
     couponList = couponList.filter((item) => item !== "happyhour");
     if (!key.includes("firstday")) {
       const hour = dayjs(massageTime).hour();
@@ -293,6 +296,9 @@ export default Object.freeze({
   checkCouponSolo(cartItem: CartItemType) {
     let { form } = cartItem;
     let { couponList } = form;
+
+    couponList = couponList ? couponList : [];
+
     couponList = couponList.filter((item) => item !== "solo");
 
     if (Number(form.pax) === 1) {
@@ -304,6 +310,8 @@ export default Object.freeze({
   checkCouponRevisit(cartItem: CartItemType, isRevisit) {
     let { form } = cartItem;
     let { couponList } = form;
+
+    couponList = couponList ? couponList : [];
 
     couponList = couponList.filter((item) => item !== "revisit");
 

@@ -36,6 +36,10 @@ if (
   !OAUTH_CLIENT_SECRET ||
   !OAUTH_REFRESH_TOKEN
 ) {
+  console.log(`OAUTH_USER: ${!!OAUTH_USER} `);
+  console.log(`OAUTH_CLIENT_ID: ${!!OAUTH_CLIENT_ID} `);
+  console.log(`OAUTH_CLIENT_SECRET: ${!!OAUTH_CLIENT_SECRET} `);
+  console.log(`OAUTH_REFRESH_TOKEN: ${!!OAUTH_REFRESH_TOKEN} `);
   throw Error("OAuth 인증에 필요한 환경변수가 없습니다.");
 }
 
@@ -202,7 +206,6 @@ const handler = async (
 
                 const formHTML = Object.keys(form)
                   .map((key) => {
-                    console.log(key);
                     if (!translator[key]) return "";
                     let value = form[key];
                     value =
@@ -224,7 +227,7 @@ const handler = async (
                       : value;
 
                     if (key === "massageTime") {
-                      console.log("??", form[key]);
+                      // console.log("??", form[key]);
                     }
 
                     return `

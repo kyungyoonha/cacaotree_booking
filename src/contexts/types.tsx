@@ -54,6 +54,7 @@ export const onFinishForm = (
     : CartService.addItem(itemKey, cartItem);
 
   onOpenModalForm(true, dispatch);
+  getCartsAll({}, dispatch);
 };
 
 export const onOpenModalForm = (

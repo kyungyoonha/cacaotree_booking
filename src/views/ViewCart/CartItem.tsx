@@ -32,7 +32,6 @@ const CartItem = ({ cartItem }: CartItemProps) => {
     hasSixtyMinutesMassage,
     form,
   } = cartItem;
-  console.log({ cartItem });
   const router = useRouter();
   const { getCartsAll, dispatch } = useUIContext();
   const { title, subTitle, thumbnail } = productMap[cartItem.key];

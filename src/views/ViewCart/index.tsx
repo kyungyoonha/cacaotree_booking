@@ -14,7 +14,7 @@ const ViewCart = () => {
   const router = useRouter();
   const {
     carts: {
-      summary: { totalPaymentPeso, totalPaymentWon },
+      summary: { totalPaymentPeso, totalPaymentWon, totalItemCnt },
       cartItems,
     },
     getCartsAll,
@@ -28,44 +28,48 @@ const ViewCart = () => {
   return (
     <Wrapper>
       <CartItems cartItems={cartItems} />
-      <CartNotice />
-      <CartRecommend />
-      <CartFooter>
-        <div className="inner">
-          <CartFooterDetail>
-            <span>
-              총 계좌이체:{" "}
-              <strong>
-                {totalPaymentWon
-                  ? `${changeNumberWithComma(totalPaymentWon)}`
-                  : 0}
-                원
-              </strong>
-            </span>
-            <span className="hidden">+</span>
-            <span>
-              총 페소지불:{" "}
-              <strong>
-                {totalPaymentPeso
-                  ? `${changeNumberWithComma(totalPaymentPeso)}`
-                  : 0}
-                페소
-              </strong>
-            </span>
-          </CartFooterDetail>
-          <Button
-            size="large"
-            style={{
-              padding: "0px 40px",
-              borderRadius: "5px",
-              marginLeft: "10px",
-            }}
-            onClick={() => router.push("/cart/order")}
-          >
-            주문 완료하기
-          </Button>
-        </div>
-      </CartFooter>
+      {!!totalItemCnt && (
+        <>
+          <CartNotice />
+          <CartRecommend />
+          <CartFooter>
+            <div className="inner">
+              <CartFooterDetail>
+                <span>
+                  총 계좌이체:{" "}
+                  <strong>
+                    {totalPaymentWon
+                      ? `${changeNumberWithComma(totalPaymentWon)}`
+                      : 0}
+                    원
+                  </strong>
+                </span>
+                <span className="hidden">+</span>
+                <span>
+                  총 페소지불:{" "}
+                  <strong>
+                    {totalPaymentPeso
+                      ? `${changeNumberWithComma(totalPaymentPeso)}`
+                      : 0}
+                    페소
+                  </strong>
+                </span>
+              </CartFooterDetail>
+              <Button
+                size="large"
+                style={{
+                  padding: "0px 40px",
+                  borderRadius: "5px",
+                  marginLeft: "10px",
+                }}
+                onClick={() => router.push("/cart/order")}
+              >
+                주문 완료하기
+              </Button>
+            </div>
+          </CartFooter>
+        </>
+      )}
     </Wrapper>
   );
 };
