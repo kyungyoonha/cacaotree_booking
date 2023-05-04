@@ -5,12 +5,6 @@ const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
 
-type Result = resultType[];
-
-type resultType = {
-  [key: string]: string;
-};
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -76,6 +70,8 @@ export default async function handler(
           let newDate = dayjs(value).subtract(1, "day").format("YYYY. MM. DD");
           tempResultRow["arrivedDate"] = newDate;
         }
+
+        value = "입금전/" + value;
       }
 
       if (formKey.includes("Time")) {
@@ -125,7 +121,7 @@ export default async function handler(
     });
 
     await doc.getInfo();
-    let sheet = doc.sheetsByTitle["Test"];
+    let sheet = doc.sheetsByTitle["Booking"];
     await sheet.loadHeaderRow(1);
     await sheet.addRows(result);
 
