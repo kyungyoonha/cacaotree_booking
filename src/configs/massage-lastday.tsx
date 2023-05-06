@@ -21,7 +21,6 @@ const massageDaytime: SelectOption = [
         label: "120분 시아추 (60,000원/2,400페소)",
         value: "120분 시아추/120 Shiatsu/60000",
       },
-
       {
         label: "90분 오일 (45,000원/1,800페소)",
         value: "90분 오일/90 Oil/45000",

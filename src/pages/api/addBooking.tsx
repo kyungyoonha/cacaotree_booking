@@ -18,7 +18,7 @@ export default async function handler(
 
   let result = [];
   let resultRow = {};
-  resultRow["company"] = "CacaoTree";
+  resultRow["company"] = "미확정";
   resultRow["name"] = name;
   resultRow["email"] = email;
   resultRow["phone"] = phone;
@@ -61,6 +61,7 @@ export default async function handler(
         value = value.replace("개별 드랍하겠습니다.", "No Need");
         value = value.replace("막탄지역", "");
         value = value.replace("개별적으로 이동하겠습니다.", "No Need");
+        value = value.replace("막탄공항", "Airport");
       }
       if (formKey === "date") {
         let timeFormat = dayjs(formEtc["pickTime"]).format("A");
@@ -109,6 +110,7 @@ export default async function handler(
 
       tempResultRow["dropLocation"] = "Tour Pickup";
       tempResultRow["massageTime"] = "After Massage";
+      tempResultRow["name"] += ` (${formEtc["packageComb"]})`;
     }
 
     result.push(tempResultRow);
@@ -127,6 +129,7 @@ export default async function handler(
 
     res.status(200).json({ ok: true, result: {} });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ ok: false, error });
   }
 }
