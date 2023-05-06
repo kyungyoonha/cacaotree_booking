@@ -102,7 +102,8 @@ const CartFooter = styled.div`
     width: 1000px;
   }
   @media (max-width: ${SCREENS.md}) {
-    height: 100px;
+    height: 150px;
+    padding-bottom: 50px;
 
     & > .inner {
       padding: 0 20px !important;
