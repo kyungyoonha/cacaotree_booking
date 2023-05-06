@@ -85,10 +85,10 @@ const handler = async (
 
     await transporter.sendMail({
       to: [
-        "gkb10a@naver.com",
-        // "junyounglim095@gmail.com",
-        // "cheonsang4226@gmail.com",
-        // "gkdud9194@gmail.com",
+        "gkb10a@gmail.com",
+        "junyounglim095@gmail.com",
+        "cheonsang4226@gmail.com",
+        "gkdud9194@gmail.com",
       ],
       //   to: email,
       from: OAUTH_USER,
