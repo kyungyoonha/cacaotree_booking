@@ -1,12 +1,15 @@
 import Logo from "@components/Logo";
+import productMap from "@configs/productMap";
 import { Badge, Tooltip } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useUIContext } from "src/contexts";
 import styled from "styled-components";
 
 const Header = () => {
+  const router = useRouter();
   const {
     carts: {
       summary: { totalItemCnt },
@@ -14,6 +17,8 @@ const Header = () => {
     getCartsAll,
     dispatch,
   } = useUIContext();
+
+  let pageKey = router.pathname.split("/")[2];
 
   useEffect(() => {
     getCartsAll({}, dispatch);
@@ -24,7 +29,11 @@ const Header = () => {
       <Logo width="50" height="50" href="/" />
 
       <Title>
-        <Link href="/">마사지 예약하기</Link>
+        <Link href="/">
+          {pageKey && productMap[pageKey]?.alt
+            ? productMap[pageKey]?.alt
+            : "마사지 예약하기"}
+        </Link>
       </Title>
 
       <div>
