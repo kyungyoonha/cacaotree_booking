@@ -42,19 +42,22 @@ const productMap: ProductMap = {
       "https://user-images.githubusercontent.com/29701385/223688286-8f987bba-307e-44bc-b66d-bf9c9cc9347f.png",
     ],
   },
-  "firstday-pirate": {
-    id: "firstday-pirate",
-    alt: "첫날 0.5박 패키지 + 해적호핑",
+  "firstday-south": {
+    id: "firstday-south",
+    alt: "첫날 0.5박 패키지 + 남부투어",
     title: "첫날 0.5박 패키지",
-    subTitle: "+ 해적호핑",
+    subTitle: "+ 남부투어",
     description:
-      "마지막날 체크아웃 후 짐보관 및 공항드랍이 가능한 패키지입니다.",
-    href: "/firstday/firstday-pirate",
+      "오슬롭 / 캐녀닝 / 모알보알 호핑을 같이 즐길 수 있는 패키지 입니다.",
+    href: "/firstday/firstday-south",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/232400769-77899617-6f94-4393-85f0-4bb7ca8e642f.png",
+      "https://user-images.githubusercontent.com/29701385/232401575-66f97679-38f8-4e32-b8b8-f7d0636a02ad.png",
     imageList: [
-      "https://user-images.githubusercontent.com/29701385/224490792-0b2ff7c7-d600-4b81-9152-52ef534846d9.png",
-      "https://user-images.githubusercontent.com/29701385/224490797-a950a5e7-5700-43b9-9f9e-2c912df44676.png",
+      "https://user-images.githubusercontent.com/29701385/225563653-f2db6963-086e-429b-9081-7b42998905d8.png",
+      "https://user-images.githubusercontent.com/29701385/225563235-58e9dedf-dc43-4bfe-acab-2cc5a92df65a.png",
+      "https://user-images.githubusercontent.com/29701385/225563241-23cfb017-c8a9-464d-8bed-7059c34b909f.png",
+      "https://user-images.githubusercontent.com/29701385/225563248-e17b80f1-d3f8-4d60-8d6a-ad8d78259f7e.png",
+      "https://user-images.githubusercontent.com/29701385/225563254-e406e3fa-2af3-487a-9c75-12817a28a880.png",
     ],
   },
   "firstday-gold": {
@@ -73,22 +76,19 @@ const productMap: ProductMap = {
       "https://user-images.githubusercontent.com/29701385/224490789-345047ad-7d79-4ddc-be09-0fcb00ca5ea3.png",
     ],
   },
-  "firstday-south": {
-    id: "firstday-south",
-    alt: "첫날 0.5박 패키지 + 남부투어",
+  "firstday-pirate": {
+    id: "firstday-pirate",
+    alt: "첫날 0.5박 패키지 + 해적호핑",
     title: "첫날 0.5박 패키지",
-    subTitle: "+ 남부투어",
+    subTitle: "+ 해적호핑",
     description:
-      "오슬롭 / 캐녀닝 / 모알보알 호핑을 같이 즐길 수 있는 패키지 입니다.",
-    href: "/firstday/firstday-south",
+      "마지막날 체크아웃 후 짐보관 및 공항드랍이 가능한 패키지입니다.",
+    href: "/firstday/firstday-pirate",
     thumbnail:
-      "https://user-images.githubusercontent.com/29701385/232401575-66f97679-38f8-4e32-b8b8-f7d0636a02ad.png",
+      "https://user-images.githubusercontent.com/29701385/232400769-77899617-6f94-4393-85f0-4bb7ca8e642f.png",
     imageList: [
-      "https://user-images.githubusercontent.com/29701385/225563653-f2db6963-086e-429b-9081-7b42998905d8.png",
-      "https://user-images.githubusercontent.com/29701385/225563235-58e9dedf-dc43-4bfe-acab-2cc5a92df65a.png",
-      "https://user-images.githubusercontent.com/29701385/225563241-23cfb017-c8a9-464d-8bed-7059c34b909f.png",
-      "https://user-images.githubusercontent.com/29701385/225563248-e17b80f1-d3f8-4d60-8d6a-ad8d78259f7e.png",
-      "https://user-images.githubusercontent.com/29701385/225563254-e406e3fa-2af3-487a-9c75-12817a28a880.png",
+      "https://user-images.githubusercontent.com/29701385/224490792-0b2ff7c7-d600-4b81-9152-52ef534846d9.png",
+      "https://user-images.githubusercontent.com/29701385/224490797-a950a5e7-5700-43b9-9f9e-2c912df44676.png",
     ],
   },
   "daytime-massage": {
