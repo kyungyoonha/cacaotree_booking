@@ -48,7 +48,7 @@ const productMap: ProductMap = {
     title: "첫날 0.5박 패키지",
     subTitle: "+ 남부투어",
     description:
-      "오슬롭 / 캐녀닝 / 모알보알 호핑을 같이 즐길 수 있는 패키지 입니다.",
+      "첫날 새벽에 도착하시는 분을 위한 0.5박 마사지와 휴식 후 남부투어를 같이 즐길 수 있는 패키지 입니다.",
     href: "/firstday/firstday-south",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/232401575-66f97679-38f8-4e32-b8b8-f7d0636a02ad.png",
@@ -65,7 +65,8 @@ const productMap: ProductMap = {
     alt: "첫날 0.5박 패키지 + 골드호핑",
     title: "첫날 0.5박 패키지 ",
     subTitle: "+ 골드호핑",
-    description: "막탄 내 원하는 곳에서 픽업 및 드랍이 가능한 패키지입니다.",
+    description:
+      "첫날 새벽에 도착하시는 분을 위한 0.5박 마사지와 오전에 골드호핑을 같이 즐길 수 있는 패키지 입니다.",
     href: "/firstday/firstday-gold",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/232400767-fee2d5ac-b92d-4471-b855-283420a9f721.png",
@@ -82,7 +83,7 @@ const productMap: ProductMap = {
     title: "첫날 0.5박 패키지",
     subTitle: "+ 해적호핑",
     description:
-      "마지막날 체크아웃 후 짐보관 및 공항드랍이 가능한 패키지입니다.",
+      "첫날 새벽에 도착하시는 분을 위한 0.5박 마사지와 오전에 해적호핑을 같이 즐길 수 있는 패키지 입니다.",
     href: "/firstday/firstday-pirate",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/232400769-77899617-6f94-4393-85f0-4bb7ca8e642f.png",
@@ -96,8 +97,7 @@ const productMap: ProductMap = {
     alt: "숙소 픽드랍 패키지",
     title: "숙소 픽드랍 패키지",
     subTitle: "",
-    description:
-      "오슬롭 / 캐녀닝 / 모알보알 호핑을 같이 즐길 수 있는 패키지 입니다.",
+    description: "막탄 내 원하는 곳에서 픽업 및 드랍이 가능한 패키지입니다.",
     href: "/daytime/daytime-massage",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/222971698-80b80417-e605-4365-ad4c-571949053f53.jpeg",
@@ -108,7 +108,8 @@ const productMap: ProductMap = {
     alt: "마지막날 공항드랍 마사지",
     title: "마지막날 공항드랍 마사지",
     subTitle: "",
-    description: "-",
+    description:
+      "마지막날 체크아웃 후 짐보관 및 공항드랍이 가능한 패키지입니다.",
     href: "/lastday/lastday-massage",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/224727535-b197094d-5f7e-4b72-b724-e24839b44405.png",
@@ -119,7 +120,8 @@ const productMap: ProductMap = {
     alt: "마지막날 해적호핑 패키지",
     title: "마지막날 해적호핑 패키지",
     subTitle: "",
-    description: "-",
+    description:
+      "마지막날 해적호핑 후 샤워, 마사지, 짐보관 및 공항드랍이 가능한 패키지입니다.",
     href: "/lastday/lastday-pirate",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/232401559-39c8e13f-158f-4d6d-9913-b0eac1e40a28.png",
@@ -130,7 +132,8 @@ const productMap: ProductMap = {
     alt: "마지막날 골드호핑 패키지",
     title: "마지막날 골드호핑 패키지",
     subTitle: "",
-    description: "-",
+    description:
+      "마지막날 골드호핑 후 샤워, 마사지, 짐보관 및 공항드랍이 가능한 패키지입니다.",
     href: "/lastday/lastday-gold",
     thumbnail:
       "https://user-images.githubusercontent.com/29701385/232401540-68afb6a2-13dc-4035-9f3d-0a415b321701.png",
