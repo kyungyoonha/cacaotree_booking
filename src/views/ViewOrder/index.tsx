@@ -60,7 +60,7 @@ const ViewOrder = () => {
     if (dataBooking?.ok && dataEmail?.ok) {
       message.success("예약서 작성이 완료되었습니다.");
       CartService.removeAll();
-      router.push("/");
+      router.push("/cart/success");
     }
   }, [dataBooking, dataEmail, router]);
 
