@@ -1,4 +1,5 @@
 import Logo from "@components/Logo";
+import { SCREENS } from "@configs/screens";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -43,6 +44,7 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  padding: 0 15px;
 `;
 
 const Card = styled.div`
@@ -70,6 +72,11 @@ const Card = styled.div`
       font-weight: bold;
       font-size: 17px;
     }
+  }
+
+  @media (max-width: ${SCREENS.sm}) {
+    width: 100%;
+    padding: 35px 15px;
   }
 `;
 
