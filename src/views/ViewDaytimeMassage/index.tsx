@@ -79,13 +79,15 @@ const ViewDaytimeMassage = () => {
           name="date"
           rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
           style={{ width: "100%" }}
-          initialValue={dayjs()}
+          initialValue={dayjs().add(1, "days")}
+          extra="당일 예약은 카톡으로 문의주세요."
         >
           <DatePicker
             format={"YYYY-MM-DD"}
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
+            disabledDate={(current) => dayjs().add(0, "days") >= current}
           />
         </Form.Item>
         <FormItemMassage form={form} selectOption={massageDaytime} />
