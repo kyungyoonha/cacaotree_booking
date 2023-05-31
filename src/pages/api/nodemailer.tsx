@@ -144,17 +144,17 @@ const handler = async (
                             <tr style="text-align: center;">
                                 <td style="padding-left: 24px; padding-right: 24px;">
                                     <p style="margin:0; padding:0">
-                                        고객님, 안녕하세요. 현재 예약 대기상태이며,
+                                        예약해주셔서 감사합니다.
                                     </p>
                                     <br/>
                                     <P>
-                                        작성해주신 연락처로 최대한 빠르게 연락드려 예약확정을 도와드리도록 하겠습니다.
+                                        고객님의 예약은 현재 대기상태이며,
                                     </P>
                                     <P>
-                                        예약확정 연락이 오지 않거나, 빠른 처리를 원하시는 경우
+                                        예약 확인 및 확정 안내는 24시간 내로 카카오톡으로 안내 연락이 갈겁니다.
                                     </P>
                                     <p>
-                                        카카오톡 ID: cacaotreespa 로 연락주시면 더욱 더 빠르게 처리해드립니다.
+                                        이용해 주셔서 감사합니다 ^^
                                     </p>
                                 </td>
                             </tr>
