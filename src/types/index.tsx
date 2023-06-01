@@ -10,6 +10,11 @@ interface OptionItem {
   value: string;
 }
 
+export interface BlockDates {
+  blockDatesFirstday: string[];
+  blockDatesDaytime: string[];
+}
+
 export interface Massage {
   massage: string;
   sex: string;

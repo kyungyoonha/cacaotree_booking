@@ -8,6 +8,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { Wrapper, ItemsWrapper, ItemWrapper, ImageWrapper } from "./styled";
 import { SCREENS } from "@configs/screens";
+import { useUIContext } from "src/contexts";
 
 const QuestionSelectWithOption = ({
   title,

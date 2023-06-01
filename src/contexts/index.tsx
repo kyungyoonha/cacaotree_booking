@@ -8,9 +8,11 @@ import {
   onFinishForm,
   onOpenModalForm,
   onChangeCartItem,
+  getBlockDates,
 } from "./types";
 
 const initialState: State = {
+  blockDates: null,
   carts: {
     summary: {
       totalDiscountPeso: 0,
@@ -30,6 +32,7 @@ const initialState: State = {
   onFinishForm,
   onOpenModalForm,
   onChangeCartItem,
+  getBlockDates,
   dispatch: () => null,
 };
 
@@ -51,6 +54,11 @@ const reducer = (state: State = initialState, action: Action): State => {
       return {
         ...state,
         cartItem: action.payload,
+      };
+    case ActionType.GET_BLOCK_DATE:
+      return {
+        ...state,
+        blockDates: action.payload,
       };
   }
 };

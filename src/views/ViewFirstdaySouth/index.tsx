@@ -14,14 +14,15 @@ import { FormFirstdaySouth, ItemKey } from "@types";
 import { DatePicker, Form, message } from "antd";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useUIContext } from "src/contexts";
 import CartService from "src/services/CartService";
 
 const ViewFirstdaySouth = () => {
   const router = useRouter();
   const [form] = Form.useForm();
-  const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
+  const { cartItem, blockDates, onFinishForm, onChangeCartItem, dispatch } =
+    useUIContext();
 
   const itemKey = router.pathname.split("/")[2] as ItemKey;
   const seq = router.query.seq ? Number(router.query.seq) : null;
@@ -39,6 +40,21 @@ const ViewFirstdaySouth = () => {
     }
     message.error(errorMessage);
   };
+
+  const disabledDate = useCallback(
+    (current): boolean => {
+      if (blockDates?.blockDatesFirstday.length) {
+        return (
+          dayjs().add(0, "days") >= current ||
+          !!blockDates.blockDatesFirstday.find(
+            (date) => date === dayjs(current).format("YYYY-MM-DD")
+          )
+        );
+      }
+      return dayjs().add(0, "days") >= current;
+    },
+    [blockDates?.blockDatesFirstday]
+  );
 
   useEffect(() => {
     if (!seq) return;
@@ -87,14 +103,14 @@ const ViewFirstdaySouth = () => {
           name="date"
           rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
           style={{ width: "100%" }}
-          initialValue={dayjs().add(1, "days")}
+          // initialValue={dayjs().add(1, "days")}
         >
           <DatePicker
             format={"YYYY-MM-DD"}
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
-            disabledDate={(current) => dayjs().add(0, "days") >= current}
+            disabledDate={disabledDate}
           />
         </Form.Item>
 

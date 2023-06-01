@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { DatePicker, Form, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
@@ -21,7 +21,8 @@ import FormItemPickDrop from "@components/FormItemPickDrop";
 const ViewFirstdayMassage = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormFirstdayMassage>();
-  const { cartItem, onFinishForm, onChangeCartItem, dispatch } = useUIContext();
+  const { cartItem, blockDates, onFinishForm, onChangeCartItem, dispatch } =
+    useUIContext();
 
   const itemKey = router.pathname.split("/")[2] as ItemKey;
   const seq = router.query.seq ? Number(router.query.seq) : null;
@@ -40,6 +41,21 @@ const ViewFirstdayMassage = () => {
     }
     message.error(errorMessage);
   };
+
+  const disabledDate = useCallback(
+    (current): boolean => {
+      if (blockDates?.blockDatesFirstday.length) {
+        return (
+          dayjs().add(0, "days") >= current ||
+          !!blockDates.blockDatesFirstday.find(
+            (date) => date === dayjs(current).format("YYYY-MM-DD")
+          )
+        );
+      }
+      return dayjs().add(0, "days") >= current;
+    },
+    [blockDates?.blockDatesFirstday]
+  );
 
   useEffect(() => {
     if (!seq) return;
@@ -85,7 +101,7 @@ const ViewFirstdayMassage = () => {
           label="예약날짜"
           name="date"
           rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
-          initialValue={dayjs().add(1, "days")}
+          // initialValue={dayjs().add(1, "days")}
           extra="당일 예약은 카톡으로 문의주세요."
         >
           <DatePicker
@@ -93,7 +109,7 @@ const ViewFirstdayMassage = () => {
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
-            disabledDate={(current) => dayjs().add(0, "days") >= current}
+            disabledDate={disabledDate}
           />
         </Form.Item>
 

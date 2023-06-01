@@ -1,7 +1,8 @@
-import { CartItemType, CartsResult, FormType, ItemKey } from "@types";
+import { CartItemType, CartsResult, BlockDates, ItemKey } from "@types";
 import CartService from "src/services/CartService";
 
 export interface State {
+  blockDates: BlockDates;
   carts: CartsResult;
   cartItem: CartItemType;
   modalOpenForm: boolean;
@@ -9,6 +10,7 @@ export interface State {
   onFinishForm: typeof onFinishForm;
   onOpenModalForm: typeof onOpenModalForm;
   onChangeCartItem: typeof onChangeCartItem;
+  getBlockDates: typeof getBlockDates;
   dispatch: React.Dispatch<Action>;
 }
 
@@ -16,6 +18,7 @@ export enum ActionType {
   GET_CARTS,
   OPEN_MODAL_FORM,
   CHANGE_CART_ITEM,
+  GET_BLOCK_DATE,
 }
 
 export type Action =
@@ -30,7 +33,21 @@ export type Action =
   | {
       type: ActionType.CHANGE_CART_ITEM;
       payload: CartItemType;
+    }
+  | {
+      type: ActionType.GET_BLOCK_DATE;
+      payload: BlockDates;
     };
+
+export const getBlockDates = async (
+  blockDates: BlockDates,
+  dispatch: React.Dispatch<Action>
+) => {
+  dispatch({
+    type: ActionType.GET_BLOCK_DATE,
+    payload: blockDates,
+  });
+};
 
 export const getCartsAll = async (_, dispatch: React.Dispatch<Action>) => {
   const data = CartService.getCarts();
