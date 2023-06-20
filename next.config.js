@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: false,
 
   images: {
-    domains: ["user-images.githubusercontent.com"],
+    domains: ["user-images.githubusercontent.com", "github.com"],
   },
   compiler: {
     // Enables the styled-components SWC transform

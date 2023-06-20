@@ -101,7 +101,6 @@ const ViewFirstdayMassage = () => {
           label="예약날짜"
           name="date"
           rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
-          // initialValue={dayjs().add(1, "days")}
           extra="당일 예약은 카톡으로 문의주세요."
         >
           <DatePicker
@@ -159,7 +158,7 @@ const ViewFirstdayMassage = () => {
               fixedValueTime: "11:00 AM",
             },
             cebu: {
-              title: "세부시티, 코르도바",
+              title: "세부시티",
               disabledLoc: true,
               disabledTime: true,
               fixedValueLoc: "개별적으로 이동하겠습니다.",

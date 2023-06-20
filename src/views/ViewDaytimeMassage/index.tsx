@@ -125,7 +125,7 @@ const ViewDaytimeMassage = () => {
               fixedValueTime: "",
             },
             cebu: {
-              title: "세부시티, 코르도바",
+              title: "세부시티",
               disabledLoc: true,
               disabledTime: true,
               fixedValueLoc: "개별 드랍하겠습니다.",
@@ -159,7 +159,7 @@ const ViewDaytimeMassage = () => {
               fixedValueTime: "After Massage",
             },
             cebu: {
-              title: "세부시티, 코르도바",
+              title: "세부시티",
               disabledLoc: true,
               disabledTime: true,
               fixedValueLoc: "개별적으로 스파로 오겠습니다.",

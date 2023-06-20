@@ -130,7 +130,7 @@ const ViewLastdayHopping = () => {
               fixedValueTime: "",
             },
             cebu: {
-              title: "세부시티, 코르도바",
+              title: "세부시티",
               disabledLoc: true,
               disabledTime: true,
               fixedValueLoc: "개별적으로 이동하겠습니다.",

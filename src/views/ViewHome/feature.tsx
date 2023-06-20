@@ -9,8 +9,8 @@ export const itemList = [
     description: "첫날 새벽에 공항에 도착하시는 분들을 위한 패키지입니다.",
     href: "/firstday/firstday-massage",
     imageList: [
-      "https://user-images.githubusercontent.com/29701385/223688305-8d3f11da-3b0e-4adf-84be-cf24ecbc5ae6.png",
-      "https://user-images.githubusercontent.com/29701385/223688286-8f987bba-307e-44bc-b66d-bf9c9cc9347f.png",
+      "https://github.com/kyungyoonha/TIL/assets/29701385/6ad62cda-ece9-4efe-892f-fb566b298a50",
+      "https://github.com/kyungyoonha/TIL/assets/29701385/122d26fc-a155-44e8-9520-01b4f7c44ee8",
     ],
   },
   {
@@ -25,8 +25,8 @@ export const itemList = [
     description: "막탄 내 원하는 곳에서 픽업 및 드랍이 가능한 패키지입니다.",
     href: "/daytime/daytime-massage",
     imageList: [
-      "https://user-images.githubusercontent.com/29701385/223690170-b97c43eb-9d2e-4385-8121-28a77673a3d3.png",
-      "https://user-images.githubusercontent.com/29701385/223690191-01d7b018-513a-4c7d-aa37-de7a7ba2cd84.png",
+      "https://github.com/kyungyoonha/TIL/assets/29701385/d98fa03c-ce54-440a-a827-5d2f7cf33e9a",
+      "https://github.com/kyungyoonha/TIL/assets/29701385/50825cbe-86be-4200-81c4-5a675d4e55be",
     ],
   },
   {
@@ -42,8 +42,8 @@ export const itemList = [
       "마지막날 체크아웃 후 짐보관 및 공항드랍이 가능한 패키지입니다.",
     href: "/lastday/lastday-massage",
     imageList: [
-      "https://user-images.githubusercontent.com/29701385/223690477-a6ad306f-55f3-477f-8e56-83389aeecbe3.png",
-      "https://user-images.githubusercontent.com/29701385/223690501-5d1c29c4-8cd1-4cf9-afce-31f38fa8a6e9.png",
+      "https://github.com/kyungyoonha/TIL/assets/29701385/68813c7b-b53f-475c-84ec-b7056a5dc7cf",
+      "https://github.com/kyungyoonha/TIL/assets/29701385/ee5fd9d5-c747-449f-9394-ff941e137f80",
     ],
   },
 ];
