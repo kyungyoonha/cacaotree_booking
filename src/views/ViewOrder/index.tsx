@@ -46,8 +46,11 @@ const ViewOrder = () => {
   };
 
   useEffect(() => {
-    if (!errorEmail) return;
-    message.error("예약서 작성이 실패하였습니다.");
+    if (errorEmail && errorEmail) {
+      message.error(
+        "예약서 작성이 실패하였습니다. 카카오톡ID: cacaotreespa 로 문의주세요."
+      );
+    }
   }, [errorEmail]);
 
   useEffect(() => {

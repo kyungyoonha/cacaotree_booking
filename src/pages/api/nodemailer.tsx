@@ -86,9 +86,9 @@ const handler = async (
     await transporter.sendMail({
       to: [
         "gkb10a@gmail.com",
-        "junyounglim095@gmail.com",
-        "cheonsang4226@gmail.com",
-        "gkdud9194@gmail.com",
+        // "junyounglim095@gmail.com",
+        // "cheonsang4226@gmail.com",
+        // "gkdud9194@gmail.com",
       ],
       //   to: email,
       from: OAUTH_USER,
@@ -507,6 +507,7 @@ const handler = async (
 
     res.status(200).send({ ok: "done", message: "message has been sent" });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ ok: "fail", error: `${error}` });
   }
 };
