@@ -25,8 +25,8 @@ export interface FormItemPickDropOption {
   disabledTime: boolean;
   fixedValueLoc: string;
   fixedValueTime: string;
-  helpLoc?: string;
-  helpTime?: string;
+  helpLoc?: React.ReactNode;
+  helpTime?: React.ReactNode;
   couponKey?: CouponKey;
 }
 

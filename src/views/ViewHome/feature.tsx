@@ -7,7 +7,7 @@ export const itemList = [
     alt: "flight-arrival",
     title: "첫날 패키지",
     description: "첫날 새벽에 공항에 도착하시는 분들을 위한 패키지입니다.",
-    href: "/firstday/firstday-massage",
+    href: "/firstday/firstday-massage-direct",
     imageList: [
       "https://github.com/kyungyoonha/TIL/assets/29701385/6ad62cda-ece9-4efe-892f-fb566b298a50",
       "https://github.com/kyungyoonha/TIL/assets/29701385/122d26fc-a155-44e8-9520-01b4f7c44ee8",
