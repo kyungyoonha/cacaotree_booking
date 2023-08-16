@@ -10,6 +10,7 @@ type Props = {
   startTime?: number;
   endTime?: number;
   isHappyhour?: boolean;
+  disabled?: boolean;
 };
 const { Option } = Select;
 
@@ -20,6 +21,7 @@ const InputTimePicker = ({
   startTime = 0,
   endTime = 25,
   isHappyhour = false,
+  disabled,
 }: Props) => {
   const [selectTime, setSelectTime] = useState<string>(null);
 
@@ -56,6 +58,7 @@ const InputTimePicker = ({
       value={selectTime}
       placeholder={placeholder}
       size="large"
+      disabled={disabled}
     >
       {hourList.map((h) => {
         return ["00", "15", "30", "45"].map((m) => {
@@ -64,7 +67,7 @@ const InputTimePicker = ({
           return (
             <Option key={stringTime} value={stringTime}>
               {stringTime}
-              {isHappyhour && h < 16 && ` (해피아워 할인)`}
+              {/* {isHappyhour && h < 16 && ` (해피아워 할인)`} */}
             </Option>
           );
         });

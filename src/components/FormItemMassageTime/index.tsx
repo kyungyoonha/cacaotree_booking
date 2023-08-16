@@ -22,13 +22,13 @@ const FormItemMassageTime = () => {
           isHappyhour={true}
         />
       </Form.Item>
-      <Alert
+      {/* <Alert
         message="해피아워 적용 시간"
         description="10:00 am ~ 16:00 pm"
         type="info"
         showIcon
         style={{ width: "100%" }}
-      />
+      /> */}
     </>
   );
 };

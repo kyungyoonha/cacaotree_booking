@@ -54,6 +54,12 @@ export interface FormFirstdayMassageDirect extends FormFirstdayMassage {
   phone: string;
 }
 
+export interface FormLastdayMassageDirect extends FormLastdayMassage {
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export type FormType =
   | FormDaytimeMassage
   | FormFirstdayMassage

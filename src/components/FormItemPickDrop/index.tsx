@@ -7,6 +7,7 @@ import {
   StyledRadioGroup,
 } from "@styles/styledComponents";
 import translator from "@configs/translatorMap";
+import InputTimePicker from "@components/InputTimePicker";
 
 interface Props {
   form: FormInstance<any>;
@@ -123,6 +124,7 @@ const FormItemPickDrop = ({
               : valueLocation
           }
           size="large"
+          placeholder={disabledTime ? "-" : "장소를 입력해주세요."}
           disabled={disabledLoc}
           onChange={onChangeLocation}
         />
@@ -135,12 +137,23 @@ const FormItemPickDrop = ({
         initialValue={fixedValueTime}
         help={helpTime}
       >
-        <StyledInput
-          value={valueTime}
-          size="large"
-          placeholder="시간을 입력해주세요."
-          disabled={disabledTime}
-        />
+        {disabledTime ? (
+          <StyledInput
+            value={valueTime}
+            size="large"
+            placeholder={disabledTime ? "-" : "시간을 입력해주세요."}
+            disabled={disabledTime}
+          />
+        ) : (
+          <InputTimePicker
+            value={valueTime}
+            placeholder={disabledTime ? "-" : "시간을 입력해주세요."}
+            startTime={10}
+            endTime={23}
+            isHappyhour={true}
+            disabled={disabledTime}
+          />
+        )}
       </Form.Item>
     </>
   );
