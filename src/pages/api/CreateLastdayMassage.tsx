@@ -58,8 +58,11 @@ export default async function handler(
     massageKor.push(`${massage.split("/")[0]} (${sexKor})`);
   });
 
+  if (!isNaN(Date.parse(pickTime))) {
+    pickTime = dayjs(pickTime).format("hh:mm A");
+  }
+
   date = dayjs(date).format("YYYY. MM. DD");
-  pickTime = dayjs(pickTime).format("hh:mm A");
   massageTime = dayjs(massageTime).format("hh:mm A");
   dropLocation = dropLocation
     .replace("항구드랍 (1인 200페소 추가)", "Pier1")

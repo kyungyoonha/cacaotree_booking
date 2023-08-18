@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { DatePicker, Form, Spin, message } from "antd";
+import { Alert, DatePicker, Form, Spin, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -55,10 +55,17 @@ const ViewFirstdayMassageDirect = () => {
     [blockDates?.blockDatesFirstday]
   );
 
-  // useEffect(() => {
-  //   if (data?.ok) {
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (data?.ok) {
+      router.push("/cart/success");
+    }
+  }, [data, router]);
+
+  useEffect(() => {
+    if (error) {
+      message.error("잠시후에 다시 시도해주세요. 문의: cacaotreespa");
+    }
+  }, [error]);
 
   return (
     <LayoutQuestion>
@@ -129,12 +136,6 @@ const ViewFirstdayMassageDirect = () => {
           label="예약날짜"
           name="date"
           rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
-          extra={
-            <div>
-              → 전날도착: 20일 저녁 11:30분 도착 → 21일
-              <br />→ 당일도착: 21일 00시 10분 → 21일
-            </div>
-          }
         >
           <DatePicker
             format={"YYYY-MM-DD"}
@@ -144,6 +145,21 @@ const ViewFirstdayMassageDirect = () => {
             disabledDate={disabledDate}
           />
         </Form.Item>
+
+        <Alert
+          message="예약 날짜 참고"
+          description={
+            <div>
+              전날도착: 20일 저녁 11:30분 도착 → 21일
+              <br />
+              당일도착: 21일 00시 10분 → 21일
+            </div>
+          }
+          type="warning"
+          showIcon
+          style={{ width: "100%" }}
+        />
+        <br />
 
         <Form.Item
           label="도착시간"
@@ -188,12 +204,15 @@ const ViewFirstdayMassageDirect = () => {
               disabledLoc: false,
               disabledTime: true,
               fixedValueLoc: "",
-              fixedValueTime: "11:00 AM",
+              fixedValueTime: "11:00 am",
               helpLoc: (
-                <p style={{ marginBottom: "10px" }}>
-                  <span style={{ color: "red" }}>→ 드랍불가:</span>{" "}
-                  플랜테이션베이, 솔레아, 공항근처, 세부시티
-                </p>
+                <Alert
+                  message="드랍 불가"
+                  description="플랜테이션베이, 솔레아, 공항근처, 세부시티"
+                  type="warning"
+                  showIcon
+                  style={{ width: "100%", margin: "20px 0" }}
+                />
               ),
             },
             cebu: {
@@ -201,7 +220,7 @@ const ViewFirstdayMassageDirect = () => {
               disabledLoc: true,
               disabledTime: true,
               fixedValueLoc: "개별적으로 이동하겠습니다.",
-              fixedValueTime: "개별적으로 이동하겠습니다.",
+              fixedValueTime: "",
             },
             port: {
               title: "항구드랍",
@@ -209,7 +228,21 @@ const ViewFirstdayMassageDirect = () => {
               disabledTime: false,
               fixedValueLoc: "항구드랍 (1인 200페소 추가)",
               fixedValueTime: "",
-              helpTime: "→ 오션젯 티켓 시간을 적어주세요.",
+              helpTime: (
+                <Alert
+                  message="항구 드랍 시간을 적어주세요."
+                  description={
+                    <div>
+                      티켓시간 보다 2시간 전에 출발입니다.
+                      <br />
+                      예) 8시 20분 티켓 → 6시 20분
+                    </div>
+                  }
+                  type="warning"
+                  showIcon
+                  style={{ width: "100%", margin: "20px 0" }}
+                />
+              ),
               couponKey: "dropPort",
             },
             noNeed: {
@@ -217,8 +250,16 @@ const ViewFirstdayMassageDirect = () => {
               disabledLoc: false,
               disabledTime: true,
               fixedValueLoc: "",
-              fixedValueTime: "드랍 필요 없습니다.",
-              helpLoc: "→ 투어픽업은 투어종류를 적어주세요.",
+              fixedValueTime: "",
+              helpLoc: (
+                <Alert
+                  message="개별 이동 사유를 적어주세요."
+                  description="투어픽업은 투어종류를 적어주세요."
+                  type="warning"
+                  showIcon
+                  style={{ width: "100%", margin: "20px 0" }}
+                />
+              ),
             },
           }}
         />

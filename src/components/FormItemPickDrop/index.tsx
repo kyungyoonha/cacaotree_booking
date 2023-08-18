@@ -114,7 +114,7 @@ const FormItemPickDrop = ({
       <Form.Item
         label={titleLocation}
         name={keyLocation}
-        rules={[{ required: true, message: "장소를 입력해주세요." }]}
+        rules={[{ required: !disabledLoc, message: "장소를 입력해주세요." }]}
         help={helpLoc}
       >
         <StyledInput
@@ -133,7 +133,7 @@ const FormItemPickDrop = ({
       <Form.Item
         name={keyTime}
         label={titleTime}
-        rules={[{ required: true, message: "시간을 입력해주세요." }]}
+        rules={[{ required: !disabledTime, message: "시간을 입력해주세요." }]}
         initialValue={fixedValueTime}
         help={helpTime}
       >
@@ -148,8 +148,6 @@ const FormItemPickDrop = ({
           <InputTimePicker
             value={valueTime}
             placeholder={disabledTime ? "-" : "시간을 입력해주세요."}
-            startTime={10}
-            endTime={23}
             isHappyhour={true}
             disabled={disabledTime}
           />

@@ -61,12 +61,13 @@ const InputTimePicker = ({
       disabled={disabled}
     >
       {hourList.map((h) => {
-        return ["00", "15", "30", "45"].map((m) => {
+        return ["00", "10", "20", "30", "40", "50"].map((m) => {
           let hour = String(h).length === 1 ? "0" + h : h;
           let stringTime = hour + ":" + m;
+          let stringValue = hour + "시 " + m + "분";
           return (
             <Option key={stringTime} value={stringTime}>
-              {stringTime}
+              {stringValue}
               {/* {isHappyhour && h < 16 && ` (해피아워 할인)`} */}
             </Option>
           );

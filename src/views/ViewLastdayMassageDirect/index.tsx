@@ -7,15 +7,12 @@ import {
   StyledSelect,
 } from "@styles/styledComponents";
 import { Alert, DatePicker, Form, message, Select, Spin } from "antd";
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import massageLastday from "@configs/massage-lastday";
-import dayjs from "dayjs";
 import FormItemMassage from "@components/FormItemMassage";
-import { FormLastdayMassage, FormLastdayMassageDirect, ItemKey } from "@types";
+import { FormLastdayMassage, FormLastdayMassageDirect } from "@types";
 import { useRouter } from "next/router";
-import { useUIContext } from "src/contexts";
-import CartService from "src/services/CartService";
-import InputTimePicker from "@components/InputTimePicker";
+
 import FormItemMassageTime from "@components/FormItemMassageTime";
 import FormItemMemo from "@components/FormItemMemo";
 import FormItemPickDrop from "@components/FormItemPickDrop";
@@ -26,7 +23,7 @@ import { SpinWrapper } from "@components/ModalSpin/style";
 const { Option } = Select;
 
 const ViewLastdayMassageDirect = () => {
-  // const router = useRouter();
+  const router = useRouter();
   const [form] = Form.useForm<FormLastdayMassage>();
   // const { cartItem, blockDates, onFinishForm, onChangeCartItem, dispatch } =
   //   useUIContext();
@@ -63,6 +60,18 @@ const ViewLastdayMassageDirect = () => {
   //   },
   //   [blockDates?.blockDatesDaytime]
   // );
+
+  useEffect(() => {
+    if (data?.ok) {
+      router.push("/cart/success");
+    }
+  }, [data, router]);
+
+  useEffect(() => {
+    if (error) {
+      message.error("잠시후에 다시 시도해주세요. 문의: cacaotreespa");
+    }
+  }, [error]);
 
   return (
     <LayoutQuestion>

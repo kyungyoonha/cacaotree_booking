@@ -65,7 +65,9 @@ export default async function handler(
     .replace("막탄지역", "")
     .replace("막탄공항", "Airport");
 
-  dropTime = dropTime.replace("개별적으로 이동하겠습니다.", "x");
+  if (!isNaN(Date.parse(dropTime))) {
+    dropTime = dayjs(dropTime).format("hh:mm A");
+  }
 
   let confirmInfo =
     "[첫날팩]" +
@@ -73,7 +75,7 @@ export default async function handler(
     `총인원수: ${req.body.pax}명\n` +
     `예약날짜: ${date}\n` +
     `도착시간: ${pickTime}\n` +
-    `드랍시간: ${req.body.dropTime}\n` +
+    `드랍시간: ${dropTime}\n` +
     `드랍장소: ${req.body.dropLocation}\n` +
     `참고사항: ${req.body.memo}`;
 
@@ -200,14 +202,10 @@ export default async function handler(
                                 `;
                               })
                               .join("")}
+                              
                               <tr>
                                   <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">예약날짜</td>
                                   <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${date}</td>
-                              </tr>
-                              <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
-                              <tr>
-                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">도착시간</td>
-                                  <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${pickTime}</td>
                               </tr>
                               <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
                               <tr>
@@ -217,6 +215,26 @@ export default async function handler(
                                   }명</td>
                               </tr>
                               <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
+                              <tr>
+                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">도착시간</td>
+                                  <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${pickTime}</td>
+                              </tr>
+                              <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
+                              <tr>
+                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">드랍장소</td>
+                                  <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${dropLocation}</td>
+                              </tr>
+                              <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
+                              ${
+                                dropTime &&
+                                `
+                                <tr>
+                                    <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">드랍시간</td>
+                                    <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${dropTime}</td>
+                                </tr>
+                                <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
+                                `
+                              }
                               <tr>
                                   <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">마사지</td>
                                   <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${massageKor.join(
@@ -294,7 +312,7 @@ export default async function handler(
                 </td>
             </tr>
             <!-- Download agoda app -->
-            
+
             <tr style="text-align: center;">
                 <td style="color:#999999;font-size:12px;line-height:19px;padding-top:36px;">
                     <p style="margin:0;">
@@ -308,7 +326,7 @@ export default async function handler(
             <tr>
                 <td colspan="2"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:100%;margin:0px;">
             </tr>
-            
+
             <tr style="text-align: center;">
                 <td style="color:#999999;font-size:12px;line-height:19px;padding-top: 12px;">
                     <p style="margin:0;">
