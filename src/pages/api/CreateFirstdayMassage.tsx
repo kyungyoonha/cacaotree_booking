@@ -105,7 +105,11 @@ export default async function handler(
     await sheet.loadHeaderRow(1);
     await sheet.addRow(result);
     await transporter.sendMail({
-      to: ["gkb10a@naver.com"],
+      to: [
+        "gkb10a@gmail.com",
+        "cheonsang4226@gmail.com",
+        "gkdud9194@gmail.com",
+      ],
       from: "cacaotreespacebu@gmail.com",
       replyTo: email,
       subject: `${req.body.name} 님의 카카오트리 예약안내 메일입니다.`,

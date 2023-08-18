@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from "react";
-import { Alert, DatePicker, Form, Spin, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -7,29 +6,29 @@ import {
   StyledH1,
   StyledInput,
 } from "@styles/styledComponents";
-import massageFirstday from "@configs/massage-firstday";
+import { Form, DatePicker, message, Input, Alert, Spin } from "antd";
 import dayjs from "dayjs";
 import FormItemMassage from "@components/FormItemMassage";
-import { FormFirstdayMassageDirect } from "@types";
+import massageDaytime from "@configs/massage-daytime";
+import { FormDaytimeMassage, FormDaytimeMassageDirect } from "@types";
 import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
-import InputTimePicker from "@components/InputTimePicker";
+import FormItemMassageTime from "@components/FormItemMassageTime";
 import FormItemMemo from "@components/FormItemMemo";
 import FormItemPickDrop from "@components/FormItemPickDrop";
-import { EmailResponse } from "src/pages/api/nodemailer";
+import { EmailResponse } from "src/pages/api/CreateDaytimeMassage";
 import useMutation from "src/libs/useMutation";
 import { SpinWrapper } from "@components/ModalSpin/style";
 
-const ViewFirstdayMassageDirect = () => {
+const ViewDaytimeMassageDirect = () => {
   const router = useRouter();
-  const [form] = Form.useForm<FormFirstdayMassageDirect>();
-  const { blockDates } = useUIContext();
+  const [form] = Form.useForm<FormDaytimeMassage>();
 
-  const [createFirstdayMassage, { loading, data, error }] =
-    useMutation<EmailResponse>("/api/CreateFirstdayMassage");
+  const [createDaytimeMassage, { loading, data, error }] =
+    useMutation<EmailResponse>("/api/CreateDaytimeMassage");
 
-  const onFinish = (values: FormFirstdayMassageDirect) => {
-    createFirstdayMassage(values);
+  const onFinish = (values: FormDaytimeMassageDirect) => {
+    createDaytimeMassage(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -40,20 +39,9 @@ const ViewFirstdayMassageDirect = () => {
     message.error(errorMessage);
   };
 
-  const disabledDate = useCallback(
-    (current): boolean => {
-      if (blockDates?.blockDatesFirstday.length) {
-        return (
-          dayjs().add(1, "days") >= current ||
-          !!blockDates.blockDatesFirstday.find(
-            (date) => date === dayjs(current).format("YYYY-MM-DD")
-          )
-        );
-      }
-      return dayjs().add(1, "days") >= current;
-    },
-    [blockDates?.blockDatesFirstday]
-  );
+  const disabledDate = useCallback((current): boolean => {
+    return dayjs().add(-1, "days") >= current;
+  }, []);
 
   useEffect(() => {
     if (data?.ok) {
@@ -115,8 +103,8 @@ const ViewFirstdayMassageDirect = () => {
           <StyledInput placeholder="연락처를 입력해주세요." />
         </Form.Item>
 
-        <StyledH1>공항픽업 정보를 입력해주세요.</StyledH1>
-        <Form.Item name="package" hidden initialValue="[1] Airport Pick" />
+        <StyledH1>예약날짜를 선택해주세요.</StyledH1>
+        <Form.Item name="package" hidden initialValue="[2] Daytime" />
 
         <Form.Item label="쿠폰 목록" required hidden>
           <Form.List name="couponList" initialValue={[]}>
@@ -124,7 +112,7 @@ const ViewFirstdayMassageDirect = () => {
               <>
                 {fields.map((field) => (
                   <Form.Item {...field} key={field.key}>
-                    <StyledInput />
+                    <Input />
                   </Form.Item>
                 ))}
               </>
@@ -136,6 +124,9 @@ const ViewFirstdayMassageDirect = () => {
           label="예약날짜"
           name="date"
           rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
+          style={{ width: "100%" }}
+          // initialValue={dayjs().add(1, "days")}
+          // extra="당일 예약은 카톡으로 문의주세요."
         >
           <DatePicker
             format={"YYYY-MM-DD"}
@@ -145,130 +136,100 @@ const ViewFirstdayMassageDirect = () => {
             disabledDate={disabledDate}
           />
         </Form.Item>
-
+        <FormItemMassage form={form} selectOption={massageDaytime} />
+        <StyledH1 style={{ textAlign: "center" }}>
+          픽업 장소를 적어주세요.
+        </StyledH1>
+        <FormItemPickDrop
+          form={form}
+          keyLocation="pickLocation"
+          keyTime="pickTime"
+          titleLocation="픽업 장소"
+          titleTime="픽업 시간"
+          options={{
+            mactan: {
+              title: "막탄지역",
+              disabledLoc: false,
+              disabledTime: false,
+              fixedValueLoc: "",
+              fixedValueTime: "",
+            },
+            cebu: {
+              title: "세부시티",
+              disabledLoc: true,
+              disabledTime: true,
+              fixedValueLoc: "개별 이동하겠습니다.",
+              fixedValueTime: "",
+              placeholderLoc: "",
+              placeholderTime: "개별 이동하겠습니다.",
+            },
+            noNeed: {
+              title: "필요 없습니다.",
+              disabledLoc: true,
+              disabledTime: true,
+              fixedValueLoc: "픽업 필요 없습니다.",
+              fixedValueTime: "",
+              placeholderLoc: "",
+              placeholderTime: "픽업 필요 없습니다.",
+            },
+          }}
+        />
         <Alert
-          message="예약 날짜 참고"
-          description={
-            <div>
-              전날도착: 20일 저녁 11:30분 도착 → 21일
-              <br />
-              당일도착: 21일 00시 10분 → 21일
-            </div>
-          }
+          message="픽업 안내"
+          description="공항 픽업은 첫날팩을 이용해주세요."
           type="warning"
           showIcon
-          style={{ width: "100%" }}
+          style={{ width: "100%", margin: "20px 0" }}
         />
-        <br />
-
-        <Form.Item
-          label="도착시간"
-          name="pickTime"
-          rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
-        >
-          <InputTimePicker placeholder="도착시간을 선택해주세요." />
-        </Form.Item>
-
-        <Form.Item
-          label="항공기 편명"
-          name="pickFlight"
-          rules={[{ required: true, message: "항공기 편명을 입력해주세요." }]}
-        >
-          <StyledInput placeholder="항공기 편명을 입력해주세요." size="large" />
-        </Form.Item>
-
-        <Form.Item
-          label="픽업장소"
-          name="pickLocation"
-          rules={[{ required: true, message: "" }]}
-          initialValue="막탄공항"
-        >
-          <StyledInput disabled size="large" />
-        </Form.Item>
-
-        <FormItemMassage form={form} selectOption={massageFirstday} />
-
+        <FormItemMassageTime />
         <StyledH1 style={{ textAlign: "center" }}>
           드랍 장소를 적어주세요.
         </StyledH1>
-
         <FormItemPickDrop
           form={form}
           keyLocation="dropLocation"
           keyTime="dropTime"
-          titleLocation="드랍장소"
-          titleTime="드랍시간"
+          titleLocation="드랍 장소"
+          titleTime="드랍 시간"
           options={{
             mactan: {
               title: "막탄지역",
               disabledLoc: false,
               disabledTime: true,
               fixedValueLoc: "",
-              fixedValueTime: "11:00 am",
-              helpLoc: (
-                <Alert
-                  message="드랍 불가"
-                  description="플랜테이션베이, 솔레아, 공항근처, 세부시티"
-                  type="warning"
-                  showIcon
-                  style={{ width: "100%", margin: "20px 0" }}
-                />
-              ),
+              fixedValueTime: "",
+              placeholderLoc: "",
+              placeholderTime: "마사지 후 드랍하겠습니다.",
             },
             cebu: {
               title: "세부시티",
               disabledLoc: true,
               disabledTime: true,
-              fixedValueLoc: "개별적으로 이동하겠습니다.",
+              fixedValueLoc: "개별 이동하겠습니다.",
               fixedValueTime: "",
               placeholderLoc: "",
-              placeholderTime: "개별적으로 이동하겠습니다.",
-            },
-            port: {
-              title: "항구드랍",
-              disabledLoc: true,
-              disabledTime: false,
-              fixedValueLoc: "항구드랍 (1인 200페소 추가)",
-              fixedValueTime: "",
-              helpTime: (
-                <Alert
-                  message="항구 드랍 시간을 적어주세요."
-                  description={
-                    <div>
-                      티켓시간 보다 2시간 전에 출발입니다.
-                      <br />
-                      예) 8시 20분 티켓 → 6시 20분
-                    </div>
-                  }
-                  type="warning"
-                  showIcon
-                  style={{ width: "100%", margin: "20px 0" }}
-                />
-              ),
-              couponKey: "dropPort",
+              placeholderTime: "개별 이동하겠습니다.",
             },
             noNeed: {
               title: "필요 없습니다.",
-              disabledLoc: false,
+              disabledLoc: true,
               disabledTime: true,
-              fixedValueLoc: "",
+              fixedValueLoc: "필요 없습니다.",
               fixedValueTime: "",
               placeholderLoc: "",
               placeholderTime: "필요 없습니다.",
-              helpLoc: (
-                <Alert
-                  message="개별 이동 사유를 적어주세요."
-                  description="투어픽업은 투어종류를 적어주세요."
-                  type="warning"
-                  showIcon
-                  style={{ width: "100%", margin: "20px 0" }}
-                />
-              ),
             },
           }}
         />
-
+        <Alert
+          message="드랍 안내"
+          description="공항 드랍은 막날팩을 이용해주세요."
+          type="warning"
+          showIcon
+          style={{ width: "100%", margin: "20px 0" }}
+        />
         <FormItemMemo />
+
         {loading ? (
           <SpinWrapper>
             <Spin />
@@ -283,4 +244,4 @@ const ViewFirstdayMassageDirect = () => {
   );
 };
 
-export default ViewFirstdayMassageDirect;
+export default ViewDaytimeMassageDirect;

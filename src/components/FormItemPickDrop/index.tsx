@@ -26,6 +26,8 @@ export interface FormItemPickDropOption {
   disabledTime: boolean;
   fixedValueLoc: string;
   fixedValueTime: string;
+  placeholderLoc?: string;
+  placeholderTime?: string;
   helpLoc?: React.ReactNode;
   helpTime?: React.ReactNode;
   couponKey?: CouponKey;
@@ -48,8 +50,15 @@ const FormItemPickDrop = ({
   const valueTime = Form.useWatch(keyTime, form);
   const [selectKey, setSelectKey] = useState<string>(defaultKey);
 
-  const { disabledLoc, disabledTime, fixedValueTime, helpLoc, helpTime } =
-    useMemo(() => options[selectKey], [options, selectKey]);
+  const {
+    disabledLoc,
+    disabledTime,
+    fixedValueTime,
+    helpLoc,
+    helpTime,
+    placeholderLoc,
+    placeholderTime,
+  } = useMemo(() => options[selectKey], [options, selectKey]);
 
   const onChangeCoupon = (newCouponKey) => {
     let except = Object.values(options)
@@ -124,7 +133,7 @@ const FormItemPickDrop = ({
               : valueLocation
           }
           size="large"
-          placeholder={disabledTime ? "-" : "장소를 입력해주세요."}
+          placeholder={placeholderLoc ? placeholderLoc : "장소를 입력해주세요."}
           disabled={disabledLoc}
           onChange={onChangeLocation}
         />
@@ -141,13 +150,17 @@ const FormItemPickDrop = ({
           <StyledInput
             value={valueTime}
             size="large"
-            placeholder={disabledTime ? "-" : "시간을 입력해주세요."}
+            placeholder={
+              placeholderTime ? placeholderTime : "시간을 입력해주세요."
+            }
             disabled={disabledTime}
           />
         ) : (
           <InputTimePicker
             value={valueTime}
-            placeholder={disabledTime ? "-" : "시간을 입력해주세요."}
+            placeholder={
+              placeholderTime ? placeholderTime : "시간을 입력해주세요."
+            }
             isHappyhour={true}
             disabled={disabledTime}
           />

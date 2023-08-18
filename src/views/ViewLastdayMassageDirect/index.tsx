@@ -7,7 +7,7 @@ import {
   StyledSelect,
 } from "@styles/styledComponents";
 import { Alert, DatePicker, Form, message, Select, Spin } from "antd";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import massageLastday from "@configs/massage-lastday";
 import FormItemMassage from "@components/FormItemMassage";
 import { FormLastdayMassage, FormLastdayMassageDirect } from "@types";
@@ -19,17 +19,15 @@ import FormItemPickDrop from "@components/FormItemPickDrop";
 import useMutation from "src/libs/useMutation";
 import { EmailResponse } from "src/pages/api/CreateFirstdayMassage";
 import { SpinWrapper } from "@components/ModalSpin/style";
+import dayjs from "dayjs";
+import { useUIContext } from "src/contexts";
 
 const { Option } = Select;
 
 const ViewLastdayMassageDirect = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormLastdayMassage>();
-  // const { cartItem, blockDates, onFinishForm, onChangeCartItem, dispatch } =
-  //   useUIContext();
-
-  // const itemKey = router.pathname.split("/")[2] as ItemKey;
-  // const seq = router.query.seq ? Number(router.query.seq) : null;
+  const { blockDates } = useUIContext();
 
   const [createFirstdayMassage, { loading, data, error }] =
     useMutation<EmailResponse>("/api/CreateLastdayMassage");
@@ -46,20 +44,9 @@ const ViewLastdayMassageDirect = () => {
     message.error(errorMessage);
   };
 
-  // const disabledDate = useCallback(
-  //   (current): boolean => {
-  //     if (blockDates?.blockDatesDaytime.length) {
-  //       return (
-  //         dayjs().add(0, "days") >= current ||
-  //         !!blockDates.blockDatesDaytime.find(
-  //           (date) => date === dayjs(current).format("YYYY-MM-DD")
-  //         )
-  //       );
-  //     }
-  //     return dayjs().add(0, "days") >= current;
-  //   },
-  //   [blockDates?.blockDatesDaytime]
-  // );
+  const disabledDate = useCallback((current): boolean => {
+    return dayjs().add(-1, "days") >= current;
+  }, []);
 
   useEffect(() => {
     if (data?.ok) {
@@ -150,7 +137,7 @@ const ViewLastdayMassageDirect = () => {
             placeholder="예약날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px" }}
-            // disabledDate={disabledDate}
+            disabledDate={disabledDate}
           />
         </Form.Item>
 

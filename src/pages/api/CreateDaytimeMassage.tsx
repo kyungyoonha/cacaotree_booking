@@ -65,21 +65,18 @@ export default async function handler(
   date = dayjs(date).format("YYYY. MM. DD");
   massageTime = dayjs(massageTime).format("hh:mm A");
   dropLocation = dropLocation
-    .replace("항구드랍 (1인 200페소 추가)", "Pier1")
     .replace("필요 없습니다.", "No Need")
-    .replace("개별적으로 이동하겠습니다.", "Drop No Need")
-    .replace("막탄지역", "")
-    .replace("막탄공항", "Airport");
+    .replace("개별적으로 이동하겠습니다.", "Drop No Need");
 
   let confirmInfo =
-    "[막날팩]\n" +
+    "[일반 패키지]\n" +
     `고객성함: ${req.body.name}\n` +
     `총인원수: ${req.body.pax}명\n` +
     `예약날짜: ${date}\n` +
     `픽업시간: ${pickTime}\n` +
     `픽업장소: ${pickLocation}\n` +
     `마사지예약: ${massageTime}\n` +
-    `공항출발: ${dropTime}\n` +
+    `드랍장소: ${req.body.dropLocation}\n` +
     `참고사항: ${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
@@ -95,7 +92,7 @@ export default async function handler(
   result["pickTime"] = pickTime;
   result["pickLocation"] = pickLocation;
   result["massageTime"] = massageTime;
-  result["dropLocation"] = "Airport";
+  result["dropLocation"] = dropLocation;
   result["dropTime"] = dropTime;
   result["confirmInfo"] = confirmInfo;
 
@@ -192,7 +189,7 @@ export default async function handler(
                 <td style="margin:0;padding:0;padding-top: 16px;">
                     <table align="center" border="0" cellspacing="0" cellpadding="0"  style="font-size: 14px; color: #2A2A2E; border: 1px solid #DDDFE2; padding: 0 24px 30px; margin: 0 auto;max-width: 650px;border-radius: 8px;background-color: #FFFFFF;">
                         <tbody>
-                            <tr style="border-collapse:collapse;"><td colspan="3" style="padding:0;margin:0;padding-top:24px;font-weight: bold; font-size: 18px; line-height: 21px;">마지막날 공항드랍 마사지</td></tr>
+                            <tr style="border-collapse:collapse;"><td colspan="3" style="padding:0;margin:0;padding-top:24px;font-weight: bold; font-size: 18px; line-height: 21px;">일반 패키지 마사지</td></tr>
                             ${["name", "email", "phone", "pax"]
                               .map((key) => {
                                 return `
@@ -238,8 +235,8 @@ export default async function handler(
                               </tr>
                               <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
                               <tr>
-                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">공항출발시간</td>
-                                  <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${dropTime}</td>
+                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">드랍장소</td>
+                                  <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${dropLocation}</td>
                               </tr>
                               <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>
                               <tr>
@@ -312,7 +309,7 @@ export default async function handler(
                 </td>
             </tr>
             <!-- Download agoda app -->
-            
+
             <tr style="text-align: center;">
                 <td style="color:#999999;font-size:12px;line-height:19px;padding-top:36px;">
                     <p style="margin:0;">
@@ -326,7 +323,7 @@ export default async function handler(
             <tr>
                 <td colspan="2"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:100%;margin:0px;">
             </tr>
-            
+
             <tr style="text-align: center;">
                 <td style="color:#999999;font-size:12px;line-height:19px;padding-top: 12px;">
                     <p style="margin:0;">
