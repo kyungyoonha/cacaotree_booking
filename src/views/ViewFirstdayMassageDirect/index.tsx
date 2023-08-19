@@ -253,7 +253,7 @@ const ViewFirstdayMassageDirect = () => {
               disabledTime: true,
               fixedValueLoc: "",
               fixedValueTime: "",
-              placeholderLoc: "",
+              placeholderLoc: "개별이동 이유를 적어주세요.",
               placeholderTime: "필요 없습니다.",
               helpLoc: (
                 <Alert
