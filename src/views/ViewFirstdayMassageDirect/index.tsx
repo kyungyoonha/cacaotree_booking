@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Alert, DatePicker, Form, Spin, message } from "antd";
+import { Alert, DatePicker, Form, Spin, TimePicker, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -19,6 +19,7 @@ import FormItemPickDrop from "@components/FormItemPickDrop";
 import { EmailResponse } from "src/pages/api/nodemailer";
 import useMutation from "src/libs/useMutation";
 import { SpinWrapper } from "@components/ModalSpin/style";
+import CustimeTimePicker from "@components/CustomTimePicker/indext";
 
 const ViewFirstdayMassageDirect = () => {
   const router = useRouter();
@@ -166,7 +167,7 @@ const ViewFirstdayMassageDirect = () => {
           name="pickTime"
           rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
         >
-          <InputTimePicker placeholder="도착시간을 선택해주세요." />
+          <CustimeTimePicker placeholder="도착시간을 선택해주세요." />
         </Form.Item>
 
         <Form.Item

@@ -1,5 +1,5 @@
 import { SCREENS } from "@configs/screens";
-import { Button, Form, Input, Radio, Select } from "antd";
+import { Button, Form, Input, Radio, Select, TimePicker } from "antd";
 import styled from "styled-components";
 
 export const StyledH1 = styled.h1`

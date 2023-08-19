@@ -51,6 +51,12 @@ const GlobalStyles = createGlobalStyle`
     }
 
     
+    .ant-picker-footer {
+        display: none !important;
+    }
+
+    
+    
     
     @keyframes animation-arrow {
         0% {

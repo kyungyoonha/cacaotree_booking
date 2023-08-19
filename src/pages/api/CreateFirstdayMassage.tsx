@@ -1,6 +1,4 @@
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import type { NextApiRequest, NextApiResponse } from "next";
 import transporter from "src/libs/nodemailer";
 import translator from "@configs/translatorMap";
@@ -9,9 +7,6 @@ const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault("Asia/Seoul");
 export type EmailRequest = {
   name: string;
   message: string;
@@ -75,7 +70,7 @@ export default async function handler(
   }
 
   let confirmInfo =
-    "[첫날팩]" +
+    "[첫날팩]]\n" +
     `고객성함: ${req.body.name}\n` +
     `총인원수: ${req.body.pax}명\n` +
     `예약날짜: ${date}\n` +

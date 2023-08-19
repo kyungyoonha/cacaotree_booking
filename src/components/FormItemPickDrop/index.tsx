@@ -8,6 +8,7 @@ import {
 } from "@styles/styledComponents";
 import translator from "@configs/translatorMap";
 import InputTimePicker from "@components/InputTimePicker";
+import CustomTimePicker from "@components/CustomTimePicker/indext";
 
 interface Props {
   form: FormInstance<any>;
@@ -156,13 +157,19 @@ const FormItemPickDrop = ({
             disabled={disabledTime}
           />
         ) : (
-          <InputTimePicker
+          // <InputTimePicker
+          //   value={valueTime}
+          //   placeholder={
+          //     placeholderTime ? placeholderTime : "시간을 입력해주세요."
+          //   }
+          //   isHappyhour={true}
+          //   disabled={disabledTime}
+          // />
+          <CustomTimePicker
             value={valueTime}
             placeholder={
               placeholderTime ? placeholderTime : "시간을 입력해주세요."
             }
-            isHappyhour={true}
-            disabled={disabledTime}
           />
         )}
       </Form.Item>
