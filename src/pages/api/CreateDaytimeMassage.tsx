@@ -77,7 +77,7 @@ export default async function handler(
     `픽업장소: ${pickLocation}\n` +
     `마사지예약: ${massageTime}\n` +
     `드랍장소: ${req.body.dropLocation}\n` +
-    `마사지: ${massageKor}\n` +
+    `마사지: ${massageKor.join(`\n`)}\n` +
     `참고사항: ${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
