@@ -104,7 +104,7 @@ export default async function handler(
     await doc.getInfo();
     let sheet = doc.sheetsByTitle["Booking"];
     await sheet.loadHeaderRow(1);
-    await sheet.addRow(result);
+    sheet.addRow(result);
     await transporter.sendMail({
       to: [
         "gkb10a@gmail.com",
