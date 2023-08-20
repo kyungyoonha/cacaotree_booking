@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-
 import type { NextApiRequest, NextApiResponse } from "next";
 import transporter from "src/libs/nodemailer";
 import translator from "@configs/translatorMap";
@@ -78,6 +77,7 @@ export default async function handler(
     `픽업장소: ${pickLocation}\n` +
     `마사지예약: ${massageTime}\n` +
     `드랍장소: ${req.body.dropLocation}\n` +
+    `마사지: ${massageKor}\n` +
     `참고사항: ${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {

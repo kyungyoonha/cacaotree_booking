@@ -29,26 +29,12 @@ const InputTimePicker = ({
   hourList = hourList.filter((i) => i >= startTime && i < endTime);
 
   const onChangeSelect = (time) => {
-    // let tempTime = time.split(" ")[0];
-    let hour = time.split(":")[0];
-    let mins = time.split(":")[1];
-
-    let timeFormat = dayjs().hour(hour);
-    timeFormat = timeFormat.minute(mins);
-
-    onChange(timeFormat);
+    onChange(time);
   };
 
   useEffect(() => {
     if (value) {
-      let hour = String(new Date(value).getHours());
-      let minute = String(new Date(value).getMinutes());
-
-      hour = hour.length === 1 ? "0" + hour : hour;
-      minute = minute.length === 1 ? "0" + minute : minute;
-
-      const stringTime = hour + ":" + minute;
-      setSelectTime(stringTime);
+      setSelectTime(value);
     }
   }, [value]);
 
@@ -63,11 +49,13 @@ const InputTimePicker = ({
       {hourList.map((h) => {
         return ["00", "10", "20", "30", "40", "50"].map((m) => {
           let hour = String(h).length === 1 ? "0" + h : h;
-          let stringTime = hour + ":" + m;
+          let stringAA = h < 12 ? "AM" : "PM";
+          let stringTime = hour + ":" + m + " " + stringAA;
           let stringValue = hour + "시 " + m + "분";
+
           return (
             <Option key={stringTime} value={stringTime}>
-              {stringValue}
+              {(stringAA === "AM" ? "오전 " : "오후 ") + stringValue}
               {/* {isHappyhour && h < 16 && ` (해피아워 할인)`} */}
             </Option>
           );

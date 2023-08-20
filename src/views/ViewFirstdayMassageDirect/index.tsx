@@ -13,13 +13,12 @@ import FormItemMassage from "@components/FormItemMassage";
 import { FormFirstdayMassageDirect } from "@types";
 import { useRouter } from "next/router";
 import { useUIContext } from "src/contexts";
-import InputTimePicker from "@components/InputTimePicker";
 import FormItemMemo from "@components/FormItemMemo";
 import FormItemPickDrop from "@components/FormItemPickDrop";
 import { EmailResponse } from "src/pages/api/nodemailer";
 import useMutation from "src/libs/useMutation";
 import { SpinWrapper } from "@components/ModalSpin/style";
-import CustimeTimePicker from "@components/CustomTimePicker/indext";
+import InputTimePicker from "@components/InputTimePicker";
 
 const ViewFirstdayMassageDirect = () => {
   const router = useRouter();
@@ -167,7 +166,8 @@ const ViewFirstdayMassageDirect = () => {
           name="pickTime"
           rules={[{ required: true, message: "도착시간을 선택해주세요." }]}
         >
-          <CustimeTimePicker placeholder="도착시간을 선택해주세요." />
+          {/* <CustimeTimePicker placeholder="도착시간을 선택해주세요." /> */}
+          <InputTimePicker placeholder="도착시간을 선택해주세요." />
         </Form.Item>
 
         <Form.Item

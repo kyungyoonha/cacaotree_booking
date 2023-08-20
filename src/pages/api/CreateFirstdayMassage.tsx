@@ -57,7 +57,7 @@ export default async function handler(
   });
 
   date = dayjs(date).format("YYYY. MM. DD");
-  pickTime = dayjs(pickTime).format("hh:mm A");
+  //   pickTime = dayjs(pickTime).format("hh:mm A");
   dropLocation = dropLocation
     .replace("항구드랍 (1인 200페소 추가)", "Pier1")
     .replace("필요 없습니다.", "No Need")
@@ -70,13 +70,14 @@ export default async function handler(
   }
 
   let confirmInfo =
-    "[첫날팩]]\n" +
+    "[첫날팩]\n" +
     `고객성함: ${req.body.name}\n` +
     `총인원수: ${req.body.pax}명\n` +
     `예약날짜: ${date}\n` +
     `도착시간: ${pickTime}\n` +
     `드랍시간: ${dropTime}\n` +
     `드랍장소: ${req.body.dropLocation}\n` +
+    `마사지: ${massageKor}\n` +
     `참고사항: ${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
@@ -207,7 +208,7 @@ export default async function handler(
                                 `;
                               })
                               .join("")}
-                              
+
                               <tr>
                                   <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">예약날짜</td>
                                   <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${date}</td>

@@ -157,20 +157,20 @@ const FormItemPickDrop = ({
             disabled={disabledTime}
           />
         ) : (
-          // <InputTimePicker
-          //   value={valueTime}
-          //   placeholder={
-          //     placeholderTime ? placeholderTime : "시간을 입력해주세요."
-          //   }
-          //   isHappyhour={true}
-          //   disabled={disabledTime}
-          // />
-          <CustomTimePicker
+          <InputTimePicker
             value={valueTime}
             placeholder={
               placeholderTime ? placeholderTime : "시간을 입력해주세요."
             }
+            isHappyhour={true}
+            disabled={disabledTime}
           />
+          // <CustomTimePicker
+          //   value={valueTime}
+          //   placeholder={
+          //     placeholderTime ? placeholderTime : "시간을 입력해주세요."
+          //   }
+          // />
         )}
       </Form.Item>
     </>

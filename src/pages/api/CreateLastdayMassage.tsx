@@ -80,6 +80,7 @@ export default async function handler(
     `픽업장소: ${pickLocation}\n` +
     `마사지예약: ${massageTime}\n` +
     `공항출발: ${dropTime}\n` +
+    `마사지: ${massageKor}\n` +
     `참고사항: ${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
