@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import transporter from "src/libs/nodemailer";
 import translator from "@configs/translatorMap";
+import { changeTimeFormat } from "src/utilities/funcs";
 
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
@@ -90,10 +91,11 @@ export default async function handler(
   result["paymentWon"] = paymentWon;
   result["massage"] = massageEng.join("");
   result["date"] = "입금전/" + date;
-  result["pickTime"] = pickTime;
+  result["pickTime"] = changeTimeFormat(pickTime);
+  result["massageTime"] = changeTimeFormat(pickTime);
   result["pickLocation"] = "Airport";
   result["dropLocation"] = dropLocation;
-  result["dropTime"] = dropTime;
+  result["dropTime"] = changeTimeFormat(dropTime);
   result["confirmInfo"] = confirmInfo;
 
   try {
