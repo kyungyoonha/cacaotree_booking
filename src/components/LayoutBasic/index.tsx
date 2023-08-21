@@ -13,26 +13,10 @@ interface Props {
 }
 
 const LayoutBasic = ({ background, children }: Props) => {
-  const { dispatch, getBlockDates } = useUIContext();
-  const { data, isLoading } = useSWR<GetBuyListResult>(`/api/GetBlockDate`);
-
-  useEffect(() => {
-    if (!data?.ok) return;
-    getBlockDates(data.data, dispatch);
-  }, [data, dispatch, getBlockDates]);
-
   return (
     <>
       <Header />
-      <Wrapper background={background}>
-        {isLoading ? (
-          <SpinWrapper>
-            <Spin />
-          </SpinWrapper>
-        ) : (
-          children
-        )}
-      </Wrapper>
+      <Wrapper background={background}>{children}</Wrapper>
     </>
   );
 };
@@ -47,12 +31,4 @@ const Wrapper = styled.div<Props2>`
   background: ${(props) => props.background};
   margin-top: 50px;
   height: calc(100vh - 70px);
-`;
-
-const SpinWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
 `;

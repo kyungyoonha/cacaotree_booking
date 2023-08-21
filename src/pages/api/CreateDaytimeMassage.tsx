@@ -63,7 +63,7 @@ export default async function handler(
   }
 
   date = dayjs(date).format("YYYY. MM. DD");
-  massageTime = dayjs(massageTime).format("hh:mm A");
+  //   massageTime = dayjs(massageTime).format("hh:mm A");
   dropLocation = dropLocation
     .replace("필요 없습니다.", "No Need")
     .replace("개별적으로 이동하겠습니다.", "Drop No Need");

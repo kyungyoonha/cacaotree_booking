@@ -48,17 +48,17 @@ const ViewLastdayMassageDirect = () => {
     return dayjs().add(-1, "days") >= current;
   }, []);
 
-  useEffect(() => {
-    if (data?.ok) {
-      router.push("/cart/success");
-    }
-  }, [data, router]);
+  // useEffect(() => {
+  //   if (data?.ok) {
+  //     router.push("/cart/success");
+  //   }
+  // }, [data, router]);
 
-  useEffect(() => {
-    if (error) {
-      message.error("잠시후에 다시 시도해주세요. 문의: cacaotreespa");
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     message.error("잠시후에 다시 시도해주세요. 문의: cacaotreespa");
+  //   }
+  // }, [error]);
 
   return (
     <LayoutQuestion>
