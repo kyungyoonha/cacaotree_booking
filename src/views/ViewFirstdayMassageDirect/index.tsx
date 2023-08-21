@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { Alert, DatePicker, Form, Spin, TimePicker, message } from "antd";
+import { Alert, DatePicker, Form, Spin, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
   StyledButton,
@@ -19,18 +19,22 @@ import { EmailResponse } from "src/pages/api/nodemailer";
 import useMutation from "src/libs/useMutation";
 import { SpinWrapper } from "@components/ModalSpin/style";
 import InputTimePicker from "@components/InputTimePicker";
-import { GetBuyListResult } from "src/pages/api/GetBlockDate";
-import useSWR from "swr";
 import styled from "styled-components";
+import axios from "axios";
 
 const ViewFirstdayMassageDirect = () => {
   const router = useRouter();
   const [form] = Form.useForm<FormFirstdayMassageDirect>();
   const { blockDates, dispatch, getBlockDates } = useUIContext();
-  const { data: dataBlock, isLoading } = useSWR<GetBuyListResult>(
-    `/api/GetBlockDate`,
-    {}
-  );
+
+  const getBlockDate = async () => {
+    const result = await axios.get("/api/GetBlockDate");
+    getBlockDates(result.data, dispatch);
+  };
+
+  useEffect(() => {
+    getBlockDate();
+  }, [getBlockDates]);
 
   const [createFirstdayMassage, { loading, data, error }] =
     useMutation<EmailResponse>("/api/CreateFirstdayMassage");
@@ -63,11 +67,6 @@ const ViewFirstdayMassageDirect = () => {
   );
 
   useEffect(() => {
-    if (!dataBlock?.ok) return;
-    getBlockDates(dataBlock.data, dispatch);
-  }, [dataBlock, dispatch, getBlockDates]);
-
-  useEffect(() => {
     if (data?.ok) {
       router.push("/cart/success");
     }
@@ -81,7 +80,7 @@ const ViewFirstdayMassageDirect = () => {
 
   return (
     <>
-      {isLoading ? (
+      {!blockDates ? (
         <SpinWrapper2>
           <Spin />
         </SpinWrapper2>
