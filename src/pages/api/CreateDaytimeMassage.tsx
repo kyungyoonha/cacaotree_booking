@@ -124,8 +124,9 @@ export default async function handler(
       dstaddr: "01068488231",
       send_reserve: "0",
       button_type: "0",
-      next_type: "1",
+      next_type: "0",
     });
+    console.log(process.env.KAKAO_API_KEY);
 
     await transporter.sendMail({
       to: [
