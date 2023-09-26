@@ -69,28 +69,37 @@ export default async function handler(
   dropLocation = dropLocation
     .replace("항구드랍 (1인 200페소 추가)", "Pier1")
     .replace("필요 없습니다.", "No Need")
-    .replace("개별적으로 이동하겠습니다.", "Drop No Need")
+    .replace("개별 이동하겠습니다.", "Drop No Need")
     .replace("막탄지역", "")
     .replace("막탄공항", "Airport");
+
+  let msgString = "\n  - " + massageKor.join(`\n  - `);
+  let msgOccupy = msgString.includes("120") ? "120분" : "90분";
 
   let confirmInfo =
     "[막날팩]\n" +
     `◆ 고객성함: ${req.body.name}\n` +
     `◆ 총인원수: ${req.body.pax}명\n` +
     `◆ 예약날짜: ${date}\n` +
+    `◆ 총마사지: ${msgOccupy}\n` +
     `◆ 픽업시간: ${pickTime}\n` +
     `◆ 픽업장소: ${pickLocation}\n` +
     `◆ 예약시간: ${massageTime}\n` +
     `◆ 공항출발: ${dropTime}\n` +
-    `◆ 마사지: ${massageKor.join(`\n`)}\n` +
+    `◆ 마사지: ${msgString}\n` +
     `◆ 참고사항: ${req.body.memo}`;
 
-  let msg =
-    "♡♥안녕하세요. 고객님♡♥\n" +
-    "카카오트라 스파 입니다.\n" +
-    '홈페이지 통해 예약주신 "귀국팩" 예약 확인이 되었습니다. 아래정보가 맞는지 한번 더 확인해 주세요.\n\n' +
-    `${confirmInfo}\n\n\n` +
-    `★차량정보는 당일 또는 전날에 안내 드리겠습니다★`;
+  let variable =
+    `${req.body.name}` +
+    `|${req.body.pax}명` +
+    `|${date}` +
+    `|${msgOccupy}` +
+    `|${pickTime}` +
+    `|${pickLocation}` +
+    `|${massageTime}` +
+    `|${dropTime}` +
+    `|${msgString}` +
+    `|${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
     result[key] = formWithoutExcept[key];
@@ -121,20 +130,20 @@ export default async function handler(
 
     await axios({
       method: "POST",
-      url: "http://221.139.14.189/API/friendstalk_send",
+      url: "http://221.139.14.189/API/alimtalk_api",
       headers: {
         "Accept-Encoding": "deflate, br",
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
       data: {
         api_key: process.env.KAKAO_API_KEY,
-        msg: msg,
-        plusfriend: "@cacaotreespa",
+        template_code: "SJT_096891",
+        variable,
         callback: "01083438231",
         dstaddr: "01068488231",
-        send_reserve: "0",
-        button_type: "0",
+        // dstaddr: "01092066598",
         next_type: "0",
+        send_reserve: "0",
       },
     });
 
@@ -344,7 +353,7 @@ export default async function handler(
                 </td>
             </tr>
             <!-- Download agoda app -->
-            
+
             <tr style="text-align: center;">
                 <td style="color:#999999;font-size:12px;line-height:19px;padding-top:36px;">
                     <p style="margin:0;">
@@ -358,7 +367,7 @@ export default async function handler(
             <tr>
                 <td colspan="2"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:100%;margin:0px;">
             </tr>
-            
+
             <tr style="text-align: center;">
                 <td style="color:#999999;font-size:12px;line-height:19px;padding-top: 12px;">
                     <p style="margin:0;">

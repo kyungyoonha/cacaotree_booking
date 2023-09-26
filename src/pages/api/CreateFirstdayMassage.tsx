@@ -63,7 +63,7 @@ export default async function handler(
   dropLocation = dropLocation
     .replace("항구드랍 (1인 200페소 추가)", "Pier1")
     .replace("필요 없습니다.", "No Need")
-    .replace("개별적으로 이동하겠습니다.", "Drop No Need")
+    .replace("개별 이동하겠습니다.", "Drop No Need")
     .replace("막탄지역", "")
     .replace("막탄공항", "Airport");
 
@@ -71,27 +71,46 @@ export default async function handler(
     dropTime = dayjs(dropTime).format("hh:mm A");
   }
 
+  let msgString = "\n  - " + massageKor.join(`\n  - `);
+  let msgOccupy = msgString.includes("120") ? "120분" : "90분";
+
   let confirmInfo =
     "[첫날팩]\n" +
     `◆ 고객성함: ${req.body.name}\n` +
     `◆ 총인원수: ${req.body.pax}명\n` +
     `◆ 예약날짜: ${date}\n` +
+    `◆ 총마사지: ${msgOccupy}\n` +
     `◆ 도착시간: ${pickTime}\n` +
+    `◆ 픽업장소: 막탄공항\n` +
+    `◆ 항공편명: ${req.body.pickFlight}\n` +
     `◆ 드랍시간: ${dropTime}\n` +
     `◆ 드랍장소: ${req.body.dropLocation}\n` +
-    `◆ 마사지: ${massageKor.join(`\n`)}\n` +
+    `◆ 마사지: ${msgString}\n` +
     `◆ 참고사항: ${req.body.memo}`;
 
-  let msg =
-    "♡♥안녕하세요. 고객님♡♥\n" +
-    "카카오트라 스파 입니다.\n" +
-    '홈페이지 통해 예약주신 "첫날팩" 예약 확인이 되었습니다. 아래정보가 맞는지 한번 더 확인해 주세요.\n\n' +
-    `${confirmInfo}\n\n\n` +
-    `아래 보내드리는 "첫날팩" 안내사항을 꼭 확인해 주세요:)`;
+  let variable =
+    `${req.body.name}` +
+    `|${req.body.pax}명` +
+    `|${date}` +
+    `|${msgOccupy}` +
+    `|${pickTime}` +
+    `|막탄공항` +
+    `|${req.body.pickFlight || ""}` +
+    `|${dropTime}` +
+    `|${req.body.dropLocation || ""}` +
+    `|${msgString}` +
+    `|${req.body.memo}`;
 
-  Object.keys(formWithoutExcept).forEach((key) => {
-    result[key] = formWithoutExcept[key];
-  });
+  //   let msg =
+  //     "♡♥안녕하세요. 고객님♡♥\n" +
+  //     "카카오트라 스파 입니다.\n" +
+  //     '홈페이지 통해 예약주신 "첫날팩" 예약 확인이 되었습니다. 아래정보가 맞는지 한번 더 확인해 주세요.\n\n' +
+  //     `${confirmInfo}\n\n\n` +
+  //     `아래 보내드리는 "첫날팩" 안내사항을 꼭 확인해 주세요:)`;
+
+  //   Object.keys(formWithoutExcept).forEach((key) => {
+  //     result[key] = formWithoutExcept[key];
+  //   });
 
   result["company"] = "미확정";
   result["confirmDone"] = "N";
@@ -116,22 +135,41 @@ export default async function handler(
     await sheet.loadHeaderRow(1);
     sheet.addRow(result);
 
+    // const result2 = await axios({
+    //   method: "POST",
+    //   url: "http://221.139.14.189/API/friendstalk_send",
+    //   headers: {
+    //     "Accept-Encoding": "deflate, br",
+    //     "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+    //   },
+    //   data: {
+    //     api_key: process.env.KAKAO_API_KEY,
+    //     msg: msg,
+    //     plusfriend: "@cacaotreespa",
+    //     callback: "01083438231",
+    //     dstaddr: "01068488231",
+    //     send_reserve: "0",
+    //     button_type: "0",
+    //     next_type: "0",
+    //   },
+    // });
+
     const result2 = await axios({
       method: "POST",
-      url: "http://221.139.14.189/API/friendstalk_send",
+      url: "http://221.139.14.189/API/alimtalk_api",
       headers: {
         "Accept-Encoding": "deflate, br",
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
       data: {
         api_key: process.env.KAKAO_API_KEY,
-        msg: msg,
-        plusfriend: "@cacaotreespa",
+        template_code: "SJT_096892",
+        variable,
         callback: "01083438231",
         dstaddr: "01068488231",
-        send_reserve: "0",
-        button_type: "0",
+        // dstaddr: "01092066598",
         next_type: "0",
+        send_reserve: "0",
       },
     });
 

@@ -161,8 +161,8 @@ const ViewFirstdayMassage = () => {
               title: "세부시티",
               disabledLoc: true,
               disabledTime: true,
-              fixedValueLoc: "개별적으로 이동하겠습니다.",
-              fixedValueTime: "개별적으로 이동하겠습니다.",
+              fixedValueLoc: "개별 이동하겠습니다.",
+              fixedValueTime: "개별 이동하겠습니다.",
             },
             port: {
               title: "항구드랍",

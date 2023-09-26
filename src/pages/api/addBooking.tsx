@@ -60,7 +60,7 @@ export default async function handler(
         value = value.replace("개별적으로 스파로 오겠습니다.", "No Need");
         value = value.replace("개별 드랍하겠습니다.", "No Need");
         value = value.replace("막탄지역", "");
-        value = value.replace("개별적으로 이동하겠습니다.", "No Need");
+        value = value.replace("개별 이동하겠습니다.", "No Need");
         value = value.replace("막탄공항", "Airport");
       }
       if (formKey === "date") {

@@ -13,10 +13,10 @@ const translator = {
   massageTime: "마사지시간",
   departTime: "출발 시간",
   pacakge: "패키지",
-  "drop-by-themself": "개별적으로 이동하겠습니다.",
+  "drop-by-themself": "개별 이동하겠습니다.",
   "drop-port": "항구드랍 (1인 200페소 추가)",
   "drop-no-need": "드랍 필요 없습니다.",
-  "pick-by-themself": "개별적으로 이동하겠습니다.",
+  "pick-by-themself": "개별 이동하겠습니다.",
   "pick-no-need": "픽업 필요 없습니다.",
 };
 

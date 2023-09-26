@@ -68,7 +68,9 @@ export default async function handler(
   //   massageTime = dayjs(massageTime).format("hh:mm A");
   dropLocation = dropLocation
     .replace("필요 없습니다.", "No Need")
-    .replace("개별적으로 이동하겠습니다.", "Drop No Need");
+    .replace("개별 이동하겠습니다.", "Drop No Need");
+
+  let msgString = "\n  - " + massageKor.join(`\n  - `);
 
   let confirmInfo =
     "[일반 패키지]\n" +
@@ -78,16 +80,20 @@ export default async function handler(
     `◆ 픽업시간: ${pickTime}\n` +
     `◆ 픽업장소: ${pickLocation}\n` +
     `◆ 마사지예약: ${massageTime}\n` +
-    `◆ 드랍장소: ${req.body.dropLocation}\n` +
-    `◆ 마사지: ${massageKor.join(`\n`)}\n` +
+    `◆ 드랍장소: ${req.body.dropLocation || ""}\n` +
+    `◆ 마사지: ${msgString}\n` +
     `◆ 참고사항: ${req.body.memo}`;
 
-  let msg =
-    "♡♥안녕하세요. 고객님♡♥\n" +
-    "카카오트라 스파 입니다.\n" +
-    '홈페이지 통해 예약주신 "일반팩" 예약 확인이 되었습니다. 아래정보가 맞는지 한번 더 확인해 주세요.\n\n' +
-    `${confirmInfo}\n\n\n` +
-    `★차량정보는 당일 또는 전날에 안내 드리겠습니다★`;
+  let variable =
+    `${req.body.name}` +
+    `|${req.body.pax}명` +
+    `|${date}` +
+    `|${pickTime}` +
+    `|${pickLocation}` +
+    `|${massageTime}` +
+    `|${req.body.dropLocation || ""}` +
+    `|${msgString}` +
+    `|${req.body.memo}`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
     result[key] = formWithoutExcept[key];
@@ -118,20 +124,20 @@ export default async function handler(
 
     await axios({
       method: "POST",
-      url: "http://221.139.14.189/API/friendstalk_send",
+      url: "http://221.139.14.189/API/alimtalk_api",
       headers: {
         "Accept-Encoding": "deflate, br",
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
       data: {
         api_key: process.env.KAKAO_API_KEY,
-        msg: msg,
-        plusfriend: "@cacaotreespa",
+        template_code: "SJT_096890",
+        variable,
         callback: "01083438231",
         dstaddr: "01068488231",
-        send_reserve: "0",
-        button_type: "0",
+        // dstaddr: "01092066598",
         next_type: "0",
+        send_reserve: "0",
       },
     });
 
