@@ -119,7 +119,7 @@ export default async function handler(
     const result2 = await axios.post(
       "http://221.139.14.189/API/friendstalk_send",
       {
-        api_key: process.env.KAKAO_API_KEY,
+        api_key: process.env.NEXT_PUBLIC_KAKAO_API_KEY,
         msg: msg,
         plusfriend: "@cacaotreespa",
         callback: "01083438231",

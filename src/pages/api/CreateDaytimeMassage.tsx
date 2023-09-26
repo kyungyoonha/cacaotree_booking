@@ -117,7 +117,7 @@ export default async function handler(
     sheet.addRow(result);
 
     await axios.post("http://221.139.14.189/API/friendstalk_send", {
-      api_key: process.env.KAKAO_API_KEY,
+      api_key: process.env.NEXT_PUBLIC_KAKAO_API_KEY,
       msg: msg,
       plusfriend: "@cacaotreespa",
       callback: "01083438231",
@@ -126,7 +126,6 @@ export default async function handler(
       button_type: "0",
       next_type: "0",
     });
-    console.log(process.env.KAKAO_API_KEY);
 
     await transporter.sendMail({
       to: [
