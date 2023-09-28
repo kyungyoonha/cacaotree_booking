@@ -76,6 +76,7 @@ export default async function handler(
     "[일반 패키지]\n" +
     `◆ 고객성함: ${req.body.name}\n` +
     `◆ 총인원수: ${req.body.pax}명\n` +
+    `◆ 전화번호: ${req.body.phone}\n` +
     `◆ 예약날짜: ${date}\n` +
     `◆ 픽업시간: ${pickTime}\n` +
     `◆ 픽업장소: ${pickLocation}\n` +
@@ -84,16 +85,23 @@ export default async function handler(
     `◆ 마사지: ${msgString}\n` +
     `◆ 참고사항: ${req.body.memo}`;
 
-  let variable =
-    `${req.body.name}` +
-    `|${req.body.pax}명` +
-    `|${date}` +
-    `|${pickTime}` +
-    `|${pickLocation}` +
-    `|${massageTime}` +
-    `|${req.body.dropLocation || ""}` +
-    `|${msgString}` +
-    `|${req.body.memo}`;
+  //   let variable =
+  //     `${req.body.name}` +
+  //     `|${req.body.pax}명` +
+  //     `|${date}` +
+  //     `|${pickTime}` +
+  //     `|${pickLocation}` +
+  //     `|${massageTime}` +
+  //     `|${req.body.dropLocation || ""}` +
+  //     `|${msgString}` +
+  //     `|${req.body.memo}`;
+
+  let msg =
+    "♡♥안녕하세요. 고객님♡♥\n" +
+    "카카오트라 스파 입니다.\n" +
+    '홈페이지 통해 예약주신 "일반팩" 예약 확인이 되었습니다. 아래정보가 맞는지 한번 더 확인해 주세요.\n\n' +
+    `${confirmInfo}\n\n\n` +
+    `★차량정보는 당일 또는 전날에 안내 드리겠습니다★`;
 
   Object.keys(formWithoutExcept).forEach((key) => {
     result[key] = formWithoutExcept[key];
@@ -124,20 +132,21 @@ export default async function handler(
 
     await axios({
       method: "POST",
-      url: "http://221.139.14.189/API/alimtalk_api",
+      url: "http://221.139.14.189/API/friendstalk_send",
       headers: {
         "Accept-Encoding": "deflate, br",
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
       data: {
         api_key: process.env.KAKAO_API_KEY,
-        template_code: "SJT_096890",
-        variable,
+        msg: msg,
+        plusfriend: "@cacaotreespa",
         callback: "01083438231",
         dstaddr: "01068488231",
         // dstaddr: "01092066598",
-        next_type: "0",
         send_reserve: "0",
+        button_type: "0",
+        next_type: "0",
       },
     });
 
