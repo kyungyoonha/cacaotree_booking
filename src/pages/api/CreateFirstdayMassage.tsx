@@ -108,9 +108,9 @@ export default async function handler(
   //     `${confirmInfo}\n\n\n` +
   //     `아래 보내드리는 "첫날팩" 안내사항을 꼭 확인해 주세요:)`;
 
-  //   Object.keys(formWithoutExcept).forEach((key) => {
-  //     result[key] = formWithoutExcept[key];
-  //   });
+  Object.keys(formWithoutExcept).forEach((key) => {
+    result[key] = formWithoutExcept[key];
+  });
 
   result["company"] = "미확정";
   result["confirmDone"] = "N";

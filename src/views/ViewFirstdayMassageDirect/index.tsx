@@ -68,7 +68,7 @@ const ViewFirstdayMassageDirect = () => {
 
   useEffect(() => {
     if (data?.ok) {
-      router.push("/cart/success");
+      // router.push("/cart/success");
     }
   }, [data, router]);
 
