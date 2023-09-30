@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Alert, DatePicker, Form, Spin, message } from "antd";
 import LayoutQuestion from "@components/LayoutQuestion";
 import {
@@ -27,15 +27,6 @@ const ViewFirstdayMassageDirect = () => {
   const [form] = Form.useForm<FormFirstdayMassageDirect>();
   const { blockDates, dispatch, getBlockDates } = useUIContext();
 
-  const getBlockDate = async () => {
-    const result = await axios.get("/api/GetBlockDate");
-    getBlockDates(result.data, dispatch);
-  };
-
-  useEffect(() => {
-    getBlockDate();
-  }, [getBlockDates]);
-
   const [createFirstdayMassage, { loading, data, error }] =
     useMutation<EmailResponse>("/api/CreateFirstdayMassage");
 
@@ -63,9 +54,17 @@ const ViewFirstdayMassageDirect = () => {
       }
       return dayjs().add(1, "days") >= current;
     },
-    [blockDates?.blockDatesFirstday]
+    [blockDates]
   );
 
+  useEffect(() => {
+    const getBlockDate = async () => {
+      const result = await axios.get("/api/GetBlockDate");
+      getBlockDates(result.data.data, dispatch);
+    };
+
+    getBlockDate();
+  }, [dispatch, getBlockDates]);
   useEffect(() => {
     if (data?.ok) {
       router.push("/cart/success");
