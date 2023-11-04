@@ -215,7 +215,7 @@ const ViewLastdayMassageDirect = () => {
 
         <Alert
           message="공항드랍 불가"
-          description="오전, 오후 공항 드랍은 예약이 어렵습니다."
+          description="오전, 오후9시 이전 공항드랍은 어렵습니다."
           type="warning"
           showIcon
           style={{ width: "100%" }}
