@@ -24,7 +24,7 @@ export default async function handler(
     await doc.getInfo();
     let sheetOrder = doc.sheetsByTitle["BlockDate"];
 
-    await sheetOrder.loadHeaderRow(1);
+    // await sheetOrder.loadHeaderRow(1);
     let rows = await sheetOrder.getRows();
 
     let blockDatesFirstday = [];
