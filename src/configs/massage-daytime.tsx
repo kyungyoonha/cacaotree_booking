@@ -30,6 +30,10 @@ const massageDaytime: SelectOption = [
         value: "90분 오일/90 Oil/40000",
       },
       {
+        label: "90분 성장마사지 (20,000원/800페소)",
+        value: "90분 성장마지지/90 Kid/20000",
+      },
+      {
         label: "120분 타이 (50,000원/2,000페소)",
         value: "120분 타이/120 Thai/50000",
       },

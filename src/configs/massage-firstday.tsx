@@ -21,6 +21,10 @@ const massageFirstday: SelectOption = [
         value: "90분 라바스톤/90 LavaStone/45000",
       },
       {
+        label: "90분 성장마사지 (30,000원/1,200페소)",
+        value: "90분 성장마지지/90 Kid/30000",
+      },
+      {
         label: "120분 타이 (60,000원/2,400페소)",
         value: "120분 타이/120 Thai/60000",
       },
