@@ -232,7 +232,7 @@ const ViewFirstdayMassageDirect = () => {
                   helpLoc: (
                     <Alert
                       message="드랍 불가"
-                      description="플랜테이션베이, 솔레아, 공항근처, 세부시티"
+                      description="솔레아, 공항근처, 세부시티"
                       type="warning"
                       showIcon
                       style={{ width: "100%", margin: "20px 0" }}
