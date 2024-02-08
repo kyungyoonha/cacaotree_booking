@@ -1,5 +1,5 @@
 import { StyledH1 } from "@styles/styledComponents";
-import { Form, Input } from "antd";
+import { Alert, Form, Input } from "antd";
 import React from "react";
 
 const FormItemMemo = () => {
@@ -19,6 +19,13 @@ const FormItemMemo = () => {
           style={{ borderRadius: "10px", padding: "15px" }}
         />
       </Form.Item>
+      <Alert
+        message="참고사항"
+        description="예약확정 안내를 받을 수 있는 카카오톡ID를 첨부해주세요. (또는 위애 작성해주신 핸드폰 번호를 한번 더 확인해주세요)"
+        type="warning"
+        showIcon
+        style={{ width: "100%" }}
+      />
     </>
   );
 };
