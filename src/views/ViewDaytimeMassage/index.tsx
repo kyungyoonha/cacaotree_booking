@@ -73,7 +73,7 @@ const ViewDaytimeMassage = () => {
         requiredMark={false}
         scrollToFirstError={true}
       >
-        <StyledH1>예약날짜를 선택해주세요.</StyledH1>
+        <StyledH1>이용날짜를 선택해주세요.</StyledH1>
         <Form.Item name="package" hidden initialValue="[2] Daytime" />
 
         <Form.Item label="쿠폰 목록" required hidden>
@@ -91,16 +91,16 @@ const ViewDaytimeMassage = () => {
         </Form.Item>
 
         <Form.Item
-          label="예약날짜"
+          label="이용날짜"
           name="date"
-          rules={[{ required: true, message: "예약날짜를 선택해주세요." }]}
+          rules={[{ required: true, message: "이용날짜를 선택해주세요." }]}
           style={{ width: "100%" }}
           // initialValue={dayjs().add(1, "days")}
           extra="당일 예약은 카톡으로 문의주세요."
         >
           <DatePicker
             format={"YYYY-MM-DD"}
-            placeholder="예약날짜를 선택해주세요."
+            placeholder="이용날짜를 선택해주세요."
             className="ant-input"
             style={{ height: "60px", borderRadius: "10px", paddingTop: "15px" }}
             disabledDate={disabledDate}

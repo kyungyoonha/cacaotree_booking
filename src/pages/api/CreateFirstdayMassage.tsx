@@ -79,7 +79,7 @@ export default async function handler(
     `◆ 고객성함: ${req.body.name}\n` +
     `◆ 총인원수: ${req.body.pax}명\n` +
     `◆ 전화번호: ${req.body.phone}\n` +
-    `◆ 예약날짜: ${date}\n` +
+    `◆ 이용날짜: ${date}\n` +
     // `◆ 총마사지: ${msgOccupy}\n` +
     `◆ 도착시간: ${pickTime}\n` +
     `◆ 픽업장소: 막탄공항\n` +
@@ -285,7 +285,7 @@ export default async function handler(
                               .join("")}
 
                               <tr>
-                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">예약날짜</td>
+                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">이용날짜</td>
                                   <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${date}</td>
                               </tr>
                               <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>

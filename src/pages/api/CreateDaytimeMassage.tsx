@@ -77,7 +77,7 @@ export default async function handler(
     `◆ 고객성함: ${req.body.name}\n` +
     `◆ 총인원수: ${req.body.pax}명\n` +
     `◆ 전화번호: ${req.body.phone}\n` +
-    `◆ 예약날짜: ${date}\n` +
+    `◆ 이용날짜: ${date}\n` +
     `◆ 픽업시간: ${pickTime}\n` +
     `◆ 픽업장소: ${pickLocation}\n` +
     `◆ 마사지예약: ${massageTime}\n` +
@@ -162,7 +162,7 @@ export default async function handler(
       replyTo: email,
       subject: `${req.body.name} 님의 카카오트리 예약안내 메일입니다.`,
       html: `
-      <div style="background-color: #E5E5E5;">
+      <div style="background-color: #E5E5E5;"
         <table align="center" border="0" cellspacing="0" cellpadding="0" style="padding: 0; margin: 0 auto; width: 95%;">
             <tbody><br/><br/>
             <tr>
@@ -255,7 +255,7 @@ export default async function handler(
                               })
                               .join("")}
                               <tr>
-                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">예약날짜</td>
+                                  <td colspan="1" style="width: 160px; padding: 16px 18px 10px 0; color: #737373; line-height: 25px; vertical-align: top;">이용날짜</td>
                                   <td colspan="2" style="padding: 16px 0 10px 0; line-height: 25px; color: #2A2A2E; vertical-align: top;">${date}</td>
                               </tr>
                               <tr><td colspan="3"style="padding:0;margin:0;border-bottom:1px solid #DDDFE2;background:none;height:1px;width:602px;margin:0px;"></tr>

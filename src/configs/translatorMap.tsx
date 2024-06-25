@@ -4,7 +4,7 @@ const translator = {
   email: "이메일",
   pax: "인원수",
   pickTime: "도착시간",
-  date: "예약날짜",
+  date: "이용날짜",
   pickFlight: "도착 항공편",
   pick: "픽업장소",
   drop: "드랍장소",

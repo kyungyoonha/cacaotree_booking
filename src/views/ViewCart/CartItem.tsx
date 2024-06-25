@@ -84,7 +84,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
         <CartItemBodyDetail className="item">
           <Image width="130" height="130" src={thumbnail} alt="image" />
           <div className="item detail">
-            <p>예약날짜: {dayjs(cartItem?.form?.date).format("YYYY-MM-DD")}</p>
+            <p>이용날짜: {dayjs(cartItem?.form?.date).format("YYYY-MM-DD")}</p>
             <p>총인원수: {cartItem?.form.pax} 명</p>
             <p>{cartItem?.massageText}</p>
             {!!downPerPax.length && hasSixtyMinutesMassage && (
