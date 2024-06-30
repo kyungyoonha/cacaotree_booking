@@ -124,6 +124,7 @@ export default async function handler(
   result["dropLocation"] = "Airport";
   result["dropTime"] = changeTimeFormat(dropTime);
   result["confirmInfo"] = confirmInfo;
+  result["timestamp"] = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss A");
 
   try {
     await doc.useServiceAccountAuth({
