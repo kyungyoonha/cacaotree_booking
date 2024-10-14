@@ -1,4 +1,4 @@
-import { Carts, CartsResult } from "@types";
+import { CartsResult } from "@types";
 import { NextApiResponse, NextApiRequest } from "next";
 import nodemailer from "nodemailer";
 import translator from "@configs/translatorMap";
@@ -88,6 +88,7 @@ const handler = async (
         "gkb10a@gmail.com",
         "cheonsang4226@gmail.com",
         "gkdud9194@gmail.com",
+        "rachel950113@gmail.com",
       ],
       //   to: email,
       from: OAUTH_USER,
