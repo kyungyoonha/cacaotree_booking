@@ -186,6 +186,7 @@ export default async function handler(
         "cheonsang4226@gmail.com",
         "gkdud9194@gmail.com",
         "pheobe0630@gmail.com",
+        "rachel950113@gmail.com",
         email,
       ],
       from: "cacaotreespacebu@gmail.com",
