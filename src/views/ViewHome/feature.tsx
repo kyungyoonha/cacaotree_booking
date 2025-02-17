@@ -9,7 +9,7 @@ export const itemList = [
     description: "첫날 새벽에 공항에 도착하시는 분들을 위한 패키지입니다.",
     href: "/firstday/firstday-massage-direct",
     imageList: [
-      "https://github.com/user-attachments/assets/51d2861d-754a-4363-b8b3-3bf19b3e1377",
+      "https://github.com/user-attachments/assets/5976d49f-d2f2-46b7-9e40-2c2e5e017934",
       "https://github.com/user-attachments/assets/2ceb18f7-91fa-4ac5-94a1-04224b23f85c",
       "https://github.com/user-attachments/assets/02bd48ec-81df-4831-ba6a-73c5895cd844",
       "https://github.com/user-attachments/assets/2fe64d5a-30c2-4592-918c-295c996bd959",
