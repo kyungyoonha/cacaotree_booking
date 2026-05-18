@@ -17,7 +17,7 @@
   "field.name": "예약자 성함",
   "field.email": "이메일",
   "field.sns": "SNS 연락처",
-  "field.snsId": "아이디 / 번호",
+  "field.snsId": "SNS 아이디 / 번호",
   "field.date": "이용 날짜",
   "field.arrivalTime": "도착 시간",
   "field.flight": "항공기 편명",

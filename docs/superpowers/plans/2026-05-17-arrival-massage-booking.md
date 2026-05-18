@@ -43,6 +43,7 @@
 ## Task 1: next-i18next 설치 & i18n 설정
 
 **Files:**
+
 - Create: `next-i18next.config.js`
 - Modify: `next.config.js`
 - Modify: `src/pages/_app.tsx`
@@ -59,8 +60,8 @@ npm install next-i18next react-i18next i18next
 // next-i18next.config.js
 module.exports = {
   i18n: {
-    defaultLocale: 'ko',
-    locales: ['ko', 'en', 'ja', 'zh-Hans', 'zh-Hant'],
+    defaultLocale: "ko",
+    locales: ["ko", "en", "ja", "zh-Hans", "zh-Hant"],
   },
 };
 ```
@@ -70,7 +71,7 @@ module.exports = {
 기존 파일에서 `const { i18n } = require('./next-i18next.config');` 추가 후 nextConfig에 `i18n` 추가:
 
 ```js
-const { i18n } = require('./next-i18next.config');
+const { i18n } = require("./next-i18next.config");
 
 const nextConfig = {
   reactStrictMode: false,
@@ -87,7 +88,7 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-- [ ] **Step 4: _app.tsx 수정**
+- [ ] **Step 4: \_app.tsx 수정**
 
 `appWithTranslation`으로 export 감싸기:
 
@@ -157,6 +158,7 @@ git commit -m "feat: next-i18next 설치 및 i18n 설정 추가"
 ## Task 2: 번역 파일 5개 생성
 
 **Files:**
+
 - Create: `public/locales/ko/booking.json`
 - Create: `public/locales/en/booking.json`
 - Create: `public/locales/ja/booking.json`
@@ -172,7 +174,7 @@ git commit -m "feat: next-i18next 설치 및 i18n 설정 추가"
   "field.name": "예약자 성함",
   "field.email": "이메일",
   "field.sns": "SNS 연락처",
-  "field.snsId": "아이디 / 번호",
+  "field.snsId": "SNS 아이디 / 번호",
   "field.date": "이용 날짜",
   "field.arrivalTime": "도착 시간",
   "field.flight": "항공기 편명",
@@ -390,6 +392,7 @@ git commit -m "feat: 5개 언어 booking 번역 파일 추가 (ko/en/ja/zh-Hans/
 ## Task 3: FormArrivalMassage 타입 추가
 
 **Files:**
+
 - Modify: `src/types/index.tsx`
 
 - [ ] **Step 1: FormArrivalMassage 인터페이스 추가**
@@ -397,7 +400,7 @@ git commit -m "feat: 5개 언어 booking 번역 파일 추가 (ko/en/ja/zh-Hans/
 `src/types/index.tsx`에서 `FormLastdayMassageDirect` 인터페이스 바로 아래에 추가:
 
 ```ts
-export type SnsType = 'kakao' | 'line' | 'whatsapp' | 'wechat' | 'messenger';
+export type SnsType = "kakao" | "line" | "whatsapp" | "wechat" | "messenger";
 
 export interface FormArrivalMassage extends FormFirstdayMassage {
   name: string;
@@ -419,23 +422,24 @@ git commit -m "feat: FormArrivalMassage 타입 추가"
 ## Task 4: useBlockDates 공통 훅 생성
 
 **Files:**
+
 - Create: `src/libs/useBlockDates.ts`
 
 - [ ] **Step 1: useBlockDates.ts 생성**
 
 ```ts
-import axios from 'axios';
-import dayjs from 'dayjs';
-import { useCallback, useEffect, useState } from 'react';
-import { BlockDates } from 'src/types';
+import axios from "axios";
+import dayjs from "dayjs";
+import { useCallback, useEffect, useState } from "react";
+import { BlockDates } from "src/types";
 
-type BlockDateType = 'firstday' | 'daytime';
+type BlockDateType = "firstday" | "daytime";
 
 export default function useBlockDates(type: BlockDateType) {
   const [blockDates, setBlockDates] = useState<BlockDates | null>(null);
 
   useEffect(() => {
-    axios.get('/api/GetBlockDate').then((res) => {
+    axios.get("/api/GetBlockDate").then((res) => {
       setBlockDates(res.data.data);
     });
   }, []);
@@ -443,19 +447,19 @@ export default function useBlockDates(type: BlockDateType) {
   const disabledDate = useCallback(
     (current: dayjs.Dayjs): boolean => {
       const dates =
-        type === 'firstday'
+        type === "firstday"
           ? blockDates?.blockDatesFirstday
           : blockDates?.blockDatesDaytime;
 
       if (dates?.length) {
         return (
-          dayjs().add(1, 'days') >= current ||
-          !!dates.find((date) => date === dayjs(current).format('YYYY-MM-DD'))
+          dayjs().add(1, "days") >= current ||
+          !!dates.find((date) => date === dayjs(current).format("YYYY-MM-DD"))
         );
       }
-      return dayjs().add(1, 'days') >= current;
+      return dayjs().add(1, "days") >= current;
     },
-    [blockDates, type]
+    [blockDates, type],
   );
 
   return { disabledDate, isLoading: blockDates === null };
@@ -474,14 +478,15 @@ git commit -m "feat: useBlockDates 공통 훅 추가 (Context 없이 독립 동�
 ## Task 5: TimePickerField 컴포넌트 생성
 
 **Files:**
+
 - Create: `src/components/TimePickerField.tsx`
 
 - [ ] **Step 1: TimePickerField.tsx 생성**
 
 ```tsx
-import { TimePicker } from 'antd';
-import dayjs from 'dayjs';
-import styled from 'styled-components';
+import { TimePicker } from "antd";
+import dayjs from "dayjs";
+import styled from "styled-components";
 
 interface Props {
   value?: dayjs.Dayjs;
@@ -525,37 +530,44 @@ git commit -m "feat: TimePickerField 컴포넌트 추가 (스크롤 휠 방식 �
 ## Task 6: FormItemSnsContact 컴포넌트 생성
 
 **Files:**
+
 - Create: `src/components/FormItemSnsContact.tsx`
 
 - [ ] **Step 1: FormItemSnsContact.tsx 생성**
 
 ```tsx
-import { Form, FormInstance } from 'antd';
-import { useTranslation } from 'next-i18next';
+import { Form, FormInstance } from "antd";
+import { useTranslation } from "next-i18next";
 import {
   StyledInput,
   StyledRadioButton,
   StyledRadioGroup,
-} from '@styles/styledComponents';
-import { SnsType } from 'src/types';
+} from "@styles/styledComponents";
+import { SnsType } from "src/types";
 
-const SNS_OPTIONS: SnsType[] = ['kakao', 'line', 'whatsapp', 'wechat', 'messenger'];
+const SNS_OPTIONS: SnsType[] = [
+  "kakao",
+  "line",
+  "whatsapp",
+  "wechat",
+  "messenger",
+];
 
 interface Props {
   form: FormInstance;
 }
 
 const FormItemSnsContact = ({ form }: Props) => {
-  const { t } = useTranslation('booking');
-  const snsType = Form.useWatch('snsType', form) as SnsType | undefined;
+  const { t } = useTranslation("booking");
+  const snsType = Form.useWatch("snsType", form) as SnsType | undefined;
 
   return (
     <>
       <Form.Item
-        label={t('field.sns')}
+        label={t("field.sns")}
         name="snsType"
-        rules={[{ required: true, message: t('error.sns') }]}
-        style={{ width: '100%' }}
+        rules={[{ required: true, message: t("error.sns") }]}
+        style={{ width: "100%" }}
       >
         <StyledRadioGroup>
           {SNS_OPTIONS.map((sns) => (
@@ -567,13 +579,13 @@ const FormItemSnsContact = ({ form }: Props) => {
       </Form.Item>
 
       <Form.Item
-        label={t('field.snsId')}
+        label={t("field.snsId")}
         name="snsId"
-        rules={[{ required: true, message: t('error.snsId') }]}
-        style={{ width: '100%' }}
+        rules={[{ required: true, message: t("error.snsId") }]}
+        style={{ width: "100%" }}
       >
         <StyledInput
-          placeholder={snsType ? t(`placeholder.snsId.${snsType}`) : ''}
+          placeholder={snsType ? t(`placeholder.snsId.${snsType}`) : ""}
           size="large"
         />
       </Form.Item>
@@ -596,23 +608,24 @@ git commit -m "feat: FormItemSnsContact 컴포넌트 추가 (SNS 선택 + 아이
 ## Task 7: LayoutBooking 컴포넌트 생성
 
 **Files:**
+
 - Create: `src/components/LayoutBooking/index.tsx`
 
 - [ ] **Step 1: LayoutBooking/index.tsx 생성**
 
 ```tsx
-import Logo from '@components/Logo';
-import { useRouter } from 'next/router';
-import React from 'react';
-import styled from 'styled-components';
-import { SCREENS } from '@configs/screens';
+import Logo from "@components/Logo";
+import { useRouter } from "next/router";
+import React from "react";
+import styled from "styled-components";
+import { SCREENS } from "@configs/screens";
 
 const LOCALES = [
-  { code: 'ko', label: '한국어' },
-  { code: 'en', label: 'EN' },
-  { code: 'ja', label: '日本語' },
-  { code: 'zh-Hans', label: '简体' },
-  { code: 'zh-Hant', label: '繁體' },
+  { code: "ko", label: "한국어" },
+  { code: "en", label: "EN" },
+  { code: "ja", label: "日本語" },
+  { code: "zh-Hans", label: "简体" },
+  { code: "zh-Hant", label: "繁體" },
 ];
 
 const BookingHeader = () => {
@@ -686,17 +699,17 @@ const LocaleButtons = styled.div`
 
 const LocaleButton = styled.button<{ $active: boolean }>`
   padding: 4px 10px;
-  border: 1px solid ${({ $active }) => ($active ? '#EFB041' : '#d9d9d9')};
+  border: 1px solid ${({ $active }) => ($active ? "#EFB041" : "#d9d9d9")};
   border-radius: 6px;
-  background: ${({ $active }) => ($active ? '#EFB041' : 'transparent')};
-  color: ${({ $active }) => ($active ? '#fff' : '#555')};
+  background: ${({ $active }) => ($active ? "#EFB041" : "transparent")};
+  color: ${({ $active }) => ($active ? "#fff" : "#555")};
   font-size: 12px;
   cursor: pointer;
-  font-weight: ${({ $active }) => ($active ? 'bold' : 'normal')};
+  font-weight: ${({ $active }) => ($active ? "bold" : "normal")};
 
   &:hover {
-    border-color: #EFB041;
-    color: #EFB041;
+    border-color: #efb041;
+    color: #efb041;
   }
 
   @media (max-width: ${SCREENS.sm}) {
@@ -726,46 +739,47 @@ git commit -m "feat: LayoutBooking 컴포넌트 추가 (언어 전환 헤더 포
 ## Task 8: ContactSection 생성
 
 **Files:**
+
 - Create: `src/views/ViewArrivalMassage/ContactSection.tsx`
 
 - [ ] **Step 1: ContactSection.tsx 생성**
 
 ```tsx
-import FormItemSnsContact from '@components/FormItemSnsContact';
-import { StyledH1, StyledInput } from '@styles/styledComponents';
-import { Form, FormInstance } from 'antd';
-import { useTranslation } from 'next-i18next';
+import FormItemSnsContact from "@components/FormItemSnsContact";
+import { StyledH1, StyledInput } from "@styles/styledComponents";
+import { Form, FormInstance } from "antd";
+import { useTranslation } from "next-i18next";
 
 interface Props {
   form: FormInstance;
 }
 
 const ContactSection = ({ form }: Props) => {
-  const { t } = useTranslation('booking');
+  const { t } = useTranslation("booking");
 
   return (
     <>
-      <StyledH1>{t('title')}</StyledH1>
+      <StyledH1>{t("title")}</StyledH1>
 
       <Form.Item
-        label={t('field.name')}
+        label={t("field.name")}
         name="name"
-        rules={[{ required: true, message: t('error.name') }]}
-        style={{ width: '100%' }}
+        rules={[{ required: true, message: t("error.name") }]}
+        style={{ width: "100%" }}
       >
-        <StyledInput placeholder={t('placeholder.name')} size="large" />
+        <StyledInput placeholder={t("placeholder.name")} size="large" />
       </Form.Item>
 
       <Form.Item
         name="email"
-        label={t('field.email')}
-        style={{ width: '100%' }}
+        label={t("field.email")}
+        style={{ width: "100%" }}
         rules={[
-          { type: 'email', message: t('error.emailFormat') },
-          { required: true, message: t('error.email') },
+          { type: "email", message: t("error.emailFormat") },
+          { required: true, message: t("error.email") },
         ]}
       >
-        <StyledInput placeholder={t('placeholder.email')} size="large" />
+        <StyledInput placeholder={t("placeholder.email")} size="large" />
       </Form.Item>
 
       <FormItemSnsContact form={form} />
@@ -788,17 +802,18 @@ git commit -m "feat: ViewArrivalMassage ContactSection 추가"
 ## Task 9: AirportSection 생성
 
 **Files:**
+
 - Create: `src/views/ViewArrivalMassage/AirportSection.tsx`
 
 - [ ] **Step 1: AirportSection.tsx 생성**
 
 ```tsx
-import FormItemPickDrop from '@components/FormItemPickDrop';
-import TimePickerField from '@components/TimePickerField';
-import { StyledH1, StyledInput } from '@styles/styledComponents';
-import { Alert, DatePicker, Form, FormInstance } from 'antd';
-import dayjs from 'dayjs';
-import { useTranslation } from 'next-i18next';
+import FormItemPickDrop from "@components/FormItemPickDrop";
+import TimePickerField from "@components/TimePickerField";
+import { StyledH1, StyledInput } from "@styles/styledComponents";
+import { Alert, DatePicker, Form, FormInstance } from "antd";
+import dayjs from "dayjs";
+import { useTranslation } from "next-i18next";
 
 interface Props {
   form: FormInstance;
@@ -806,58 +821,62 @@ interface Props {
 }
 
 const AirportSection = ({ form, disabledDate }: Props) => {
-  const { t } = useTranslation('booking');
+  const { t } = useTranslation("booking");
 
   return (
     <>
-      <StyledH1>{t('section.airport')}</StyledH1>
+      <StyledH1>{t("section.airport")}</StyledH1>
 
       <Form.Item
-        label={t('field.date')}
+        label={t("field.date")}
         name="date"
-        rules={[{ required: true, message: t('error.date') }]}
-        style={{ width: '100%' }}
+        rules={[{ required: true, message: t("error.date") }]}
+        style={{ width: "100%" }}
       >
         <DatePicker
           format="YYYY-MM-DD"
-          placeholder={t('error.date')}
+          placeholder={t("error.date")}
           className="ant-input"
-          style={{ width: '100%', height: '60px', borderRadius: '10px' }}
+          style={{ width: "100%", height: "60px", borderRadius: "10px" }}
           disabledDate={disabledDate}
         />
       </Form.Item>
 
       <Alert
-        message={t('alert.dateGuide.title')}
-        description={<span style={{ whiteSpace: 'pre-line' }}>{t('alert.dateGuide.desc')}</span>}
+        message={t("alert.dateGuide.title")}
+        description={
+          <span style={{ whiteSpace: "pre-line" }}>
+            {t("alert.dateGuide.desc")}
+          </span>
+        }
         type="warning"
         showIcon
-        style={{ width: '100%', marginBottom: '16px' }}
+        style={{ width: "100%", marginBottom: "16px" }}
       />
 
       <Form.Item
-        label={t('field.arrivalTime')}
+        label={t("field.arrivalTime")}
         name="pickTime"
-        rules={[{ required: true, message: t('error.arrivalTime') }]}
-        style={{ width: '100%' }}
+        rules={[{ required: true, message: t("error.arrivalTime") }]}
+        style={{ width: "100%" }}
       >
-        <TimePickerField placeholder={t('placeholder.arrivalTime')} />
+        <TimePickerField placeholder={t("placeholder.arrivalTime")} />
       </Form.Item>
 
       <Form.Item
-        label={t('field.flight')}
+        label={t("field.flight")}
         name="pickFlight"
-        rules={[{ required: true, message: t('error.flight') }]}
-        style={{ width: '100%' }}
+        rules={[{ required: true, message: t("error.flight") }]}
+        style={{ width: "100%" }}
       >
-        <StyledInput placeholder={t('placeholder.flight')} size="large" />
+        <StyledInput placeholder={t("placeholder.flight")} size="large" />
       </Form.Item>
 
       <Form.Item
-        label={t('field.pickupLocation')}
+        label={t("field.pickupLocation")}
         name="pickLocation"
         initialValue="막탄공항"
-        style={{ width: '100%' }}
+        style={{ width: "100%" }}
       >
         <StyledInput disabled size="large" />
       </Form.Item>
@@ -870,36 +889,36 @@ const AirportSection = ({ form, disabledDate }: Props) => {
         titleTime="드랍시간"
         options={{
           mactan: {
-            title: '막탄지역',
+            title: "막탄지역",
             disabledLoc: false,
             disabledTime: true,
-            fixedValueLoc: '',
-            fixedValueTime: '11:00 am',
+            fixedValueLoc: "",
+            fixedValueTime: "11:00 am",
             helpLoc: (
               <Alert
                 message="드랍 불가"
                 description="솔레아, 공항근처, 세부시티"
                 type="warning"
                 showIcon
-                style={{ width: '100%', margin: '20px 0' }}
+                style={{ width: "100%", margin: "20px 0" }}
               />
             ),
           },
           cebu: {
-            title: '세부시티',
+            title: "세부시티",
             disabledLoc: true,
             disabledTime: true,
-            fixedValueLoc: '개별 이동하겠습니다.',
-            fixedValueTime: '',
-            placeholderLoc: '',
-            placeholderTime: '개별 이동하겠습니다.',
+            fixedValueLoc: "개별 이동하겠습니다.",
+            fixedValueTime: "",
+            placeholderLoc: "",
+            placeholderTime: "개별 이동하겠습니다.",
           },
           port: {
-            title: '항구드랍',
+            title: "항구드랍",
             disabledLoc: true,
             disabledTime: false,
-            fixedValueLoc: '항구드랍 (1인 200페소 추가)',
-            fixedValueTime: '',
+            fixedValueLoc: "항구드랍 (1인 200페소 추가)",
+            fixedValueTime: "",
             helpTime: (
               <Alert
                 message="항구 드랍 시간을 적어주세요."
@@ -912,26 +931,26 @@ const AirportSection = ({ form, disabledDate }: Props) => {
                 }
                 type="warning"
                 showIcon
-                style={{ width: '100%', margin: '20px 0' }}
+                style={{ width: "100%", margin: "20px 0" }}
               />
             ),
-            couponKey: 'dropPort',
+            couponKey: "dropPort",
           },
           noNeed: {
-            title: '필요 없습니다.',
+            title: "필요 없습니다.",
             disabledLoc: false,
             disabledTime: true,
-            fixedValueLoc: '',
-            fixedValueTime: '',
-            placeholderLoc: '개별이동 이유를 적어주세요.',
-            placeholderTime: '필요 없습니다.',
+            fixedValueLoc: "",
+            fixedValueTime: "",
+            placeholderLoc: "개별이동 이유를 적어주세요.",
+            placeholderTime: "필요 없습니다.",
             helpLoc: (
               <Alert
                 message="개별 이동 사유를 적어주세요."
                 description="투어픽업은 투어종류를 적어주세요."
                 type="warning"
                 showIcon
-                style={{ width: '100%', margin: '20px 0' }}
+                style={{ width: "100%", margin: "20px 0" }}
               />
             ),
           },
@@ -956,16 +975,17 @@ git commit -m "feat: ViewArrivalMassage AirportSection 추가"
 ## Task 10: MassageSection 생성
 
 **Files:**
+
 - Create: `src/views/ViewArrivalMassage/MassageSection.tsx`
 
 - [ ] **Step 1: MassageSection.tsx 생성**
 
 ```tsx
-import FormItemMassage from '@components/FormItemMassage';
-import FormItemMemo from '@components/FormItemMemo';
-import massageFirstday from '@configs/massage-firstday';
-import { FormInstance } from 'antd';
-import { useTranslation } from 'next-i18next';
+import FormItemMassage from "@components/FormItemMassage";
+import FormItemMemo from "@components/FormItemMemo";
+import massageFirstday from "@configs/massage-firstday";
+import { FormInstance } from "antd";
+import { useTranslation } from "next-i18next";
 
 interface Props {
   form: FormInstance;
@@ -995,6 +1015,7 @@ git commit -m "feat: ViewArrivalMassage MassageSection 추가"
 ## Task 11: useArrivalMassageForm 훅 생성
 
 **Files:**
+
 - Create: `src/views/ViewArrivalMassage/useArrivalMassageForm.ts`
 
 - [ ] **Step 1: useArrivalMassageForm.ts 생성**
@@ -1003,42 +1024,42 @@ git commit -m "feat: ViewArrivalMassage MassageSection 추가"
 `snsType` + `snsId` → `phone` 필드로 합쳐서 전송.
 
 ```ts
-import { message, Form } from 'antd';
-import dayjs from 'dayjs';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import useBlockDates from 'src/libs/useBlockDates';
-import useMutation from 'src/libs/useMutation';
-import { EmailResponse } from 'src/pages/api/nodemailer';
-import { FormArrivalMassage } from 'src/types';
+import { message, Form } from "antd";
+import dayjs from "dayjs";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import useBlockDates from "src/libs/useBlockDates";
+import useMutation from "src/libs/useMutation";
+import { EmailResponse } from "src/pages/api/nodemailer";
+import { FormArrivalMassage } from "src/types";
 
 export default function useArrivalMassageForm() {
   const router = useRouter();
-  const { t } = useTranslation('booking');
+  const { t } = useTranslation("booking");
   const [form] = Form.useForm<FormArrivalMassage>();
-  const { disabledDate, isLoading } = useBlockDates('firstday');
-  const [createBooking, { loading, data, error }] =
-    useMutation<EmailResponse>('/api/CreateFirstdayMassage');
+  const { disabledDate, isLoading } = useBlockDates("firstday");
+  const [createBooking, { loading, data, error }] = useMutation<EmailResponse>(
+    "/api/CreateFirstdayMassage",
+  );
 
   const onFinish = (values: FormArrivalMassage) => {
     const phone = `${values.snsType}: ${values.snsId}`;
-    const pickTime = dayjs(values.pickTime).format('HH:mm A');
+    const pickTime = dayjs(values.pickTime).format("HH:mm A");
     createBooking({ ...values, phone, pickTime });
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    const msg =
-      errorInfo?.errorFields?.[0]?.errors?.[0] ?? t('error.retry');
+    const msg = errorInfo?.errorFields?.[0]?.errors?.[0] ?? t("error.retry");
     message.error(msg);
   };
 
   useEffect(() => {
-    if (data?.ok) router.push('/cart/success');
+    if (data?.ok) router.push("/cart/success");
   }, [data, router]);
 
   useEffect(() => {
-    if (error) message.error(t('error.retry'));
+    if (error) message.error(t("error.retry"));
   }, [error, t]);
 
   return {
@@ -1063,24 +1084,25 @@ git commit -m "feat: useArrivalMassageForm 훅 추가 (SNS→phone 변환, pickT
 ## Task 12: ViewArrivalMassage index + 페이지 파일
 
 **Files:**
+
 - Create: `src/views/ViewArrivalMassage/index.tsx`
 - Create: `src/pages/booking/arrival-massage.tsx`
 
 - [ ] **Step 1: ViewArrivalMassage/index.tsx 생성**
 
 ```tsx
-import { Form, Spin } from 'antd';
-import { useTranslation } from 'next-i18next';
-import { SpinWrapper } from '@components/ModalSpin/style';
-import { StyledButton, StyledForm } from '@styles/styledComponents';
-import AirportSection from './AirportSection';
-import ContactSection from './ContactSection';
-import MassageSection from './MassageSection';
-import useArrivalMassageForm from './useArrivalMassageForm';
-import styled from 'styled-components';
+import { Form, Spin } from "antd";
+import { useTranslation } from "next-i18next";
+import { SpinWrapper } from "@components/ModalSpin/style";
+import { StyledButton, StyledForm } from "@styles/styledComponents";
+import AirportSection from "./AirportSection";
+import ContactSection from "./ContactSection";
+import MassageSection from "./MassageSection";
+import useArrivalMassageForm from "./useArrivalMassageForm";
+import styled from "styled-components";
 
 const ViewArrivalMassage = () => {
-  const { t } = useTranslation('booking');
+  const { t } = useTranslation("booking");
   const { form, onFinish, onFinishFailed, loading, disabledDate } =
     useArrivalMassageForm();
 
@@ -1117,7 +1139,7 @@ const ViewArrivalMassage = () => {
         </SpinWrapper>
       ) : (
         <StyledButton type="primary" htmlType="submit">
-          {t('submit')}
+          {t("submit")}
         </StyledButton>
       )}
     </StyledForm>
@@ -1137,9 +1159,9 @@ const LoadingWrapper = styled.div`
 - [ ] **Step 2: src/pages/booking/arrival-massage.tsx 생성**
 
 ```tsx
-import LayoutBooking from '@components/LayoutBooking';
-import ViewArrivalMassage from '@views/ViewArrivalMassage';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import LayoutBooking from "@components/LayoutBooking";
+import ViewArrivalMassage from "@views/ViewArrivalMassage";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ArrivalMassagePage = () => (
   <LayoutBooking>
@@ -1151,7 +1173,7 @@ export default ArrivalMassagePage;
 
 export const getStaticProps = async ({ locale }: { locale: string }) => ({
   props: {
-    ...(await serverSideTranslations(locale, ['booking'])),
+    ...(await serverSideTranslations(locale, ["booking"])),
   },
 });
 ```
@@ -1177,6 +1199,7 @@ npm run dev
 
 브라우저에서 `http://localhost:3000/booking/arrival-massage` 접속.
 확인 항목:
+
 - 헤더에 언어 버튼 5개 표시 (한국어 강조)
 - 성함, 이메일, SNS 선택, 날짜, 도착시간, 항공편, 픽업/드랍, 마사지 필드 렌더링
 
