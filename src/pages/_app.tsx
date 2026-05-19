@@ -8,6 +8,7 @@ import { UIProvider } from "src/contexts";
 import { SWRConfig } from "swr";
 import { appWithTranslation } from "next-i18next";
 import { useTranslation } from "next-i18next";
+import nextI18NextConfig from "../../next-i18next.config.js";
 
 function App({ Component, pageProps }: AppProps) {
   const { t } = useTranslation();
@@ -43,4 +44,4 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, nextI18NextConfig);
