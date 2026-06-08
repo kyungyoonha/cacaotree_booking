@@ -26,14 +26,33 @@ const ViewHome = () => {
           <SpinRing $size={52} $delay="0.35s" />
           <CalIcon>
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="4" width="18" height="18" rx="2" stroke="#EFB041" strokeWidth="2" />
+              <rect
+                x="3"
+                y="4"
+                width="18"
+                height="18"
+                rx="2"
+                stroke="#EFB041"
+                strokeWidth="2"
+              />
               <path d="M3 9h18" stroke="#EFB041" strokeWidth="2" />
-              <path d="M8 2v4M16 2v4" stroke="#EFB041" strokeWidth="2" strokeLinecap="round" />
-              <path d="M7 13l3 3 5-5" stroke="#EFB041" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M8 2v4M16 2v4"
+                stroke="#EFB041"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M7 13l3 3 5-5"
+                stroke="#EFB041"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </CalIcon>
         </RingBox>
-        <PageLoadingText>{t("loading.desc")}</PageLoadingText>
+        {/* <PageLoadingText>{t("loading.desc")}</PageLoadingText> */}
         <DotsRow>
           <Dot $delay="0s" />
           <Dot $delay="0.2s" />
@@ -55,7 +74,10 @@ const ViewHome = () => {
           </Link>
         </ButtonRow>
         {daytimeImages.map((src, idx) => (
-          <ImageWrapper key={idx} style={{ position: "relative", width: "100%" }}>
+          <ImageWrapper
+            key={idx}
+            style={{ position: "relative", width: "100%" }}
+          >
             <Image
               className="custom-img"
               alt=""
@@ -240,7 +262,9 @@ const DirectBookButton = styled.a`
   text-decoration: none;
   letter-spacing: 0.02em;
   box-shadow: 0 4px 16px rgba(239, 176, 65, 0.3);
-  transition: background 0.15s, transform 0.1s;
+  transition:
+    background 0.15s,
+    transform 0.1s;
 
   &:hover {
     background: #d99e32;
@@ -251,4 +275,3 @@ const DirectBookButton = styled.a`
     transform: translateY(0);
   }
 `;
-
